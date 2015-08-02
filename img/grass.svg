@@ -1,0 +1,26 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
+ "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+ width="64.000000pt" height="64.000000pt" viewBox="0 0 64.000000 64.000000"
+ preserveAspectRatio="xMidYMid meet">
+<g style="stroke:black;stroke-width:0.5px">
+<g fill="#00cc00">
+<polygon points="-2,32 32,32 40,24 40,-2 -1,-1"></polygon>
+<polygon points="66,-2 66,32 64,32 52,20 52,-2"></polygon>
+<polygon points="66,66 66,52 64,52 52,64 52,66"></polygon>
+<polygon points="40,66 40,64 28,52 -2,52 -2,66"></polygon>
+</g>
+<g fill="#00ff00">
+<polygon points="-2,32 32,32 40,40 28,52 -2,52"></polygon>
+<polygon points="66,32 64,32 52,20 48,32 64,52 66,52"></polygon>
+</g>
+<g fill="#00aa00">
+<polygon points="40,66 40,64 28,52 48,32 64,52 64,52 52,64 52,66"></polygon>
+<polygon points="40,-2 40,0 46,6 52,0 52,-2"></polygon>
+</g>
+<polygon points="40,0 46,6 52,0 52,20  48,32 40,24" fill="#226622"></polygon>
+<polygon points="32,32 40,24 48,32 40,40" fill="#55ff55"></polygon>
+
+</g>
+</svg>
