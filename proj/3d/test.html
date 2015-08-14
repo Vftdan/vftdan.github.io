@@ -2,7 +2,8 @@
 <script>
 function drw(l,c,p1,p2,p3){var old=cont.innerHTML;cont.innerHTML=old.replace("l"+l,'\<polygon points="'+p1[0]+","+p1[1]+" "+p2[0]+","+p2[1]+" "+p3[0]+","+p3[1]+'" fill="'+c+'" \>\</polygon\>l'+l)};
 function g2d(x,y,z){var m=500/(z*2+1);var X=x*m;var Y=y*m;return [250+X,250-Y]};
-function trg(p1,p2,p3,c){var l=Math.round((p1[2]+p2[2]+p3[2])/3);drw(l,c,g2d(p1[0],p1[1],p1[2]),g2d(p2[0],p2[1],p2[2]),g2d(p3[0],p3[1],p3[2]))}
+function trg(p1,p2,p3,c){var l=Math.round((p1[2]+p2[2]+p3[2])/3);drw(l,c,g2d(p1[0],p1[1],p1[2]),g2d(p2[0],p2[1],p2[2]),g2d(p3[0],p3[1],p3[2]))};
+function rot2d(r,p,a){var x=p[0];var y=p[1];while(a<0){a+=360};a=a%360;while(!(a<90)){}}
 </script>
 <div id="out">
 <svg height="500" width="500" style="background:#ccccff">
