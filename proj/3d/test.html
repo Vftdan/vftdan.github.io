@@ -2,15 +2,18 @@
 <script>
 function drw(l,c,p1,p2,p3){var old=cont.innerHTML;cont.innerHTML=old.replace("l"+l,'\<polygon points="'+p1[0]+","+p1[1]+" "+p2[0]+","+p2[1]+" "+p3[0]+","+p3[1]+'" fill="'+c+'" \>\</polygon\>l'+l)};
 function g2d(x,y,z){var m=500/(z*2+1);var X=x*m;var Y=y*m;return [250+X,250-Y]};
-function trg(p1,p2,p3,l,c){drw(l,c,g2d(p1[0],p1[1],p1[2]),g2d(p2[0],p2[1],p2[2]),g2d(p3[0],p3[1],p3[2]))}
+function trg(p1,p2,p3,c){var l=Math.round((p1[2]+p2[2]+p3[2])/3);drw(l,c,g2d(p1[0],p1[1],p1[2]),g2d(p2[0],p2[1],p2[2]),g2d(p3[0],p3[1],p3[2]))}
 </script>
 <div id="out">
 <svg height="500" width="500" style="background:#ccccff">
+<g l="2">
+l2
+</g>
 <g l="1">
 l1
 </g>
-<g l="2">
-l2
+<g>
+l0
 </g>
 </svg>
 </div>
@@ -18,7 +21,7 @@ l2
 var cont=document.getElementById("out");
 drw(1,"red",[0,0],[50,0],[50,50]);
 //alert(g2d(-0.5,0.5,2));
-trg([-0.5,0.5,0],[-0.5,0.5,1],[-0.5,-0.5,1],1,"red");
+trg([-0.5,0.5,0],[-0.5,0.5,1],[-0.5,-0.5,1],"red");
 </script>
 </body>
 </HTML>
