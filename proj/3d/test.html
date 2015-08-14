@@ -1,6 +1,6 @@
 <HTML><body>
 <script>
-function drw(l,c,x1,y1,x2,y2,x3,y3){var old=cont.innerHTML;cont.innerHTML=old.replace("l"+l,'\<polygon points="0,0 50,50 0,50" fill="'+c+'" \>\</polygon\>l'+l);alert([old,cont.innerHTML])}
+function drw(l,c,x1,y1,x2,y2,x3,y3){var old=cont.innerHTML;cont.innerHTML=old.replace("l"+l,'\<polygon points="'+x1+","+y1+" "+x2+","+y2+" "+x3+","+y3+'" fill="'+c+'" \>\</polygon\>l'+l);alert([old,cont.innerHTML])}
 </script>
 <div id="out">
 <svg height="500" width="500" style="background:#ccccff">
@@ -14,7 +14,7 @@ l2
 </div>
 <script>
 var cont=document.getElementById("out");
-drw(1,"red")
+drw(1,"red",0,0,50,0,50,50)
 </script>
 </body>
 </HTML>
