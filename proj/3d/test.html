@@ -16,10 +16,18 @@ return [X,Y];
 }
 function grot2d(p,s){var X=p[0]; var Y=p[1];var sx=s[0];var sy=s[1];var dx=X-sx;var dy=Y-sy;
 var r=Math.sqrt((dy*dy)+(dx*dx));var q;
-if(dx<0&&dy>0){q=0};
+/*if(dx<0&&dy>0){q=0};
 if(dx>0&&dy>0){q=1};
 if(dx>0&&dy<0){q=2};
-if(dx<0&&dy<0){q=3};
+if(dx<0&&dy<0){q=3};*/
+
+if(dx<0){
+if(dy<0){q=3;dy=-dy}else{q=0};
+dx=-dx;
+}else{
+if(dy<0){q=2;dy=-dy}else{q=1}
+};
+return q
 
 
 }
@@ -44,7 +52,7 @@ drw(1,"red",[0,0],[50,0],[50,50]);
 trg([-0.5,0.5,0],[-0.5,0.5,1],[-0.5,-0.5,1],"red");
 //alert(rot2d(1,[-1,0],225));
 //alert(sin(10));
-//alert(grot2d([-1,1],[1,-1]));
+alert(grot2d([-1,1],[1,-1]));
 </script>
 </body>
 </HTML>
