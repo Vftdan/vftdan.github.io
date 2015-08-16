@@ -18,6 +18,8 @@ function grot2d(p,s){var X=p[0]; var Y=p[1];var sx=s[0];var sy=s[1];var dx=X-sx;
 var r=Math.sqrt((dy*dy)+(dx*dx));var q;
 if(dx<0&&dy>0){q=0};
 if(dx>0&&dy>0){q=1};
+if(dx>0&&dy<0){q=2};
+if(dx<0&&dy<0){q=3};
 
 
 }
