@@ -6,13 +6,13 @@ function trg(p1,p2,p3,c){var l=Math.round((p1[2]+p2[2]+p3[2])/3);drw(l,c,g2d(p1[
 var pi=3.141592;
 function sin(a){return Math.sin(a/180*pi)};
 function asin(a){return (Math.asin(a)/pi*180)};
-function rot2d(r,p,a){var x=p[0];var y=p[1];while(a<0){a+=360};a=a%360;var q=0;while(!(a<90)){a-=90;q++};var x=0;var y=0; if(a!=0){y=sin(a)*r;x=r-Math.sqrt((r*r)-(y*y))};
+function rot2d(r,p,a){var zx=p[0];var zy=p[1];while(a<0){a+=360};a=a%360;var q=0;while(!(a<90)){a-=90;q++};var x=0;var y=0; if(a!=0){y=sin(a)*r;x=r-Math.sqrt((r*r)-(y*y))};
 var X,Y;
 if(q==0){X=x;Y=y};
 if(q==1){X=r+y;Y=r-x};
 if(q==2){X=2*r-x;Y=-y};
 if(q==3){X=r-y;Y=x-r};
-return [X,Y];
+return [zx+X,zy+Y];
 }
 function grot2d(p,s){var X=p[0]; var Y=p[1];var sx=s[0];var sy=s[1];var dx=X-sx;var dy=Y-sy;
 var r=Math.sqrt((dy*dy)+(dx*dx));var q;
@@ -20,16 +20,15 @@ var r=Math.sqrt((dy*dy)+(dx*dx));var q;
 if(dx>0&&dy>0){q=1};
 if(dx>0&&dy<0){q=2};
 if(dx<0&&dy<0){q=3};*/
-
+var x=0;var y=0;
 if(dx<0){
-if(dy<0){q=3;dy=-dy}else{q=0};
-dx=-dx;
+if(dy<0){q=3;y=-dx}else{q=0;y=dy}
 }else{
-if(dy<0){q=2;dy=-dy}else{q=1}
+if(dy<0){q=2;y=-dy}else{q=1;y=dx}
 };
-return q
-
-
+var a=asin(y/r);
+while(q!=0){a+=90;q--};
+return a
 }
 </script>
 <div id="out">
