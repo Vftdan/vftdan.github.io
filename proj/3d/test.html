@@ -36,8 +36,17 @@ function rot3d(d,s,a){
 var
  dx=d[0]
 ,dy=d[1]
-,dz=d[2];
-alert([dz,dy,dx])
+,dz=d[2]
+,sx=s[0]
+,sy=s[1]
+,sz=s[2]
+,a1=a[0]
+,a2=a[1];
+var g=grot2d([dx,dz],[sx,sz]);
+a2+=g[0]
+dx=sx-r;
+dz=sz-r;
+rot2d([dx,dy],[sx,sy],a1);
 }
 </script>
 <div id="out">
@@ -60,7 +69,7 @@ drw(1,"red",[0,0],[50,0],[50,50]);
 trg([-0.5,0.5,0],[-0.5,0.5,1],[-0.5,-0.5,1],"red");
 //alert(rot2d(1,[-1,0],225));
 //alert(sin(10));
-alert(rot3d([1,2,3]));
+//alert(rot3d([1,2,3]));
 </script>
 </body>
 </HTML>
