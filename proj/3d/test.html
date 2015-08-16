@@ -31,7 +31,7 @@ var a=asin(y/r);
 while(q!=0){a+=90;q--};
 return [a,r]
 }
-function rot2d(d,s,a){var st=grot2d(d,s);a+=st[0];var r=st[1];return nrot2d(r,d,a)}
+function rot2d(d,s,a){var st=grot2d(d,s);a+=st[0];var r=st[1];return nrot2d(r,[s[0]-r,s[1]],a)}
 </script>
 <div id="out">
 <svg height="500" width="500" style="background:#ccccff">
