@@ -6,7 +6,8 @@ function trg(p1,p2,p3,c){var l=Math.round((p1[2]+p2[2]+p3[2])/3);drw(l,c,g2d(p1[
 var pi=3.141592;
 function sin(a){return Math.sin(a/180*pi)};
 function asin(a){return (Math.asin(a)/pi*180)};
-function rot2d(r,p,a){var zx=p[0];var zy=p[1];while(a<0){a+=360};a=a%360;var q=0;while(!(a<90)){a-=90;q++};var x=0;var y=0; if(a!=0){y=sin(a)*r;x=r-Math.sqrt((r*r)-(y*y))};
+
+function nrot2d(r,p,a){var zx=p[0];var zy=p[1];while(a<0){a+=360};a=a%360;var q=0;while(!(a<90)){a-=90;q++};var x=0;var y=0; if(a!=0){y=sin(a)*r;x=r-Math.sqrt((r*r)-(y*y))};
 var X,Y;
 if(q==0){X=x;Y=y};
 if(q==1){X=r+y;Y=r-x};
@@ -28,8 +29,9 @@ if(dy<0){q=2;y=-dy}else{q=1;y=dx}
 };
 var a=asin(y/r);
 while(q!=0){a+=90;q--};
-return a
+return [a,r]
 }
+function rot2d(d,s,a){var st=grot2d(d,s);a+=st[0];var r=st[1];return nrot2d(r,d,a)}
 </script>
 <div id="out">
 <svg height="500" width="500" style="background:#ccccff">
@@ -51,7 +53,7 @@ drw(1,"red",[0,0],[50,0],[50,50]);
 trg([-0.5,0.5,0],[-0.5,0.5,1],[-0.5,-0.5,1],"red");
 //alert(rot2d(1,[-1,0],225));
 //alert(sin(10));
-alert(grot2d([-1,-1],[0,0]));
+alert(rot2d([1,0],[0,0],90));
 </script>
 </body>
 </HTML>
