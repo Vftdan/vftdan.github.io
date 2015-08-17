@@ -77,15 +77,26 @@ var
  w=dim[0]
 ,h=dim[1]
 ,d=dim[2]
-,ox=off[0]
-,oy=off[1]
-,oz=off[2]
+,ox=off[0]*w
+,oy=off[1]*h
+,oz=off[2]*d
 ,sx=ps[0]
 ,sy=ps[1]
 ,sz=ps[2]
 ,a1=r[0]
-,a2=r[1]
+,a2=r[1];
+var p=[];
+p.push([sx-ox,sy-oy,sz-oz]);
+p.push(addp(p[0],[0,h,0]));
+p.push(addp(p[0],[w,h,0]));
+p.push(addp(p[0],[w,0,0]));
+p.push(addp(p[0],[w,0,d]));
+p.push(addp(p[0],[w,h,d]));
+p.push(addp(p[0],[0,h,d]));
+p.push(addp(p[0],[0,0,d]));
+
 };
+function addp(p,o){return [p[0]+o[0],p[1]+o[1],p[2]+o[2]]}
 </script>
 <div id="out">
 <svg height="500" width="500" style="background:#ccccff">
