@@ -46,7 +46,11 @@ var g=grot2d([dx,dz],[sx,sz]);
 a2+=g[0]
 dx=sx-r;
 dz=sz-r;
-rot2d([dx,dy],[sx,sy],a1);
+var dxy=rot2d([dx,dy],[sx,sy],a1);
+dx=dxy[0];
+dy=dxy[1];
+
+
 }
 </script>
 <div id="out">
