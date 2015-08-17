@@ -33,7 +33,7 @@ return [a,r]
 }
 function rot2d(d,s,a){var st=grot2d(d,s);a+=st[0];var r=st[1];return nrot2d(r,[s[0]-r,s[1]],a)};
 function rot3d(d,s,a){
- alert(0);
+// alert(0);
 var
  dx=d[0]
 ,dy=d[1]
@@ -43,13 +43,14 @@ var
 ,sz=s[2]
 ,a1=a[0]
 ,a2=a[1];
- alert(1);
+// alert(1);
 var g=grot2d([dx,dz],[sx,sz]);
- alert(1.5);
+// alert(1.5);
 a2+=g[0];
- alert(1.6);
+// alert(1.6);
+var r=g[1];
 dx=sx-r;
- alert(1.7);
+// alert(1.7);
 dz=sz-r;
  alert(2);
 var dxy=rot2d([dx,dy],[sx,sy],a1);
