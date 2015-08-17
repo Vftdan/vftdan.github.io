@@ -42,16 +42,20 @@ var
 ,sz=s[2]
 ,a1=a[0]
 ,a2=a[1];
+ alert(1);
 var g=grot2d([dx,dz],[sx,sz]);
 a2+=g[0]
 dx=sx-r;
 dz=sz-r;
+ alert(2);
 var dxy=rot2d([dx,dy],[sx,sy],a1);
 dx=dxy[0];
 dy=dxy[1];
+ alert(3);
 var dxz=rot2d([dx,dz],[sx,sz],a2);
 dx=dxz[0];
 dz=dxz[1];
+ alert(4);
 return [dx,dy,dz];
 };
 </script>
