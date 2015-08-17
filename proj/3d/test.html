@@ -49,9 +49,11 @@ dz=sz-r;
 var dxy=rot2d([dx,dy],[sx,sy],a1);
 dx=dxy[0];
 dy=dxy[1];
-
-
-}
+var dxz=rot2d([dx,dz],[sx,sz],a2);
+dx=dxz[0];
+dz=dxz[1];
+return [dx,dy,dz];
+};
 </script>
 <div id="out">
 <svg height="500" width="500" style="background:#ccccff">
@@ -73,7 +75,7 @@ drw(1,"red",[0,0],[50,0],[50,50]);
 trg([-0.5,0.5,0],[-0.5,0.5,1],[-0.5,-0.5,1],"red");
 //alert(rot2d(1,[-1,0],225));
 //alert(sin(10));
-//alert(rot3d([1,2,3]));
+alert(rot3d([-1,0,0],[0,0,0],[45,90]));
 </script>
 </body>
 </HTML>
