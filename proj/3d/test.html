@@ -46,8 +46,10 @@ var
  alert(1);
 var g=grot2d([dx,dz],[sx,sz]);
  alert(1.5);
-a2+=g[0]
+a2+=g[0];
+ alert(1.6);
 dx=sx-r;
+ alert(1.7);
 dz=sz-r;
  alert(2);
 var dxy=rot2d([dx,dy],[sx,sy],a1);
@@ -81,8 +83,8 @@ drw(1,"red",[0,0],[50,0],[50,50]);
 trg([-0.5,0.5,0],[-0.5,0.5,1],[-0.5,-0.5,1],"red");
 //alert(rot2d(1,[-1,0],225));
 //alert(sin(10));
-//alert(rot3d([-1,0,0],[0,0,0],[45,90]));
-alert(grot2d([-1,0],[0,0]))
+alert(rot3d([-1,0,0],[0,0,0],[45,90]));
+//alert(grot2d([-1,0],[0,0]))
 </script>
 </body>
 </HTML>
