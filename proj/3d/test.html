@@ -1,6 +1,6 @@
 <HTML><body>
 <script>
-function drw(l,c,p1,p2,p3){var old=cont.innerHTML;cont.innerHTML=old.replace("l"+l,'\<polygon points="'+p1[0]+","+p1[1]+" "+p2[0]+","+p2[1]+" "+p3[0]+","+p3[1]+'" fill="'+c+'" \>\</polygon\>l'+l)};
+function drw(l,c,p1,p2,p3){if(c){var old=cont.innerHTML;cont.innerHTML=old.replace("l"+l,'\<polygon points="'+p1[0]+","+p1[1]+" "+p2[0]+","+p2[1]+" "+p3[0]+","+p3[1]+'" fill="'+c+'" \>\</polygon\>l'+l)}};
 function g2d(x,y,z){var m=500/(z*2+1);var X=x*m;var Y=y*m;return [250+X,250-Y]};
 function trg(p1,p2,p3,c){var l=Math.round((p1[2]+p2[2]+p3[2])/3);drw(l,c,g2d(p1[0],p1[1],p1[2]),g2d(p2[0],p2[1],p2[2]),g2d(p3[0],p3[1],p3[2]))};
 var pi=3.141592;
@@ -82,9 +82,7 @@ var
 ,oz=off[2]*d
 ,sx=ps[0]
 ,sy=ps[1]
-,sz=ps[2]
-,a1=r[0]
-,a2=r[1];
+,sz=ps[2];
 var p=[];
 p.push([sx-ox,sy-oy,sz-oz]);
 p.push(addp(p[0],[0,h,0]));
@@ -94,6 +92,16 @@ p.push(addp(p[0],[w,0,d]));
 p.push(addp(p[0],[w,h,d]));
 p.push(addp(p[0],[0,h,d]));
 p.push(addp(p[0],[0,0,d]));
+var i=0;
+if(r){
+while(i!=8){p[i]=rot3d(p[i],ps,r);i++};
+};
+qgn([p[0],p[1],p[2],p[3]],c[0]);
+qgn([p[2],p[3],p[4],p[5]],c[1]);
+qgn([p[4],p[5],p[6],p[7]],c[2]);
+qgn([p[6],p[7],p[0],p[1]],c[3]);
+qgn([p[1],p[2],p[5],p[6]],c[4]);
+qgn([p[0],p[3],p[4],p[7]],c[5]);
 
 };
 function addp(p,o){return [p[0]+o[0],p[1]+o[1],p[2]+o[2]]}
@@ -122,6 +130,7 @@ trg([-0.5,0.5,0],[-0.5,0.5,1],[-0.5,-0.5,1],"red");
 //alert(grot2d([-1,0],[0,0]))
 //alert(rot2d([-0.7,0],[0,0],45));
 qgn([[-0.5,0.5,0],[0.5,0.5,0],[0.5,0.5,1],[-0.5,0.5,1]],"rgba(0,255,0,0.5)");
+hxd([],[],[],[])
 </script>
 </body>
 </HTML>
