@@ -52,11 +52,11 @@ var r=g[1];
 dx=sx-r;
 // alert(1.7);
 dz=sz-r;
- alert(dx);
+// alert(dx);
 var dxy=rot2d([dx,dy],[sx,sy],a1);
 dx=dxy[0];
 dy=dxy[1];
- alert(dx);
+ alert([dx,dz,sx,sz,a2]);
 var dxz=rot2d([dx,dz],[sx,sz],a2);
 dx=dxz[0];
 dz=dxz[1];
@@ -84,9 +84,9 @@ drw(1,"red",[0,0],[50,0],[50,50]);
 trg([-0.5,0.5,0],[-0.5,0.5,1],[-0.5,-0.5,1],"red");
 //alert(rot2d(1,[-1,0],225));
 //alert(sin(10));
-//alert(rot3d([-1,0,0],[0,0,0],[45,90]));
+alert(rot3d([-1,0,0],[0,0,0],[45,90]));
 //alert(grot2d([-1,0],[0,0]))
-alert(rot2d([-0.7,0],[0,0],45));
+//alert(rot2d([-0.7,0],[0,0],45));
 </script>
 </body>
 </HTML>
