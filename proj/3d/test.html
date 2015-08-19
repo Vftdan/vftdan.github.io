@@ -95,6 +95,7 @@ p.push(addp(p[0],[0,0,d]));
 var i=0;
 if(r){
 while(i!=8){p[i]=rot3d(p[i],ps,r);i++};
+alert([r,p]);
 };
 qgn([p[0],p[1],p[2],p[3]],c[0]);
 qgn([p[2],p[3],p[4],p[5]],c[1]);
@@ -139,7 +140,7 @@ var cont=document.getElementById("out");
 //alert(grot2d([-1,0],[0,0]))
 //alert(rot2d([-0.7,0],[0,0],45));
 //qgn([[-0.5,0.5,0],[0.5,0.5,0],[0.5,0.5,1],[-0.5,0.5,1]],"rgba(0,255,0,0.5)");
-hxd([0,0,2],[1,1,1],["rgba(255,0,0,0.5)","green","blue","cyan","magenta","yellow"],[0.5,0.5,0.5],[0,10])
+hxd([0,0,2],[1,1,1],["rgba(255,0,0,0.5)","green","blue","cyan","magenta","yellow"],[0.5,0.5,0.5],[10,45])
 </script>
 </body>
 </HTML>
