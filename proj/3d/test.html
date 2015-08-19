@@ -1,8 +1,11 @@
 <HTML><body>
 <script>
+function min(a){var i;var r=a[0];for(i=0;i<a.length;i++){if(a[i]<r){r=a[i]}};return r}
 function drw(l,c,p1,p2,p3){if(c){var old=cont.innerHTML;cont.innerHTML=old.replace("l"+l+"l",'\<polygon points="'+p1[0]+","+p1[1]+" "+p2[0]+","+p2[1]+" "+p3[0]+","+p3[1]+'" fill="'+c+'" \>\</polygon\>l'+l+"l")}};
 function g2d(x,y,z){var m=500/(z*2+1);var X=x*m;var Y=y*m;return [250+X,250-Y]};
-function trg(p1,p2,p3,c){var l=Math.round((p1[2]+p2[2]+p3[2])/1);drw(l,c,g2d(p1[0],p1[1],p1[2]),g2d(p2[0],p2[1],p2[2]),g2d(p3[0],p3[1],p3[2]))};
+function trg(p1,p2,p3,c){
+var l=Math.round((p1[2]+p2[2]+p3[2]-min([p1[2],p2[2],p3[2]]))/1);
+drw(l,c,g2d(p1[0],p1[1],p1[2]),g2d(p2[0],p2[1],p2[2]),g2d(p3[0],p3[1],p3[2]))};
 var pi=Math.asin(1)*2;
 function sin(a){return Math.sin(a/180*pi)};
 function asin(a){return (Math.asin(a)/pi*180)};
