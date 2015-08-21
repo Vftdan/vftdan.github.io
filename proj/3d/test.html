@@ -1,12 +1,13 @@
 <HTML><body>
 <meta http-equiv="Pragma" content="no-cache" />
 <script>
-function cls(){var s=""; for(i=32;i>-1;i--){s+="\<g l="+i+" \>l"+i+"l\</g\>\n"};alert(s)}
+function cls(){var s=""; for(i=32;i>-1;i--){s+="\<g l="+i+" \>l"+i+"l\</g\>\n"};
+cont.innerHTML=cont.innerHTML.replace("\</svg",s+"\</svg")}
 function min(a){var i;var r=a[0];for(i=0;i<a.length;i++){if(a[i]<r){r=a[i]}};return r}
 function drw(l,c,p1,p2,p3){if(c){var old=cont.innerHTML;cont.innerHTML=old.replace("l"+l+"l",'\<polygon points="'+p1[0]+","+p1[1]+" "+p2[0]+","+p2[1]+" "+p3[0]+","+p3[1]+'" fill="'+c+'" \>\</polygon\>l'+l+"l")}};
 function g2d(x,y,z){var m=500/(z*2+1);var X=x*m;var Y=y*m;return [250+X,250-Y]};
 function trg(p1,p2,p3,c){
-var l=Math.round((p1[2]+p2[2]+p3[2]-min([p1[2],p2[2],p3[2]]))/1);
+var l=Math.round((p1[2]+p2[2]+p3[2]-min([p1[2],p2[2],p3[2]]))*2);
 drw(l,c,g2d(p1[0],p1[1],p1[2]),g2d(p2[0],p2[1],p2[2]),g2d(p3[0],p3[1],p3[2]))};
 var pi=Math.asin(1)*2;
 function sin(a){return Math.sin(a/180*pi)};
@@ -113,42 +114,7 @@ function addp(p,o){return [p[0]+o[0],p[1]+o[1],p[2]+o[2]]}
 </script>
 <div id="out">
 <svg height="500" width="500" style="background:#ccccff">
-<g l="11">
-l11l
-</g>
-<g l="10">
-l10l
-</g>
-<g l="9">
-l9l
-</g>
-<g l="8">
-l8l
-</g>
-<g l="7">
-l7l
-</g>
-<g l="6">
-l6l
-</g>
-<g l="5">
-l5l
-</g>
-<g l="4">
-l4l
-</g>
-<g l="3">
-l3l
-</g>
-<g l="2">
-l2l
-</g>
-<g l="1">
-l1l
-</g>
-<g l="0">
-l0l
-</g>
+
 </svg>
 </div>
 <script>
