@@ -1,6 +1,7 @@
 <HTML><body>
 <meta http-equiv="Pragma" content="no-cache" />
 <script>
+function normalize(a,l){var i;for(i=0;i<l;i++){if(!a[i]){a[i]=0}};return a};
 function cls(){var s=""; for(i=128;i>-1;i--){s+="\<g l="+i+" \>l"+i+"l\</g\>\n"};
 cont.innerHTML='\<svg height="500" width="500" style="background:#ccccff"\>'+s+"\</svg\>"}
 function min(a){var i;var r=a[0];for(i=0;i<a.length;i++){if(a[i]<r){r=a[i]}};return r}
@@ -40,6 +41,9 @@ return [a,r]
 function rot2d(d,s,a){var st=grot2d(d,s);a+=st[0];var r=st[1];return nrot2d(r,[s[0]-r,s[1]],a)};
 function rot3d(d,s,a){
 // alert(0);
+d=normalize(d,3);
+s=normalize(s,3);
+a=normalize(a,3);
 var
  dx=d[0]
 ,dy=d[1]
