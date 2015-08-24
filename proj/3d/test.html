@@ -39,7 +39,7 @@ return [a,r]
 }
 function rot2d(d,s,a){var st=grot2d(d,s);a+=st[0];var r=st[1];return nrot2d(r,[s[0]-r,s[1]],a)};
 function rot3d(d,s,a){
- alert(0);
+// alert(0);
 var
  dx=d[0]
 ,dy=d[1]
@@ -50,7 +50,7 @@ var
 ,a0=a[0]
 ,a1=a[1]
 ,a2=a[2];
- alert(1);
+// alert(1);
 //var g=grot2d([dx,dz],[sx,sz]);
 // alert(1.5);
 //a2+=g[0];
@@ -60,19 +60,19 @@ var
 // alert(1.7);
 //dz=sz;
 // alert(dx);
-var dxy=rot2d([dx,dz],[sx,sz],a0);
+var dxz=rot2d([dx,dz],[sx,sz],a0);
 dx=dxz[0];
 dz=dxz[1];
-alert(2)
+//alert(2)
 var dzy=rot2d([dz,dy],[sz,sy],a1);
 dz=dzy[0];
 dy=dzy[1];
-alert(3)
+//alert(3)
 // alert([dx,dz,sx,sz,a2]);
 var dxy=rot2d([dx,dy],[sx,sy],a2);
 dx=dxy[0];
 dy=dxy[1];
-alert(4)
+//alert(4)
 // alert(dx);
 return [dx,dy,dz];
 };
@@ -132,7 +132,7 @@ cls();
 //trg([-0.5,0.5,0],[-0.5,0.5,1],[-0.5,-0.5,1],"red");
 //alert(rot2d(1,[-1,0],225));
 //alert(sin(10));
-alert(rot3d([1,0,-1],[0,0,0],[2,2,2]));
+//alert(rot3d([1,0,-1],[0,0,0],[2,2,2]));
 //alert(grot2d([-1,0],[0,0]))
 //alert(rot2d([-0.7,0],[0,0],45));
 //qgn([[-0.5,0.5,0],[0.5,0.5,0],[0.5,0.5,1],[-0.5,0.5,1]],"rgba(0,255,0,0.5)");
