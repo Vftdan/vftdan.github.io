@@ -1,0 +1,123 @@
+<HTML><body>
+<meta http-equiv="Pragma" content="no-cache" />
+<script>
+function normalize(a,l){var i;for(i=0;i<l;i++){if(!a[i]){a[i]=0}};return a};
+function cls(){var s=""; for(i=128;i>-1;i--){s+="\<g l="+i+" \>l"+i+"l\</g\>\n"};
+cont.innerHTML='\<svg height="500" width="500" style="background:#ccccff"\>'+s+"\</svg\>"}
+function min(a){var i;var r=a[0];for(i=0;i<a.length;i++){if(a[i]<r){r=a[i]}};return r}
+function drw(l,c,p1,p2,p3){if(c){var old=cont.innerHTML;cont.innerHTML=old.replace("l"+l+"l",'\<polygon points="'+p1[0]+","+p1[1]+" "+p2[0]+","+p2[1]+" "+p3[0]+","+p3[1]+'" fill="'+c+'" \>\</polygon\>l'+l+"l")}};
+function g2d(x,y,z){var m=500/(z*2+1);var X=x*m;var Y=y*m;return [250+X,250-Y]};
+function trg(p1,p2,p3,c){
+var l=Math.round((p1[2]+p2[2]+p3[2]-min([p1[2],p2[2],p3[2]]))*10);
+drw(l,c,g2d(p1[0],p1[1],p1[2]),g2d(p2[0],p2[1],p2[2]),g2d(p3[0],p3[1],p3[2]))};
+var pi=Math.asin(1)*2;
+function sin(a){return Math.sin(a/180*pi)};
+function asin(a){return (Math.asin(a)/pi*180)};
+
+function nrot2d(r,p,a){var zx=p[0];var zy=p[1];while(a<0){a+=360};a=a%360;var q=0;while(!(a<90)){a-=90;q++};var x=0;var y=0; if(a!=0){y=sin(a)*r;x=r-Math.sqrt((r*r)-(y*y))};
+var X,Y;
+if(q==0){X=x;Y=y};
+if(q==1){X=r+y;Y=r-x};
+if(q==2){X=2*r-x;Y=-y};
+if(q==3){X=r-y;Y=x-r};
+return [zx+X,zy+Y];
+}
+function grot2d(p,s){var X=p[0]; var Y=p[1];var sx=s[0];var sy=s[1];var dx=X-sx;var dy=Y-sy;
+var r=Math.sqrt((dy*dy)+(dx*dx));var q;
+
+var x=0;var y=0;
+if(dx<0){
+if(dy<0){q=3;y=-dx}else{q=0;y=dy}
+}else{
+if(dy<0){q=2;y=-dy}else{q=1;y=dx}
+};
+var a=asin(y/r);
+while(q!=0){a+=90;q--};
+return [a,r]
+}
+function rot2d(d,s,a){var st=grot2d(d,s);a+=st[0];var r=st[1];return nrot2d(r,[s[0]-r,s[1]],a)};
+function rot3d(d,s,a){
+
+d=normalize(d,3);
+s=normalize(s,3);
+a=normalize(a,3);
+var
+ dx=d[0]
+,dy=d[1]
+,dz=d[2]
+,sx=s[0]
+,sy=s[1]
+,sz=s[2]
+,a0=a[0]
+,a1=a[1]
+,a2=a[2];
+var dxz=rot2d([dx,dz],[sx,sz],a0);
+dx=dxz[0];
+dz=dxz[1];
+
+var dzy=rot2d([dz,dy],[sz,sy],a1);
+dz=dzy[0];
+dy=dzy[1];
+
+var dxy=rot2d([dx,dy],[sx,sy],a2);
+dx=dxy[0];
+dy=dxy[1];
+
+return [dx,dy,dz];
+};
+function qgn(p,c){
+var
+ p1=p[0]
+,p2=p[1]
+,p3=p[2]
+,p4=p[3];
+trg(p1,p2,p3,c);
+trg(p1,p4,p3,c);
+};
+function hxd(ps,dim,c,off,r){
+var
+ w=dim[0]
+,h=dim[1]
+,d=dim[2]
+,ox=off[0]*w
+,oy=off[1]*h
+,oz=off[2]*d
+,sx=ps[0]
+,sy=ps[1]
+,sz=ps[2];
+var p=[];
+p.push([sx-ox,sy-oy,sz-oz]);
+p.push(addp(p[0],[0,h,0]));
+p.push(addp(p[0],[w,h,0]));
+p.push(addp(p[0],[w,0,0]));
+p.push(addp(p[0],[w,0,d]));
+p.push(addp(p[0],[w,h,d]));
+p.push(addp(p[0],[0,h,d]));
+p.push(addp(p[0],[0,0,d]));
+var i=0;
+if(r){
+while(i!=8){p[i]=rot3d(p[i],ps,r);i++};
+};
+qgn([p[4],p[5],p[6],p[7]],c[2]);//b
+qgn([p[0],p[3],p[4],p[7]],c[5]);//y
+qgn([p[1],p[2],p[5],p[6]],c[4]);//m
+qgn([p[6],p[7],p[0],p[1]],c[3]);//c
+qgn([p[2],p[3],p[4],p[5]],c[1]);//g
+qgn([p[0],p[1],p[2],p[3]],c[0]);//r
+};
+function addp(p,o){return [p[0]+o[0],p[1]+o[1],p[2]+o[2]]}
+</script>
+<div id="out">
+<svg height="500" width="500" style="background:#ccccff">
+
+</svg>
+</div>
+<script>
+var cont=document.getElementById("out");
+cls();
+var R=0;
+setInterval(function(){cls();hxd([0,0,2],[1,1,1],["rgba(255,0,0,0.5)","green","blue","cyan","magenta","yellow"],[0.5,0.5,0.5],[R,0,R]);R+=2},100)
+
+</script>
+</body>
+</HTML>
