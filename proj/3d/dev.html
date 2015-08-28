@@ -50,6 +50,7 @@ function rot3d(d,s,a){
 d=normalize(d,3);
 s=normalize(s,3);
 a=normalize(a,3);
+if(a==[0,0,0]){return d};
 var
  dx=d[0]
 ,dy=d[1]
