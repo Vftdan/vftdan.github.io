@@ -148,8 +148,30 @@ var cont=document.getElementById("out");
 cls();
 var R=0;
 /*setInterval(function(){cls();hxd([0,0,2],[1,1,1],["rgba(255,0,0,0.5)","green","blue","cyan","magenta","yellow"],[0.5,0.5,0.5],[R,-R,R]);R+=2},100)*/
-sph([0,0,3],1,"red");
+//sph([0,0,3],1,"red");
+var skin={};
+skin.face=[];
+skin.face.push(["brown","brown","brown","brown","brown","brown","brown","brown"]);
+skin.face.push(["brown","brown","brown","brown","brown","brown","brown","brown"]);
+skin.face.push(["brown","#ddcc22","#ddcc22","#ddcc22","#ddcc22","#ddcc22","brown","brown"]);
+skin.face.push(["brown","white","blue","#ddcc22","#ddcc22","blue","white","brown"]);
+skin.face.push(["#ddcc22","#ddcc22","#ddcc22","#ddcc22","#ddcc22","#ddcc22","#ddcc22","#ddcc22"]);
+skin.face.push(["#ddcc22","#ddcc22","brown","brown","brown","brown","#ddcc22","#ddcc22"]);
+skin.face.push(["#ddcc22","brown","brown","#ddcc22","#ddcc22","brown","brown","#ddcc22"]);
+skin.face.push(["brown","brown","brown","brown","brown","brown","brown","brown"]);
+function drwskin(ps,h,off,r){
+//var ox=off[0]*h,oy=off[1]*h;
+var px=h/8;
+var i,j;
+var o=off*8;
+for(i=0;i<8;i++){
+for(j=0;j<8;j++){
+hxd(ps,[h,h,0.1],skin.face[i][j],[o-i,1-(o-j)],r);
+}
 
+}
+};
+drwskin([0,0,3],2,0.5,[0.1,0.1,0.1]);
 </script>
 </body>
 </HTML>
