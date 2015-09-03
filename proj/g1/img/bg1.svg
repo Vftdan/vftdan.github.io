@@ -4,7 +4,7 @@
 <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
  width="640.000000pt" height="400.000000pt" viewBox="0 0 640.000000 400.000000"
  preserveAspectRatio="xMidYMid meet">
-<polygon points="0,0 0,400 640,400 640,0" style="fill:url(#bg)"></polygon>
+<!--polygon points="0,0 0,400 640,400 640,0" style="fill:url(#bg)"></polygon-->
 <linearGradient gradientUnits="userSpaceOnUse" id="bg" x1="0" y1="400" x2="0" y2="0">
 <stop offset="0" style="stop-color:#9977ff"/>
 <stop offset="0.3" style="stop-color:rgba(255,255,255,0)"/>
