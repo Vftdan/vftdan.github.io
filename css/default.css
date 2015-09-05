@@ -38,6 +38,8 @@ box-shadow:0px -2pt 2pt -1.5pt rgba(0,0,0,0.5) inset;
 }
 [smallPadding]{
 padding:1ex;
+padding-top:2pt;
+padding-bottom:1.2em;
 }
 @media print{
 * {
