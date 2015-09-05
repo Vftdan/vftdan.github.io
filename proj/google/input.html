@@ -15,14 +15,20 @@ head{
 display:none;
 }
 html, body, form, input{
-height:1.5em;
+height:1em;
 width:100%;
 }
 form{
 background-image:url("/img/google.svg");
-background-size:1.5em;
+background-size:1em;
 background-position:top right;
 background-repeat:no-repeat;
+overflow:hidden;
+}
+input{
+height:1.5em;
+position:relative;
+bottom:0.5em;
 }
 </style>
 </head><body><form onsubmit="if(event.preventDefault());search(this);return false"><input type="text"></input></form><script>
