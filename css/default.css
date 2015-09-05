@@ -9,7 +9,22 @@ button, [type="button"] {
 background:#aaaa88;
 }
 button:hover, [type="button"]:hover {
-background:#888877;
+background:#666655;
+color:#ccccff;
+}
+submit, [type="submit"] {
+background:#7788bb;
+}
+submit:hover, [type="submit"]:hover {
+background:blue;
+color:#005500;
+}
+reset, [type="reset"] {
+background:#bb6666;
+}
+reset:hover, [type="reset"]:hover {
+background:#red;
+color:white;
 }
 [type="text"], textarea, [contenteditable] {
 border-bottom:1px solid black;
