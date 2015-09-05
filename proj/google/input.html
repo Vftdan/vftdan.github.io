@@ -38,7 +38,7 @@ function search(e){
 var text=e.firstChild.value;
 text=parse(text);
 var site=location.search;
-if(site){site="site:"+site.replace("?","")+"+"}else{site=""}
+if(site&&site!="?"){site="site:"+site.replace("?","")+"+"}else{site=""}
 window.open(location.protocol+"//google.com/search?q="+site+text)
 }
 </script></body></html>
