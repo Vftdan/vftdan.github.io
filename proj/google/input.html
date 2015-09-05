@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<form onsubmit="search(this)"><input type="text"></input>
+<form onsubmit="preventDefault;search(this)"><input type="text"></input>
 </form>
 <script>
 function parse(a) {
@@ -13,6 +13,8 @@ return b.join("");
 function search(e){
 var text=e.firstChild.value;
 text=parse(text);
-window.open("google.com/search?q="+text)
+var site=location.search;
+if(site){site="site:"+site.replace("?","")+"+"}else{site=""}
+window.open("google.com/search?q="+site+text)
 }
 </script>
