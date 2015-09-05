@@ -5,6 +5,7 @@ margin:0px;
 padding:0px;
 border:0px solid black;
 line-height:1.2em;
+overflow:auto;
 }
 button, [type="button"] {
 background:#aaaa88;
@@ -42,6 +43,30 @@ padding:1ex;
 padding-top:2pt;
 padding-bottom:1.2em;
 }
+[sideBar]{
+display:block;
+position:fixed;
+top:0px;
+bottom:0px;
+left:75%;
+right:0px;
+background:#aaaa88;
+border-right:1px solid black;
+}
+[content]{
+display:block;
+width:75%;
+}
+[sidebar] [content]{
+width:100%;
+}
+[sidebar] [sideOpener]{
+display:block;
+float:left;
+height:100%;
+width:0px;
+}
+
 @media print{
 * {
 background-color:white;
