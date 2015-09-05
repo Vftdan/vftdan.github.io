@@ -1,0 +1,17 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
+ "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+ width="64.000000px" height="64.000000px" viewBox="0 0 64.000000 64.000000"
+ preserveAspectRatio="xMidYMid meet">
+<metadata>
+Created by Vftdan
+</metadata>
+<g transform="translate(13.000000,13.000000) scale(1.00000,1.00000)" fill="transparent"
+stroke="rgba(200,0,0,0.5)" style="stroke-width:12" href="crc4.svg">
+<path d="M0 0A25,25 0 0 1 35,0" stroke="red"/>
+<path d="M34.9 35.1a25,25 0 0 0 8,-18h-25" stroke="blue"/>
+<path d="M35 35a25,25 0 0 1 -35,0" stroke="green"/>
+<path d="M0 0A25,25 0 0 0 0,35" stroke="yellow"/>
+</g>
+</svg>
