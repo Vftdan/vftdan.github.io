@@ -1,2 +1,2 @@
 # vftdan.github.io
-***[Search](http://vftdan.github.io/proj/google/input.html?vftdan.github.io "Google search by Vftdan")***
+***[Search](http://vftdan.github.io/proj/google/example.html "Google search by Vftdan")***
