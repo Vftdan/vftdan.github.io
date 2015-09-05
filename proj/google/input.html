@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<form onsubmit="search(this)"><input type="text"></input>
+</form>
+<script>
+function parse(a) {
+var b=[],i;
+for(i in a){
+b.push(a[i])
+if(a[i]=="&"){b.pop();b.push("%26")}
+}
+return b.join("");
+}
+function search(e){
+var text=e.firstChild.value;
+text=parse(text);
+window.open("google.com/search?q="+text)
+}
+</script>
