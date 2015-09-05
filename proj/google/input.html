@@ -1,7 +1,29 @@
 <!DOCTYPE html>
-<form onsubmit="preventDefault;search(this)"><input type="text"></input>
-</form>
-<script>
+<html><head>
+<style>
+*{
+margin:0px;
+padding:0px;
+font-family:sans-serif;
+white-space:pre;
+background:transparent;
+border:none;
+}
+head{
+display:none;
+}
+html, body, form, input{
+height:100%;
+width:100%;
+}
+form{
+background-image:url("/img/google.svg");
+background-size:100%;
+background-position:top left;
+background-repeat:no-repeat;
+}
+</style>
+</head><body><form onsubmit="preventDefault;search(this)"><input type="text"></input></form><script>
 function parse(a) {
 var b=[],i;
 for(i in a){
@@ -17,4 +39,4 @@ var site=location.search;
 if(site){site="site:"+site.replace("?","")+"+"}else{site=""}
 window.open("google.com/search?q="+site+text)
 }
-</script>
+</script></body></html>
