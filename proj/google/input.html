@@ -32,6 +32,8 @@ bottom:0.5em;
 }
 </style>
 </head><body --site by Vftdan--><form onsubmit="if(event.preventDefault());search(this);return false"><input type="text"></input></form><script>
+var w;
+if(w=parent||w=window){};
 function parse(a) {
 var b=[],i;
 for(i in a){
@@ -45,6 +47,6 @@ var text=e.firstChild.value;
 text=parse(text);
 var site=location.search;
 if(site&&site!="?"){site="site:"+site.replace("?","")+"+"}else{site=""}
-window.open(location.protocol+"//google.com/search?q="+site+text)
+w.open(location.protocol+"//google.com/search?q="+site+text)
 }
 </script></body></html>
