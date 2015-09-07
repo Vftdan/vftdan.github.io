@@ -59,6 +59,7 @@ width:75%;
 }
 [sidebar] [content]{
 width:100%;
+float:right;
 }
 [sidebar] [sideOpener]{
 display:block;
@@ -67,6 +68,18 @@ height:100%;
 width:0px;
 }
 
+@media not (orientation:landscape), max-width:320px {
+[sidebar] {
+left:80%;
+right:-60%;
+}
+[sidebar] [content] {
+width::75%;
+}
+[sidebar] [sideOpener]{
+width:25%;
+}
+}
 @media print{
 * {
 background-color:white;
