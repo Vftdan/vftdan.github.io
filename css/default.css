@@ -8,7 +8,7 @@ line-height:1.2em;
 overflow:auto;
 }
 button, [type="button"] {
-background:#aaaa88;
+background:#aaaa99;
 }
 button:hover, [type="button"]:hover {
 background:#666655;
@@ -50,8 +50,8 @@ top:0px;
 bottom:0px;
 left:75%;
 right:0px;
-background:#aaaa88;
-border-right:1px solid black;
+background:#aaaa99;
+border-left:1px solid black;
 }
 [content]{
 display:block;
@@ -72,6 +72,10 @@ width:0px;
 [sidebar] {
 left:80%;
 right:-60%;
+}
+[sidebar]:hover {
+left:20%;
+right:0%;
 }
 [sidebar] [content] {
 width::75%;
