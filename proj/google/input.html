@@ -33,7 +33,6 @@ bottom:0.5em;
 </style>
 </head><body --site by Vftdan--><form onsubmit="if(event.preventDefault());search(this);return false"><input type="text"></input></form><script>
 var D;
-if(D=parent.contentDocument||w=document){};
 function parse(a) {
 var b=[],i;
 for(i in a){
@@ -47,7 +46,7 @@ var text=e.firstChild.value;
 text=parse(text);
 var site=location.search;
 if(site&&site!="?"){site="site:"+site.replace("?","")+"+"}else{site=""}
-D.open(location.protocol+"//google.com/search?q="+site+text)
+D(location.protocol+"//google.com/search?q="+site+text)
 };
-function open(u){this.location.href=u};
+function D(u){parent.location.href=u};
 </script></body></html>
