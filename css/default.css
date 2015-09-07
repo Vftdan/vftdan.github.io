@@ -94,8 +94,8 @@ left:0px;
 right:80#;
 background:rgba(0,0,0,0.4);
 }
-[sidebar] a[href="#main"] {
-display:block;
+[sidebar]:hover a[href="#main"] {
+display:block !important;
 }
 }
 @media print{
