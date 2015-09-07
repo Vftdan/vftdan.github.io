@@ -67,6 +67,9 @@ float:left;
 height:100%;
 width:0px;
 }
+[sidebar] a[href="#main"] {
+display:none;
+}
 
 @media not (orientation:landscape), max-width:320px {
 [sidebar] {
@@ -80,8 +83,19 @@ right:0%;
 [sidebar] [content] {
 width::75%;
 }
-[sidebar] [sideOpener]{
+[sidebar] [sideOpener] {
 width:25%;
+}
+[sidebar] a[href="#main"] {
+position:fixed;
+top:0px;
+bottom:0px;
+left:0px;
+right:80#;
+background:rgba(0,0,0,0.4);
+}
+[sidebar] a[href="#main"] {
+display:block;
 }
 }
 @media print{
