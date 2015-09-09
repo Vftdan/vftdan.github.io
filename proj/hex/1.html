@@ -1,7 +1,8 @@
+<link href="https://vftdan.github.io/css/default.css" charset="UTF-8" rel="stylesheet" type="text/css" />
 <script>
 var hexdig=["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"]
 function h2t(v){
-v=v.toUpperCase
+v=v.toUpperCase();
 var h=v.split("");
 var t="";
 var i;
@@ -18,6 +19,8 @@ prompt("",t);
 }
 //alert(h2t(prompt("hex","A0")))
 </script>
+<body smallPadding>
 <div>
 <input type="text" value="2045"></input><button onclick="out(h2t(this.previousSibling.value))">To text</button>
 </div>
+</body>
