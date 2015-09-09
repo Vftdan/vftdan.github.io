@@ -11,7 +11,10 @@ t+=String.fromCharCode(h2d(h[i])*16+h2d(h[i+1]))
 return t
 }
 function h2d(h){
-return hexdig.indexof(h);
+return hexdig.indexOf(h);
 }
-alert(h2t(prompt("hex","A0")))
+//alert(h2t(prompt("hex","A0")))
 </script>
+<div>
+<input type="text" value="2045"></input><button onclick="prompt("",h2t(this.previousSibling.value))">To text</button>
+</div>
