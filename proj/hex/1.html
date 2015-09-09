@@ -3,6 +3,7 @@
 var hexdig=["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"]
 function h2t(v){
 v=v.toUpperCase();
+v=v.replaceAll(/[^0-9A-F]*/i,"");
 var h=v.split("");
 var t="";
 var i;
@@ -16,6 +17,10 @@ return hexdig.indexOf(h);
 }
 function out(t){
 prompt("",t);
+}
+function replaceAll(e,t){
+while(this.match(e)!=""){this.replace(e,t)};
+return this;
 }
 //alert(h2t(prompt("hex","A0")))
 </script>
