@@ -13,8 +13,11 @@ return t
 function h2d(h){
 return hexdig.indexOf(h);
 }
+function out(t){
+prompt("",t);
+}
 //alert(h2t(prompt("hex","A0")))
 </script>
 <div>
-<input type="text" value="2045"></input><button onclick="prompt("",h2t(this.previousSibling.value))">To text</button>
+<input type="text" value="2045"></input><button onclick="out(h2t(this.previousSibling.value))">To text</button>
 </div>
