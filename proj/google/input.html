@@ -48,5 +48,5 @@ var site=location.search;
 if(site&&site!="?"){site="site:"+site.replace("?","")+"+"}else{site=""}
 D(location.protocol+"//google.com/search?q="+site+text)
 };
-function D(u){var w=window.open(u);alert([w,!(!w)])};
+function D(u){var w=window.open(u);if(confirm("")){alert([w,!(!w)])}};
 </script></body></html>
