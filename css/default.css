@@ -43,6 +43,9 @@ padding:1ex;
 padding-top:2pt;
 padding-bottom:1.2em;
 }
+[sublist] {
+padding-left:1em;
+}
 [sideBar]{
 display:block;
 position:fixed;
