@@ -85,11 +85,14 @@ right:-60%;
 left:20%;
 right:0%;
 }
-[sidebar] [content] {
-width:75%;
-}
 [sidebar] [sideOpener] {
 width:25%;
+}
+[sidebar]:hover [sideOpener] {
+width:0px;
+}
+[sidebar]:hover [content] {
+width:100%;
 }
 [sidebar]~a[href="#main"] {
 position:fixed;
