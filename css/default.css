@@ -86,7 +86,7 @@ left:20%;
 right:0%;
 }
 [sidebar] [content] {
-width::75%;
+width:75%;
 }
 [sidebar] [sideOpener] {
 width:25%;
