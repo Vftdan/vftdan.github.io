@@ -48,5 +48,5 @@ var site=location.search;
 if(site&&site!="?"){site="site:"+site.replace("?","")+"+"}else{site=""}
 D(location.protocol+"//google.com/search?q="+site+text,text)
 };
-function D(u,t){var l=location.href;if(!window.open(u,"_top")){history.go(-1);window.open(u);window.focus();window.open(l,"_self");document.getElementById("q").value=t};};
+function D(u,t){var l=location.href;if(!window.open(u,"_top")){window.open(u);window.focus();history.go(-1);location.href=l;document.getElementById("q").value=t};};
 </script></body></html>
