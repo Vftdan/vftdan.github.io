@@ -41,9 +41,11 @@ box-shadow:0px -2pt 2pt -1.5pt rgba(0,0,0,0.5) inset;
 ul a {
 font-weight:550;
 text-decoration:none;
+color:#3333dd;
+}
+a li {
 border-bottom:1px solid #bbbbaa;
-background:rgba(200,200,200,0.2);
-color:#3333ee;
+background:rgba(200,200,200,0.1);
 }
 [smallPadding]{
 padding:1ex;
