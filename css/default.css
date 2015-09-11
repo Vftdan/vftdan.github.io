@@ -38,7 +38,7 @@ border-top-left-radius:0px;
 border-top-right-radius:0px;
 box-shadow:0px -2pt 2pt -1.5pt rgba(0,0,0,0.5) inset;
 }
-a li {
+ul a {
 font-weight:550;
 text-decoration:none;
 border-bottom:1px solid #bbbbaa;
