@@ -46,6 +46,7 @@ color:#3333dd;
 a li {
 border-bottom:1px solid #bbbbaa;
 background:rgba(200,200,200,0.1);
+padding-left:1pt;
 }
 a:hover li {
 background:rgba(140,140,140,0.2)
