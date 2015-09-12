@@ -130,6 +130,11 @@ button, [type="button"], submit, [type="submit"], reset, [type="reset"] {
 border-width:1pt;
 }
 }
+[Vlong] {
+overflow-x:hidden;
+overflow-y:auto;
+height:100%;
+}
 [fullW] {
 width:100%;
 }
