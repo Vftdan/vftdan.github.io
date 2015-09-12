@@ -130,3 +130,6 @@ button, [type="button"], submit, [type="submit"], reset, [type="reset"] {
 border-width:1pt;
 }
 }
+[fullW] {
+width:100%;
+}
