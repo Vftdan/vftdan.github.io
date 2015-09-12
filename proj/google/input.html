@@ -46,7 +46,9 @@ var text=e.firstChild.value;
 text=parse(text);
 var site=location.search;
 if(site&&site!="?"){site="site:"+site.replace("?","")+"+"}else{site=""}
-D(location.protocol+"//google.com/search?q="+site+text,text)
+D(location.protocol+"//google.com/search?q="+site+text)
 };
-function D(u,t){var l=location.href;if(!window.open(u,"_top")){window.open(u);window.focus();history.go(1);location.href=l;document.getElementById("q").value=t};};
+function D(u){
+if(((!window.open(u,"_blank"))&&parent&&parent!=window)&&(window.open(u,"_top")||location.href=u)){};
+}
 </script></body></html>
