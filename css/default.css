@@ -93,6 +93,8 @@ display:block;
 }
 [dInline] {
 display:inline;
+padding:0px;
+margin:0px;
 }
 [onlyMobile] {
 display:none;
