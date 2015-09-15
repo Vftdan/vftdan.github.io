@@ -135,7 +135,7 @@ display:none;
 [onlyMobile] {
 display:block;
 }
-[onlyMobile] [dInline] {
+[onlyMobile][dInline] {
 display:inline;
 }
 }
