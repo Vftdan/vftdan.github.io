@@ -88,6 +88,15 @@ width:0px;
 [sidebar]~a[href="#main"] {
 display:none;
 }
+[dBlock] {
+display:block;
+}
+[dInline] {
+display:inline;
+}
+[onlyMobile] {
+display:none;
+}
 
 @media not (orientation:landscape), max-width:320px {
 [sidebar] {
@@ -117,6 +126,15 @@ background:rgba(0,0,0,0.4);
 }
 [sidebar]:hover~a[href="#main"] {
 display:block !important;
+}
+[onlyDesktop] {
+display:none;
+}
+[onlyMobile] {
+display:block;
+}
+[onlyMobile] [dInline] {
+display:inline;
 }
 }
 @media print{
