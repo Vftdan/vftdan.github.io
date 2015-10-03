@@ -100,7 +100,7 @@ margin:0px;
 display:none;
 }
 
-@media not (orientation:landscape), max-width:320px {
+@media max-width:320px {
 [sidebar] {
 left:80%;
 right:-60%;
