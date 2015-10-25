@@ -44,8 +44,10 @@ background: rgba(255,255,255,0.1);
 }
 [imgMenu] *{
 height: 100%;
-width: 2em;
 display:inline-block;
+}
+[imgMenu] *:not([notButton]){
+width: 2em;
 background-size:cover;
 }
 [imgMenu] [_img="back"]{
