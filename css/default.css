@@ -47,6 +47,7 @@ white-space: nowrap;
 [imgMenu] *{
 height: 100%;
 display:inline-block;
+position: relative;
 }
 [imgMenu] *:not([notButton]){
 width: 2em;
