@@ -44,6 +44,10 @@ background: rgba(255,255,255,0.4);
 }
 [imgMenu] *{
 width: 2em;
+display:inline-block;
+}
+[imgMenu] [_img="back"]{
+background-image: url("/img/ar_l.svg");
 }
 ul a {
 font-weight:550;
