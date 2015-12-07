@@ -24,9 +24,9 @@ right:1pt;
 .gTable * {
 padding: 0.5ex !important;
 overflow: auto;
-max-width:2cm;
+max-width:2.5cm;
 width: 100%;
 }
-.gTableRight {
-width: 7%;
+.gTableRight, .forumIcoTd {
+width: 10%;
 }
