@@ -36,7 +36,9 @@ background:#efdf50;
 z-index: 10;
 position: absolute;
 top:0px;
+display: flex;
+justify-content: space-around;
 }
-#top [class|="show"] * {
+#top [class|="show"] {
 background:#afaf90;
 }
