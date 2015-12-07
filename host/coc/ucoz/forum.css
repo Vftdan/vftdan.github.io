@@ -9,9 +9,9 @@ overflow: hidden;
 .b-main {
 position: absolute;
 top:1cm;
-left:-6% !important;
-right: -6% !important;
-padding: 2pt;
+left:-13pt !important;
+right: -13pt !important;
+padding: 2%;
 }
 table:not(.gTable) {
 width: 50%;
