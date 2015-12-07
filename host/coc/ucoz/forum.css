@@ -9,8 +9,8 @@ overflow: hidden;
 .b-main {
 position: absolute;
 top:1cm;
-left:-4% !important;
-right: -2% !important;
+left:-5% !important;
+right: -5% !important;
 }
 table:not(.gTable) {
 width: 50%;
@@ -18,7 +18,7 @@ float:right;
 }
 footer {
 position: fixed;
-bottom: 2px;
+bottom: -2px;
 right:1pt;
 }
 .gTable * {
