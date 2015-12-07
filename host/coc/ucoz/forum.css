@@ -5,8 +5,9 @@ margin: 0px;
 .b-main {
 position: absolute;
 top:1cm;
-left:-20pt !important;
+left:-4% !important;
 right: 0px;
+width: 104%;
 }
 footer {
 position: fixed;
@@ -17,4 +18,5 @@ right:1pt;
 padding: 0.5ex !important;
 overflow: auto;
 max-width:2cm;
+width: 100%;
 }
