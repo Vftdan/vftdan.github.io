@@ -10,10 +10,11 @@ overflow: hidden;
 position: absolute;
 top:1cm;
 left:-4% !important;
-right: 0px;
+right: -2% !important;
 }
-table {
+table:not(.gTable) {
 width: 50%;
+float:right;
 }
 footer {
 position: fixed;
