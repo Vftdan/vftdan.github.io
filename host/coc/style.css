@@ -17,6 +17,7 @@ background:#efdf50;
 overflow: visible;
 padding:2pt;
 border-bottom-right-radius:3pt;
+white-space: nowrap;
 }
 [ui|="menu"] a {
 color:#fffaef;
