@@ -9,8 +9,9 @@ overflow: hidden;
 .b-main {
 position: absolute;
 top:1cm;
-left:-5% !important;
-right: -5% !important;
+left:-6% !important;
+right: -6% !important;
+padding: 2pt;
 }
 table:not(.gTable) {
 width: 50%;
@@ -24,7 +25,7 @@ right:1pt;
 .gTable * {
 padding: 0.5ex !important;
 overflow: auto;
-max-width:2.5cm;
+max-width:90%;
 width: 100%;
 }
 .gTableRight, .forumIcoTd {
