@@ -5,12 +5,13 @@ margin: 0px;
 .b-main {
 position: absolute;
 top:1cm;
-left:-1ex;
-bottom: 0px;
+left:-20pt !important;
+right: 0px;
 }
 footer {
-position: absolute;
-bottom: 0px;
+position: fixed;
+bottom: 2px;
+right:1pt;
 }
 .gTable * {
 padding: 0.5ex !important;
