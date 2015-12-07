@@ -2,12 +2,18 @@
 padding:0px;
 margin: 0px;
 }
+html {
+width: 100%;
+overflow: hidden;
+}
 .b-main {
 position: absolute;
 top:1cm;
 left:-4% !important;
 right: 0px;
-width: 104%;
+}
+table {
+width: 50%;
 }
 footer {
 position: fixed;
