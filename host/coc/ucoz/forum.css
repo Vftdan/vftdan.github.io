@@ -33,8 +33,10 @@ width: 10%;
 }
 #top {
 background:#efdf50;
-z-index: 2;
+z-index: 10;
+position: absolute;
+top:0px;
 }
-#top * {
+#top [class|="show"] * {
 background:#afaf90;
 }
