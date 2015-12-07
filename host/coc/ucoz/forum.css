@@ -38,9 +38,9 @@ position: absolute;
 top:0px;
 display: flex;
 justify-content: space-around;
-left:0px;
-right:0px;
+left:-6%;
+right:-6%;
 }
 #top [class|="show"] {
-background:#afaf90;
+background-color:#afaf90;
 }
