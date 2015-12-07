@@ -14,7 +14,8 @@ display: flex;
 [ui|="menu"] {
 justify-content: space-around;
 background:#efdf50;
-overflow: visible;
+overflow-x: auto;
+overflow-y: visible;
 padding:2pt;
 border-bottom-right-radius:3pt;
 white-space: nowrap;
