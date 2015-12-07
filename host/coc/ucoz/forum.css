@@ -5,7 +5,11 @@ margin: 0px;
 .b-main {
 position: absolute;
 top:1cm;
-left:0px;
+left:-1ex;
+bottom: 0px;
+}
+footer {
+position: absolute;
 bottom: 0px;
 }
 .gTable * {
