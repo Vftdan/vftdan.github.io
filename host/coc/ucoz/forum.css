@@ -44,3 +44,6 @@ right:-6%;
 #top [class|="show"] {
 background-color:#afaf90;
 }
+#top [class~="uMenuItemA"] {
+background: rgba(0,0,0,0.2);
+}
