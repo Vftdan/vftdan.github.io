@@ -86,6 +86,10 @@ margin-top:1pt;
 [ui|="content"] a {
 font-size:1.2em;
 }
+table td + td {
+padding-left:3.5mm;
+border-left:1pt dotted #aaaaaa;
+}
 [ui~="wide"] {
 width: 100%;
 }
