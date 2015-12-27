@@ -69,6 +69,9 @@ overflow-x:auto;
 overflow-y:visible;
 height:1.4em;
 }
+iframe[ui|="menu-multilevel"]:hover {
+height: auto;
+}
 [ui|="menu"] > * {
 font-size:1.2rem;
 }
