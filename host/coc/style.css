@@ -72,7 +72,7 @@ height:1.4em;
 background: transparent;
 top:-2pt;
 left:-2pt;
-right:-1pt;
+right:-2pt;
 }
 iframe[ui|="menu-multilevel"]:hover {
 height: auto;
