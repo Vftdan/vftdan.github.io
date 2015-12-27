@@ -61,6 +61,10 @@ display:flex;
 opacity:1;
 background: transparent;
 }
+iframe[ui|="menu-multilevel"] {
+overflow-x:auto;
+overflow-y:visible;
+}
 [ui|="menu"] > * {
 font-size:1.2rem;
 }
