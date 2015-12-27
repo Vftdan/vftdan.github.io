@@ -68,7 +68,7 @@ background: transparent;
 iframe[ui|="menu-multilevel"] {
 overflow-x:auto;
 overflow-y:visible;
-height:1.4em;
+height:1.5em;
 background: transparent;
 top:-2pt;
 left:-2pt;
