@@ -70,8 +70,9 @@ overflow-x:auto;
 overflow-y:visible;
 height:1.4em;
 background: transparent;
-top:-1pt;
-left:-1pt;
+top:-2pt;
+left:-2pt;
+right:-1pt;
 }
 iframe[ui|="menu-multilevel"]:hover {
 height: auto;
