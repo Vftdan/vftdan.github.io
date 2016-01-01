@@ -1,7 +1,7 @@
 #page_layout, .scroll_fix, .fl_l {
 background:#333333;
 }
-#side_bar > * {
+#side_bar {
 background: black;
 border:1pt solid black;
 border-radius:2pt;
