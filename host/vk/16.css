@@ -1,13 +1,15 @@
-#page_layout, .scroll_fix, .fl_l {
+#page_layout, .scroll_fix {
 background:#333333;
 color:white;
+height: 100%;
+width: 100%;
 }
 #side_bar {
 background: black;
 padding: 0px!important;
 border:1pt solid black;
 border-radius:2pt;
-box-shaddow:0pt 0pt 1pt 7pt white;
+box-shaddow:0pt 0pt 7pt 1pt white;
 overflow: hidden;
 }
 #side_bar > *{
@@ -20,7 +22,7 @@ right:1.5ex;
 .content, .reg {
 background: black;
 padding: 0px;
-box-shaddow:0pt 0pt 1pt 7pt white;
+box-shaddow:0pt 0pt 7pt 1pt white;
 }
 li > span {
 color: white!important;
