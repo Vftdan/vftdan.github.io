@@ -3,7 +3,7 @@ background:#333333;
 }
 #side_bar {
 background: black;
-padding: 0px;
+padding: 0px!important;
 border:1pt solid black;
 border-radius:2pt;
 box-shaddow:0pt 0pt 2pt 3pt white;
