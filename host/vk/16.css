@@ -20,6 +20,9 @@ right:1.5ex;
 .content, .reg {
 background: black;
 }
-li {
+ul, ol {
 color: white!important;
+}
+.page_body {
+border: none;
 }
