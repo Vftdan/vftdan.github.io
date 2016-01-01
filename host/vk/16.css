@@ -19,7 +19,7 @@ width: inherit!important;
 position: relative;
 right:1.5ex;
 }
-.content, .reg {
+.content, .reg, .content > * {
 background: black;
 padding: 0px;
 box-shaddow:0pt 0pt 7pt 1pt white;
