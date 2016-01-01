@@ -12,5 +12,5 @@ overflow: hidden;
 #side_bar > *{
 background: black;
 margin: 0px!important;
-width: 100%!important;
+width: inherit!important;
 }
