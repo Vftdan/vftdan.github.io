@@ -1,5 +1,6 @@
 #page_layout, .scroll_fix, .fl_l {
 background:#333333;
+color:white;
 }
 #side_bar {
 background: black;
@@ -15,4 +16,7 @@ margin: 0px!important;
 width: inherit!important;
 position: relative;
 right:1.5ex;
+}
+.content {
+background: black;
 }
