@@ -17,7 +17,7 @@ width: inherit!important;
 position: relative;
 right:1.5ex;
 }
-.content {
+.content, .reg {
 background: black;
 }
 li {
