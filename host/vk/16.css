@@ -20,3 +20,6 @@ right:1.5ex;
 .content {
 background: black;
 }
+li {
+color: white!important;
+}
