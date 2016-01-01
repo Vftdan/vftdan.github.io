@@ -8,5 +8,5 @@ border-radius:2pt;
 box-shaddow:0pt 0pt 2pt 3pt white;
 }
 #side_bar > *{
-background: inherit;
+background: #333333;
 }
