@@ -20,7 +20,7 @@ position: relative;
 right:1.5ex;
 }
 .content, .reg, .content > * {
-background: black;
+background: black!important;
 padding: 0px;
 box-shaddow:0pt 0pt 7pt 1pt white;
 }
