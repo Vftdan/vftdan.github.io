@@ -5,5 +5,8 @@ background:#333333;
 background: black;
 border:1pt solid black;
 border-radius:2pt;
-box-shaddow:0pt 0pt 2pt 1pt white;
+box-shaddow:0pt 0pt 2pt 3pt white;
+}
+#side_bar > *{
+background: transparent;
 }
