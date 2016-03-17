@@ -16,8 +16,5 @@ e.setAttribute("ui",t);
 scrolled:[]
 };
 //alert ([window.parent/*,window.parent.contentWindow*/]);
-try {
-var a=document.getElementsByTagName("iframe")[0];
-alert(a.style);
-} catch(){}
+
 })()
