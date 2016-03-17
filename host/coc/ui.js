@@ -1,5 +1,6 @@
+function (){
 window.onscroll=function (){var i;for(i in $UI.scrolled){($UI.scrolled[i])()}};
-var $UI={
+window.$UI={
 open:function (e,m){
 var t=e.getAttribute("ui");
 t+=" @opened";
@@ -13,3 +14,4 @@ e.setAttribute("ui",t);
 },
 scrolled:[]
 }
+}()
