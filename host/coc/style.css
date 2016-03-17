@@ -115,6 +115,7 @@ height:1em;
 [ui~="fixed"] {
 position: fixed;
 top:0px;
+border:1pt solid red;
 }
 [ui~="fixed"] + * {
 margin-top:1.5em;
