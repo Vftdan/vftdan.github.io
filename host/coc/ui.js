@@ -5,7 +5,7 @@ open:function (e,m){
 var t=e.getAttribute("ui");
 t+=" @opened";
 e.setAttribute("ui",t);
-if(m){$UI.scrolled.push(function (){$UI.close(e)});window.parent.contentWindow.$UI.scrolled.push(function (){/*$UI.close(e)*/alert (1)})};
+if(m){$UI.scrolled.push(function (){$UI.close(e)});window.parent.$UI.scrolled.push(function (){/*$UI.close(e)*/alert (1)})};
 
 },
 close:function (e){
