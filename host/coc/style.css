@@ -115,6 +115,7 @@ height:1em;
 [ui~="fixed"] {
 position: fixed !important;
 top:0px;
+z-index: 4;
 }
 [ui~="fixed"] + * {
 margin-top:1.5em;
