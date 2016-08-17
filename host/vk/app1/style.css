@@ -1,0 +1,28 @@
+@charset "UTF-8";
+
+* {
+font-family:Tahoma,sans-serif;
+}
+spoiler {
+display:none;
+}
+spoiler[o="1"] {
+display:block;
+}
+input,submit,reset,button {
+background:none;
+border:1pt solid #597da3;
+border-radius:2pt;
+}
+submit,reset,button,[type="submit"],[type="reset"]{
+-webkit-appearance: none;
+font-size:1.2em;
+padding:2pt;
+background:#597da3;
+color:white;
+margin-right:1pt;
+}
+reset,[type="reset"]{
+background-color:#e21d1a;
+border-color:#e21d1a;
+}
