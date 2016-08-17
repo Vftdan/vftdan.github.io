@@ -11,9 +11,10 @@ if(id=="s")byp=a;
 function ge(id){
 return document.getElementById(id);
 }
-function go(){
-var p=norm(ge("p").value);
-var h=norm(ge("h").value);
+function go(e){
+e.preventDefault();
+var p=ge("p").value;
+var h=ge("h").value;
 window.open(byp?("https://vk.com/"+p+"?q=%23"+h):("https://vk.com/feed?section=search&q=%23"+h))
 }
 var hex="0123456789ABCDEF".split("");
