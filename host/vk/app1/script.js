@@ -15,7 +15,7 @@ function go(e){
 e.preventDefault();
 var p=ge("p").value;
 var h=ge("h").value;
-window.open(byp?("https://vk.com/"+p+"?q=%23"+h):("https://vk.com/feed?section=search&q=%23"+h))
+window.open(byp?("https://vk.com/"+p+"?q=%23"+h):("https://vk.com/feed?c%5Bq%5D=%23"+h+"&section=search"))
 }
 var hex="0123456789ABCDEF".split("");
 function norm(s){
