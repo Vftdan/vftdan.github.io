@@ -13,10 +13,12 @@ function ge(id){
 return document.getElementById(id);
 }
 function go(e){
+try{
 e.preventDefault();
 var p=ge("p").value;
 var h=ge("h").value;
-window.open(ism?(byp?("https://m.vk.com/"+p+"?q=%23"+h):("https://m.vk.com/feed?section=search&q=%23"+h)):(byp?("https://vk.com/"+p+"?q=%23"+h):("https://vk.com/feed?c%5Bq%5D=%23"+h+"&section=search")))
+window.open(ism?(byp?("https://m.vk.com/"+p+"?q=%23"+h):("https://m.vk.com/feed?section=search&q=%23"+h)):(byp?(function(){throw "В полной версии поиск по странице не поддерживается!"}()):("https://vk.com/feed?c%5Bq%5D=%23"+h+"&section=search")))
+}catch(e){alert(e)}
 }
 var hex="0123456789ABCDEF".split("");
 function norm(s){
