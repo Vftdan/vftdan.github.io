@@ -21,6 +21,6 @@ window.open(ism?(byp?("https://m.vk.com/"+p+"?q=%23"+h):("https://m.vk.com/feed?
 function trim(a){
 a=a.split("");
 var i;
-for(i in a){if(a[i].match(/[\n\t ]/))a[i]=""};
+for(i in a){if(a[i].match(/[\n\t ]/))a[i]="";if(a[i]=="/")a[i]="%2F"};
 return a.join("");
 }
