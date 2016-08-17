@@ -1,6 +1,4 @@
-/*window.addEventListener('load', function(e) {
-  document.querySelector('#test').innerHTML = 'app1';
-}, false);*/
+
 ism=false;
 var byp=0;
 function chsp(id){
@@ -15,31 +13,14 @@ return document.getElementById(id);
 function go(e){
 try{
 e.preventDefault();
-var p=ge("p").value;
-var h=ge("h").value;
+var p=trim(ge("p").value);
+var h=trim(ge("h").value);
 window.open(ism?(byp?("https://m.vk.com/"+p+"?q=%23"+h):("https://m.vk.com/feed?section=search&q=%23"+h)):(byp?(function(){throw "В полной версии поиск по странице не поддерживается!"}()):("https://vk.com/feed?c%5Bq%5D=%23"+h+"&section=search")))
 }catch(e){alert(e)}
 }
-var hex="0123456789ABCDEF".split("");
-function norm(s){
-s=s.split("");
-var i,c,c1,c2;
-for(i in s){
-c=s[i].charCodeAt();
-if(c>255){
-c1=div(c,256);
-c2=c%256;
-s[i]=hexc(c1)+hexc(c2);
-}else{
-s[i]=hexc(c);
-}
-}
-s=s.join("");
-return s;
-}
-function div(i,j){
-return (i-(i%j))/j;
-}
-function hexc(a){
-return "%"+hex[div(a,16)]+hex[a%16];
+function trim(a){
+a=a.split("");
+var i;
+for(i in a){if(a[i].match(/[\n\t ]/))a[i]=""};
+return a.join("");
 }
