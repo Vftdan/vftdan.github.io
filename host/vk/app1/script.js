@@ -15,7 +15,7 @@ try{
 e.preventDefault();
 var p=trim(ge("p").value);
 var h=trim(ge("h").value);
-window.open(ism?(byp?("https://m.vk.com/"+p+"?q=%23"+h):("https://m.vk.com/feed?section=search&q=%23"+h)):(byp?(function(){throw "В полной версии поиск по странице не поддерживается!"}()):("https://vk.com/feed?c%5Bq%5D=%23"+h+"&section=search")))
+window.open(ism?(byp?("https://m.vk.com/"+p+"?q=%23"+h):("https://m.vk.com/feed?section=search&q=%23"+h)):(byp?(function(){throw "В полной версии поиск по странице не поддерживается, установите флажок «Мобильная версия»"}()):("https://vk.com/feed?c%5Bq%5D=%23"+h+"&section=search")))
 }catch(e){alert(e)}
 }
 function trim(a){
