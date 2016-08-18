@@ -24,3 +24,7 @@ var i;
 for(i in a){if(a[i].match(/[\n\t ]/))a[i]="";if(a[i]=="/")a[i]="%2F"};
 return a.join("");
 }
+
+
+window.addEventListener('load',(function(){if(window.parent&&window.parent!=window){vk.init(function(){
+VK.callMethod("showSettingsBox", 0);})}}),false)
