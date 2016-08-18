@@ -27,4 +27,4 @@ return a.join("");
 
 
 window.addEventListener('load',(function(){if(window.parent&&window.parent!=window){vk.init(function(){
-VK.callMethod("showSettingsBox", 0);})}}),false)
+alert(VK.callMethod("showSettingsBox", 0));})}}),false)
