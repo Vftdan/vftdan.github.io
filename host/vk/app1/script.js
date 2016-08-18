@@ -26,5 +26,9 @@ return a.join("");
 }
 
 
-window.addEventListener('load',(function(){if(window.parent&&window.parent!=window){VK.init(function(){
-VK.callMethod("showSettingsBox", 256);},function(){alert(-1)},"5.53")}}),false)
+window.addEventListener('load',(function(){if(window.parent&&window.parent!=window){VK.init(function(){ge(vkb).setAttribute("o",1);
+/*VK.callMethod("showSettingsBox", 256)*/;},function(){alert(-1)},"5.53")}}),false);
+function addtomenu(){
+VK.callMethod("showSettingsBox", 256);
+VK.api("account.setNameInMenu",{},function(){});
+}
