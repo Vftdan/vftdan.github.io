@@ -18,7 +18,7 @@ try{
 e.preventDefault();
 var p=trim(ge("p").value);
 var h=trim(ge("h").value);
-window.open(ism?(byp?("https://m.vk.com/"+p+"?q=%23"+h):("https://m.vk.com/feed?section=search&q=%23"+h+"&_ff=1")):(byp?(deskbyp(p,h)):("https://vk.com/feed?c%5Bq%5D=%23"+h+"&section=search")))
+window.open(ism?(byp?("https://m.vk.com/"+p+"?q=%23"+h):("https://m.vk.com/feed?section=search&q=%23"+h+"&_ff=1")):(byp?("https://vk.com/"+p+"/"+h):("https://vk.com/feed?c%5Bq%5D=%23"+h+"&section=search")))
 }catch(e){message(e)}
 }
 function trim(a){
