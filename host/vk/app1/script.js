@@ -32,7 +32,7 @@ throw "В полной версии поиск по странице не под
 }
 
 window.addEventListener('load',(function(){if(window.parent&&window.parent!=window){VK.init(function(){ge("vkb").setAttribute("o",1);
-},function(){alert(-1)},"5.53");deskbyp=function(p,h){VK.api("utils.resolveScreenName",{screen_name:p},function(w){try{w=w.response;if(w.type=="group"){w.object_id*=-1};var hr="https://vk.com/wall"+w.object_id+"?q=%23"+h;message(hr);window.open(hr)}catch(e){message(e)} });throw ""}}}),false);
+},function(){alert(-1)},"5.53");deskbyp=function(p,h){VK.api("utils.resolveScreenName",{screen_name:p},function(w){try{w=w.response;if(w.type=="group"){w.object_id*=-1};var hr="https://vk.com/wall"+w.object_id+"?q=%23"+h;if(confirm("Продолжить?")){window.open(hr)}}catch(e){message(e)} });throw ""}}}),false);
 
 function addtomenu(){
 VK.callMethod("showSettingsBox", 256);
