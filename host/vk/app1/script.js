@@ -22,7 +22,7 @@ window.open(ism?(byp?("https://m.vk.com/"+p+"?q=%23"+h):("https://m.vk.com/feed?
 }catch(e){message(e)}
 }
 function trim(a){
-a=a.split("");
+a=a.toLowerCase().split("");
 var i;
 for(i in a){if(a[i].match(/[\n\t ]/))a[i]="";if(a[i]=="/")a[i]="%2F"};
 return a.join("");
@@ -44,3 +44,4 @@ var i,a=[];
 for(i in o){a.push(i+":"+o[i])}
 return a;
 }
+
