@@ -11,7 +11,7 @@ function ge(id){
 return document.getElementById(id);
 }
 function message(a) {
-if(a&&a!=""){alert(a)};
+if(a!=""){alert(a)};
 }
 function go(e){
 try{
@@ -19,7 +19,7 @@ e.preventDefault();
 var p=trim(ge("p").value);
 var h=trim(ge("h").value);
 window.open(ism?(byp?("https://m.vk.com/"+p+"?q=%23"+h):("https://m.vk.com/feed?section=search&q=%23"+h+"&_ff=1")):(byp?(deskbyp(p,h)):("https://vk.com/feed?c%5Bq%5D=%23"+h+"&section=search")))
-}catch(e){alert(e)}
+}catch(e){message(e)}
 }
 function trim(a){
 a=a.split("");
@@ -32,9 +32,15 @@ throw "В полной версии поиск по странице не под
 }
 
 window.addEventListener('load',(function(){if(window.parent&&window.parent!=window){VK.init(function(){ge("vkb").setAttribute("o",1);
-},function(){alert(-1)},"5.53");deskbyp=function(p,h){VK.api("utils.resolveScreenName",{screen_name:p},function(w){try{var hr="https://vk.com/wall"+w.object_id+"?q=%23"+h;alert(hr);window.open(hr)}catch(e){alert(e)} });throw ""}}}),false);
+},function(){alert(-1)},"5.53");deskbyp=function(p,h){VK.api("utils.resolveScreenName",{screen_name:p},function(w){try{alert(sayobj(w));var hr="https://vk.com/wall"+w.object_id+"?q=%23"+h;alert(hr);window.open(hr)}catch(e){alert(e)} });throw ""}}}),false);
 
 function addtomenu(){
 VK.callMethod("showSettingsBox", 256);
 VK.api("account.setNameInMenu",{},function(){});
+}
+
+function sayobj(o){
+var i,a=[];
+for(i in o){a.push(i+":"+o[i])}
+return a;
 }
