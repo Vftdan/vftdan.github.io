@@ -27,21 +27,11 @@ var i;
 for(i in a){if(a[i].match(/[\n\t ]/))a[i]="";if(a[i]=="/")a[i]="%2F"};
 return a.join("");
 }
-function deskbyp(){
-throw "В полной версии поиск по странице не поддерживается, установите флажок «Мобильная версия»"
-}
 
 window.addEventListener('load',(function(){if(window.parent&&window.parent!=window){VK.init(function(){ge("vkb").setAttribute("o",1);
-},function(){alert(-1)},"5.53");deskbyp=function(p,h){VK.api("utils.resolveScreenName",{screen_name:p},function(w){try{w=w.response;if(w.type=="group"){w.object_id*=-1};var hr="https://vk.com/wall"+w.object_id+"?q=%23"+h;if(confirm("Продолжить?")){window.open(hr)}}catch(e){message(e)} });throw ""}}}),false);
+},function(){alert(-1)},"5.53");}}),false);
 
 function addtomenu(){
 VK.callMethod("showSettingsBox", 256);
 VK.api("account.setNameInMenu",{},function(){});
 }
-
-function sayobj(o){
-var i,a=[];
-for(i in o){a.push(i+":"+o[i])}
-return a;
-}
-
