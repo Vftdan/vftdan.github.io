@@ -11,7 +11,7 @@ function ge(id){
 return document.getElementById(id);
 }
 function message(a) {
-if(a!=""){alert(a)};
+if(a!=""){var m=ge("mes");m.setAttribute("o",1);m.innerHTML=a;};
 }
 function go(e){
 try{
@@ -32,9 +32,9 @@ throw "В полной версии поиск по странице не под
 }
 
 window.addEventListener('load',(function(){if(window.parent&&window.parent!=window){VK.init(function(){ge("vkb").setAttribute("o",1);
-},function(){alert(-1)},"5.53");deskbyp=function(p,h){VK.api("utils.resolveScreenName",{screen_name:p},function(w){try{w=w.response;if(w.type=="group"){w.object_id*=-1};var hr="https://vk.com/wall"+w.object_id+"?q=%23"+h;var ev1,ev2;
-ev1=document.lastChild.addEventListener("click",function(){window.open(hr);document.lastChild.removeEventListener(ev1);/*document.lastChild.removeEventListener(ev2)*/},false);
-/*ev2=document.lastChild.addEventListener("touchmove",function(e){e.preventDefault();window.open(hr);document.lastChild.removeEventListener(ev1);document.lastChild.removeEventListener(ev2)},false);*/
+},function(){alert(-1)},"5.53");deskbyp=function(p,h){VK.api("utils.resolveScreenName",{screen_name:p},function(w){try{w=w.response;if(w.type=="group"){w.object_id*=-1};var hr="https://vk.com/wall"+w.object_id+"?q=%23"+h;var ev1;
+ev1=document.lastChild.addEventListener("click",function(){window.open(hr);document.lastChild.removeEventListener(ev1);},false);
+message("Пожалуйста, кликните ещё раз");
 
 
 }catch(e){message(e)} });throw ""}}}),false);
