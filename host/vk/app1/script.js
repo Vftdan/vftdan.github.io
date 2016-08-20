@@ -28,7 +28,7 @@ for(i in a){if(a[i].match(/[\n\t ]/))a[i]="";if(a[i]=="/")a[i]="%2F"};
 return a.join("");
 }
 function deskbyp(){
-throw "В полной версии поиск по странице не поддерживается, установите флажок «Мобильная версия»"
+throw "В полной версии поиск по странице не поддерживается, установите флажок «Мобильная версия»/<a href='https://vk.cc/5vYUKP'>используйте приложение</a>"
 }
 
 window.addEventListener('load',(function(){if(window.parent&&window.parent!=window){VK.init(function(){ge("vkb").setAttribute("o",1);
