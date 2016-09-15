@@ -1,6 +1,10 @@
 @charset "UTF-8";
+*{
+  margin:0px;
+  padding:0px;
+}
 [vdz~="overlay"]{
-position:absolute;
+position:fixed;
 top:0px;
 bottom:0px;
 left:0px;
@@ -8,7 +12,7 @@ right:0px;
 z-index:4;
 background:rgba(0,0,0,0.6);
 }
-body{
-  background:red;
-  
+[vdz~="win"]{
+  z-index:5;
+  position:fixed;
 }
