@@ -52,4 +52,6 @@ display:inline-block;
 height:1em;
 width:1em;
 background-size:100%;
+position:relative;
+top:0.125em;
 }
