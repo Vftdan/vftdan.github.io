@@ -27,6 +27,12 @@ background:rgba(0,0,0,0.6);
 [vdz~="win"],[vdz~="tile"],[vdz~="padding"]{
   padding:1em;
 }
+[vdz~="hpadding"]{
+padding:1em 0em;
+}
+[vdz~="vpadding"]{
+padding:0em 1em;
+}
 [vdz~="round"]{
  border-radius:1ex; 
 }
