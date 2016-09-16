@@ -16,3 +16,7 @@ background:rgba(0,0,0,0.6);
   z-index:5;
   position:fixed;
 }
+[vdz~="outset"]{
+  box-shadow:1pt 2pt 0pt 0pt black;
+  
+}
