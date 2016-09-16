@@ -3,6 +3,10 @@
   margin:0px;
   padding:0px;
 }
+body{
+  font-family:Helvetica,sans-serif;
+  
+}
 [vdz~="overlay"]{
 position:fixed;
 top:0px;
