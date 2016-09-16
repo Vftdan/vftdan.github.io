@@ -35,5 +35,5 @@ background:rgba(0,0,0,0.6);
  border-radius-bottom-right:1ex; 
 }
 [vdz~="hover"]:hover,[vdz~="hover>"]>*:hover,[vdz~="hover>1"]>*:first-child:hover{
-background:rgba(0,0,0,0.2); 
+background:rgba(0,0,0,0.13); 
 }
