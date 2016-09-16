@@ -57,6 +57,7 @@ top:0.125em;
 }
 [vdz~="dark"]{
 background:#101010;
+color:white;
 }
 [vdz~="fullwidth"]{
 width:100%;
