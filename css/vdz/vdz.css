@@ -44,3 +44,6 @@ background:rgba(0,0,0,0.13);
 [vdz~="white"]{
   background:#fefefe;
 }
+[vdz~="bwhite"]{
+  background:white;
+}
