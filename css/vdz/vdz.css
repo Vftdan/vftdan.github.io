@@ -41,3 +41,6 @@ background:rgba(0,0,0,0.6);
 [vdz~="hover"]:hover,[vdz~="hover>"]>*:hover,[vdz~="hover>1"]>*:first-child:hover{
 background:rgba(0,0,0,0.13); 
 }
+[vdz~="white"]{
+  background:white;
+}
