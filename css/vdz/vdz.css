@@ -47,3 +47,9 @@ background:rgba(0,0,0,0.13);
 [vdz~="bwhite"]{
   background:white;
 }
+[vdz^="strimg/"]{
+display:inline-block;
+height:1em;
+width:1em;
+background-size:100%;
+}
