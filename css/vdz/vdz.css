@@ -20,3 +20,18 @@ background:rgba(0,0,0,0.6);
   box-shadow:0pt 1.5pt 4pt -0.3pt black;
   
 }
+[vdz~="win"],[vdz~="tile"],[vdz~="padding"]{
+  padding:1em;
+}
+[vdz~="round"]{
+ border-radius:1ex; 
+}
+[vdz~="uround"]{
+ border-radius-top-left:1ex;
+ border-radius-top-right:1ex; 
+}
+[vdz~="bround"]{
+ border-radius-bottom-left:1ex;
+ border-radius-bottom-right:1ex; 
+}
+
