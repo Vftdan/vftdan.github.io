@@ -27,7 +27,13 @@ a.pop();
 a.shift();
 VDZprops=a;
 };
-return([VDZtype,VDZprops,VDZsubtype]);
+el.VDZtype=VDZtype;
+el.VDZprops=VDZprops;
+el.VDZsubtype=VDZsubtype;
+el.save=function(){
+el.setAttribute("vdz",el.VDZtype+"/ "+el.VDZprops.join(" ")+" /"+el.VDZsubtype)
+};
+return el;
 };
 
 return {vdzSet:vdzSet};
