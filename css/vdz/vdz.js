@@ -32,7 +32,7 @@ el.VDZtype=VDZtype;
 el.VDZprops=VDZprops;
 el.VDZsubtype=VDZsubtype;
 };
-el.load();
+load();
 var VDZcontains=function(p){
   return el.VDZprops.indexOf(p)!=-1;
 
