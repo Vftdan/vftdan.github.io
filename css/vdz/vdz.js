@@ -33,6 +33,37 @@ el.VDZprops=VDZprops;
 el.VDZsubtype=VDZsubtype;
 };
 el.load();
+var VDZcontains=function(p){
+  return el.VDZprops.indexOf(p)!=-1;
+
+}
+var VDZadd=function(p){
+  if(!VDZcontains(p)){el.VDZprops.push(p)};
+
+}
+var VDZrem=function(p){
+  var j,i=el.VDZprops.indexOf(p);
+  if(i!=-1){
+   for(j=i;j<el.VDZprops.length-1;j++){
+     el.VDZprops[j]=el.VDZprops[j+1];
+  }
+  el.VDZprops.pop();
+  }
+}
+var hide=function(){
+  VDZadd("hidden")
+  
+}
+var show=function(){
+  VDZrem("hidden")
+  
+}
+
+el.VDZcontains=VDZcontains;
+el.VDZadd=VDZadd;
+el.VDZrem=VDZrem;
+el.show=show;
+el.hide=hide;
 el.save=function(){
 el.setAttribute("vdz",el.VDZtype+"/ "+el.VDZprops.join(" ")+" /"+el.VDZsubtype)
 };
