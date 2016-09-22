@@ -17,7 +17,9 @@ var el=document.createElement(t);
 return el;
 };
 var vdzSet=function(el){
+el.load=function(){
 var a=el.getAttribute("vdz");
+
 var VDZtype="",VDZprops=[],VDZsubtype="";
 if(a){a=a.split(" ");
 if(a.length==1){a=a[0].split("/");VDZtype=a[0];VDZsubtype=a[1]}else{
@@ -30,6 +32,8 @@ VDZprops=a;
 el.VDZtype=VDZtype;
 el.VDZprops=VDZprops;
 el.VDZsubtype=VDZsubtype;
+}
+el.load();
 el.save=function(){
 el.setAttribute("vdz",el.VDZtype+"/ "+el.VDZprops.join(" ")+" /"+el.VDZsubtype)
 };
