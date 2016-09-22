@@ -45,7 +45,7 @@ padding:1em 0em;
  border-radius-bottom-right:1ex; 
 }
 [vdz~="hover"]:hover,[vdz~="hover>"]>*:hover,[vdz~="hover>1"]>*:first-child:hover{
-background:rgba(0,0,0,0.13); 
+background:rgba(127,127,127,0.26); 
 }
 [vdz~="white"]{
   background:#fefefe;
