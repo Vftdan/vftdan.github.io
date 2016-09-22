@@ -17,6 +17,7 @@ var el=document.createElement(t);
 return el;
 };
 var vdzSet=function(el){
+  var load=function(){
 var a=el.getAttribute("vdz");
 var VDZtype="",VDZprops=[],VDZsubtype="";
 if(a){a=a.split(" ");
@@ -30,6 +31,8 @@ VDZprops=a;
 el.VDZtype=VDZtype;
 el.VDZprops=VDZprops;
 el.VDZsubtype=VDZsubtype;
+};
+el.load();
 el.save=function(){
 el.setAttribute("vdz",el.VDZtype+"/ "+el.VDZprops.join(" ")+" /"+el.VDZsubtype)
 };
