@@ -45,7 +45,11 @@ padding:1em 0em;
  border-radius-bottom-right:1ex; 
 }
 [vdz~="hover"]:hover,[vdz~="hover>"]>*:hover,[vdz~="hover>1"]>*:first-child:hover{
-background:rgba(127,127,127,0.26); 
+background:rgba(127,127,127,0.26);
+transition:0.6s;
+}
+[vdz~="hover"]:not(:hover),[vdz~="hover>"]>*:not(:hover),[vdz~="hover>1"]>*:first-child:not(:hover){
+transition:0.6s;
 }
 [vdz~="white"]{
   background:#fefefe;
