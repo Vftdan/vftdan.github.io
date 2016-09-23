@@ -69,6 +69,6 @@ el.setAttribute("vdz",el.VDZtype+"/ "+el.VDZprops.join(" ")+" /"+el.VDZsubtype)
 };
 return el;
 };
-
-return {vdzSet:vdzSet};
+var setScale=function(s){document.lastChild.style.fontSize=s+'rem'};
+return {vdzSet:vdzSet,setScale:setScale};
 })();
