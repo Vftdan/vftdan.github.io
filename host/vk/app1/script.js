@@ -11,7 +11,8 @@ function ge(id){
 return document.getElementById(id);
 }
 function message(a) {
-if(a!=""){var m=ge("mes");m.setAttribute("o",1);m.innerHTML=a;}else{m.setAttribute("o",0);}
+var m=ge("mes");
+if(a!=""){m.setAttribute("o",1);m.innerHTML=a;}else{m.setAttribute("o",0);}
 }
 function go(e){
 try{
