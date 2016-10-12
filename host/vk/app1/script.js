@@ -11,7 +11,7 @@ function ge(id){
 return document.getElementById(id);
 }
 function message(a) {
-if(a!=""){var m=ge("mes");m.setAttribute("o",1);m.innerHTML=a;};
+if(a!=""){var m=ge("mes");m.setAttribute("o",1);m.innerHTML=a;}else{m.setAttribute("o",0);}
 }
 function go(e){
 try{
@@ -33,7 +33,7 @@ throw "В полной версии поиск по странице не под
 
 window.addEventListener('load',(function(){if(window.parent&&window.parent!=window){VK.init(function(){ge("vkb").setAttribute("o",1);
 },function(){alert(-1)},"5.53");deskbyp=function(p,h){VK.api("utils.resolveScreenName",{screen_name:p},function(w){try{w=w.response;if(w.type=="group"){w.object_id*=-1};var hr="https://vk.com/wall"+w.object_id+"?q=%23"+h;
-var ev1f=function(){document.lastChild.removeEventListener("click",ev1f,false);window.open(hr); };
+var ev1f=function(){document.lastChild.removeEventListener("click",ev1f,false);window.open(hr);message("") };
 document.lastChild.addEventListener("click",ev1f,false);
 message("Пожалуйста, кликните ещё раз");
 
