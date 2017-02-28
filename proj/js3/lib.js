@@ -7,6 +7,8 @@ return function(){return func.apply(scope, arguments)};
 var lib = this;
 var Graphics = {dim2:{}, dim3:{}};
 var Vectors;
+var PI = Math.acos(-1);
+var DEG = PI / 180;
 var getView;
 var R = {values:{}, colors:{}};
 var baseView = {};
@@ -147,7 +149,23 @@ this.dims = a;
 add: function(v1, v2) {v1 = v1.copy(); v1.addSelf(v2); return v1},
 sub: function(v1, v2) {v1 = v1.copy(); v1.subSelf(v2); return v1}
 }),
-RotMatrix: withProto(lib, {}, function(){}, {})
+deg: function(a) {return DEG * a},
+SqMatrix: withProto(lib, {addDim: function(){var i, l = this.length, m = this.vals; m[l] = []; for(i=0; i<l; i++){m[i][l] = 0; m[l][i] = 0}; m[l][l] = 1; this.length++ }, expandTo: function(a){var i; for(i = this.length; i < a; i++) this.addDim()}}, function(m){
+if(arguments.length == 0) m = [];
+if(arguments.length > 1 || (arguments[0] && arguments[0].length === undefined)) m = [].slice.call(arguments, 0);
+this.vals = m;
+var i, j, l = m.length;
+for(i = 0; i < m.length; i++) {
+l = Math.max(l, m[i].length);
+}
+this.length = l;
+for(i = 0; i < l; i++) {
+m[i] = m[i] || [];
+m[i].toString = function(){return this.join('\t')};
+for(j = m[i].length; j < l; j++){
+m[i][j] = 1 * (i == j);
+}}
+}, {})
 }
 
 
