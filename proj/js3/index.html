@@ -1,0 +1,18 @@
+<script src="lib.js"></script>
+<script defer>
+//alert([lib.GE("q","[defer]").constructor==Object, {}.constructor==Object])
+try{
+//Object.prototype.toString = function() {var i, s = []; for(i in this) s.push(i + ': ' + this[i]); return '{' + s.join(',\n') + '}'}
+//alert(lib);
+//alert(document.constructor == HTMLDocument);
+//alert(lib.GE("q","script"))
+//alert(lib.Vectors.Vec([1, 2, 3]))
+with(lib.Vectors){
+with(Vec){
+//var a = Vec(1, 2, 3);
+//a.subSelf(Vec(4, 5));
+alert(sub(Vec(1,2,3), Vec(4, 5)))
+}}
+}catch(e){alert(e)}
+//alert(document.parentNode)
+</script>
