@@ -171,7 +171,9 @@ m[i].toString = function(){return this.join('\t')};
 for(j = m[i].length; j < l; j++){
 m[i][j] = 1 * (i == j);
 }}
-}, {toMaxLength: function(m1,m2){var l=Math.max(m1.length,m2.length);m1.expandTo(l);m2.expandTo(l);return l}, mul: function(a,b){var l=this.toMaxLength(a,b); var c=new Vectors.SqMatrix(); c.expandTo(l); var i,j,r; for(i=0;i<l;i++)for(j=0;j<l;j++){c.vals[i][j]=0;for(r=0;r<l;r++)c.vals[i][j]+=a.vals[i][r]*b.vals[r][j]};return c}})
+}, {toMaxLength: function(m1,m2){var l=Math.max(m1.length,m2.length);m1.expandTo(l);m2.expandTo(l);return l}, mul: function(a,b){var l=this.toMaxLength(a,b); var c=new Vectors.SqMatrix(); c.expandTo(l); var i,j,r; for(i=0;i<l;i++)for(j=0;j<l;j++){c.vals[i][j]=0;for(r=0;r<l;r++)c.vals[i][j]+=a.vals[i][r]*b.vals[r][j]};return c}
+,rotMx: function(a, d) {d = d || [0, 1]; if(d.split){d = d.split(''); d = d.map(function(c){switch(c){case 'x':return 0; case 'y':return 1; case 'z':return 2; default:return 3;}})}; var l = Math.max(d[0], d[1])+1; var Mx = new this(); Mx.expandTo(l); var M = Mx.vals; var d1=d[0], d2=d[1]; var cos = Math.cos(a), sin = Math.sin(a); M[d1][d1] = M[d2][d2] = cos; M[d1][d2] = -sin; M[d2][d1] = sin; return Mx}
+})
 }
 
 
