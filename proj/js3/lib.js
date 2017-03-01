@@ -7,13 +7,17 @@ return function(){return func.apply(scope, arguments)};
 var lib = this;
 var Graphics = {dim2:{}, dim3:{}};
 var Vectors;
+var compFloat;
 var PI = Math.acos(-1);
 var DEG = PI / 180;
 var getView;
 var R = {values:{}, colors:{}};
 var baseView = {};
 var withProto;
-var View = function(el, opt){
+var View;
+this.compFloatBits = 16;
+compFloat = function(a, b) {var m = 1 << lib.compFloatBits; a = Math.round(a*m)/m; b = Math.round(b*m)/m; return a == b}
+View = function(el, opt){
 if(!(this instanceof View)) return new View(el, opt);
 var TN, i, ID, par, parv;
 if(!(el||opt)) return this;
@@ -153,10 +157,11 @@ this.d = L;
 this.dims = a;
 }, {toMaxDimNum: function(v1, v2) {var l = Math.max(v1.d, v2.d); v1.resize(l); v2.resize(l); return l}, Resized: function(v, l) {v = v.copy(); v.resize(l); return v},
 add: function(v1, v2) {v1 = v1.copy(); v1.addSelf(v2); return v1},
-sub: function(v1, v2) {v1 = v1.copy(); v1.subSelf(v2); return v1}
+sub: function(v1, v2) {v1 = v1.copy(); v1.subSelf(v2); return v1},
+mul: function(v1, v2) {v1 = v1.copy(); v1.mulSelf(v2); return v1}
 }),
 deg: function(a) {return DEG * a},
-SqMatrix: withProto(lib, {toString: function(){return '['+this.vals.join('\n')+']'}, addDim: function(){var i, l = this.length, m = this.vals; m[l] = []; m[l].toString = function(){return this.join('\t')}; for(i=0; i<l; i++){m[i][l] = 0; m[l][i] = 0}; m[l][l] = 1; this.length++ }, expandTo: function(a){var i; for(i = this.length; i < a; i++) this.addDim()}}, function(m){
+SqMatrix: withProto(lib, {toString: function(){return '['+this.vals.join('\n')+']'}, addDim: function(){var i, l = this.length, m = this.vals; m[l] = []; m[l].toString = function(){return this.join('\t')}; for(i=0; i<l; i++){m[i][l] = 0; m[l][i] = 0}; m[l][l] = 1; this.length++ }, expandTo: function(a){var i; for(i = this.length; i < a; i++) this.addDim()}, mulSelf: function(m2){var m1 = this.constructor.mul(m2); this.length = m1.length; this.vals = m1.vals}}, function(m){
 if(arguments.length == 0) m = [];
 if(arguments.length > 1 || (arguments[0] && arguments[0].length === undefined)) m = [].slice.call(arguments, 0);
 var i, j, l = m.length;
@@ -174,7 +179,7 @@ this.vals = m;
 }, {toMaxLength: function(m1,m2){var l=Math.max(m1.length,m2.length);m1.expandTo(l);m2.expandTo(l);return l}, mul: function(a,b){var l=this.toMaxLength(a,b); var c=new Vectors.SqMatrix(); c.expandTo(l); var i,j,r; for(i=0;i<l;i++)for(j=0;j<l;j++){c.vals[i][j]=0;for(r=0;r<l;r++)c.vals[i][j]+=a.vals[i][r]*b.vals[r][j]};return c}
 ,rotMx: function(a, d) {d = d || [0, 1]; if(d.split){d = d.split(''); d = d.map(function(c){switch(c){case 'x':return 0; case 'y':return 1; case 'z':return 2; default:return 3;}})}; var l = Math.max(d[0], d[1])+1; var Mx = new this(); Mx.expandTo(l); var M = Mx.vals; var d1=d[0], d2=d[1]; var cos = Math.cos(a), sin = Math.sin(a); M[d1][d1] = M[d2][d2] = cos; M[d1][d2] = -sin; M[d2][d1] = sin; return Mx}
 }),
-Transformator: withProto(lib, {toString: function(){return 'Transformator:\n' + this.m}, rot: function(a, d){with(Vectors.SqMatrix){this.m = mul(this.m, rotMx(a, d)); return this}}}, function(){var m = new Vectors.SqMatrix(); this.m = m})
+Transformator: withProto(lib, {toString: function(){return 'Transformator:\n' + this.m}, rot: function(a, d){with(Vectors.SqMatrix){this.m = mul(this.m, rotMx(a, d)); return this}}, proceedSelf: function(a){var b = []; for(i=0; i<a.length; i++) {b[i] = a[i]; if(a[i].mulSelf) a[i].mulSelf(this.m)}}}, function(){var m = new Vectors.SqMatrix(); this.m = m})
 }
 
 
@@ -184,6 +189,7 @@ this.GE = GE;
 this.getView = getView;
 this.Vectors = Vectors;
 this.Graphics = Graphics;
+this.compFloat = compFloat;
 
 window[libName] = this;
 })("lib");
