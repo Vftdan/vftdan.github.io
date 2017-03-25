@@ -534,7 +534,7 @@ try {
 					return S[0].slice(S[1], S[1] + 4 - this.noAlpha)
 				},
 				unbind: function() {
-					this.srcs = [this.getValues, 0]
+					this.srcs = [this.getValues(), 0]
 				},
 				copy: function() {
 					with(this) {
