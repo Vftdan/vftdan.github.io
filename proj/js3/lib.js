@@ -15,10 +15,7 @@ try {
 			return r;
 		}
 		var lib = this;
-		var Graphics = {
-			dim2: {},
-			dim3: {}
-		};
+		var Graphics;
 		var Vectors;
 		var compFloat;
 		var PI = Math.acos(-1);
