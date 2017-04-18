@@ -1,0 +1,62 @@
+<script>
+var $ce = function(tn) {
+return document.createElement(tn);
+}
+var $searchm = function(form) {
+try{
+var el = form.firstChild, q, peer_id, i, _r, _b, _c1, _c2;
+q = el.value;
+el = el.nextSibling;
+peer_id = el.value;
+//alert([q, peer_id]);
+var xhr = new XMLHttpRequest();
+var url = "https://api.vk.com/method/messages.search?access_token=" + LData.access_token + '&q=' + q + '&peer_id=' + peer_id + '&preview_length=500&count=100';
+//window.open(url, '_blank');
+xhr.open('GET', url, true);
+xhr.send();
+//xhr.onreadystatechange = function() {
+//alert([xhr.readyState, xhr.responseText, xhr.statusText]);
+var a = $jsonp(xhr.responseText).response.slice(1);
+//alert(a);
+var t = $ce('table');
+for(i in a) {
+_r = $ce('tr');
+_c1 = $ce('td');
+_c2 = $ce('td');
+_b = $ce('a');
+_b.href = "https://api.vk.com/method/messages.delete?access_token=" + LData.access_token + '&message_ids=' + a[i].mid;
+_b.innerHTML = "Удалить " + a[i].mid;
+_c2.appendChild(_b);
+_c1.innerHTML = a[i].body;
+_r.appendChild(_c1);
+_r.appendChild(_c2);
+t.appendChild(_r);
+}
+//}
+}catch(ex){alert(e)};
+}
+var $jsonp = function(s) {
+return eval(s);
+}
+</script>
+<body>
+<form onsubmit = "$searchm(this)"><input value = "пятнадцатый год"></input><input value = "2000000048"></input><input type = "submit" value = "Найти"></input></form>
+</body>
+<script defer>
+var LData = (function(){
+try{
+var s = document.location.hash.substr(1).split('&'), i, d = {}, v;
+//alert(s);
+for(i in s) {v = s[i].split('='); d[v[0]] = v[1]};
+if(!d.access_token) throw {};
+return d;
+}catch(ex){
+var t = $ce('div'), a = $ce('a');
+t.innerHTML = "Предоставьте доступ и замените всё до символа '#' адресом этой страницы ";
+a.innerHTML = "(перейти)";
+a.href = "https://oauth.vk.com/oauth/authorize?redirect_uri=http://vk.com/blank.html&response_type=token&client_id=5878451&scope=messages&display=wap";
+t.appendChild(a);
+document.body.appendChild(t);
+}
+})();
+</script>
