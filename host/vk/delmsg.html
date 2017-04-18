@@ -12,7 +12,7 @@ peer_id = el.value;
 var xhr = new XMLHttpRequest();
 var url = "https://api.vk.com/method/messages.search?access_token=" + LData.access_token + '&q=' + q + '&peer_id=' + peer_id + '&preview_length=500&count=100';
 //window.open(url, '_blank');
-xhr.open('GET', url, true);
+xhr.open('GET', url, false);
 xhr.send();
 //xhr.onreadystatechange = function() {
 alert([xhr.readyState, xhr.responseText, xhr.statusText]);
