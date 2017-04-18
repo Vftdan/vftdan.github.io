@@ -15,7 +15,7 @@ var url = "https://api.vk.com/method/messages.search?access_token=" + LData.acce
 xhr.open('GET', url, true);
 xhr.send();
 //xhr.onreadystatechange = function() {
-//alert([xhr.readyState, xhr.responseText, xhr.statusText]);
+alert([xhr.readyState, xhr.responseText, xhr.statusText]);
 var a = $jsonp(xhr.responseText).response.slice(1);
 //alert(a);
 var t = $ce('table');
