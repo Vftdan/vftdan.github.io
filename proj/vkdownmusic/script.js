@@ -25,7 +25,7 @@
 		rets = rets.concat(trimSplit(xhr.responseText.split("<!>")[5], "<!json>[[", "]]", "],["));
 	}
 	console.log(rets);
-	var div = document.createElement("div"), row;
+	var div = document.createElement("div"), row, rows = [];
 	for(i = 0; i < rets.length; i++) {
 		rets[i] = JSON.parse("[" + rets[i].replace(/\]\]$/gi, "") + "]");
 		row = document.createElement("a");
@@ -35,9 +35,20 @@
 		row.innerHTML = "\<b\>" + rets[i][4] + "\</b\> - " + rets[i][3];
 		div.appendChild(row);
 		div.appendChild(document.createElement("br"));
+		rows.push(row);
 	}
 	div.style.background = "#EDEEF0";
 	div.style.height = "100%";
+	var downAll = document.createElement("input");
+	downAll.setAttribute("type", "button");
+	downAll.setAttribute("value", "Скачать/открыть всё");
+	downAll.onclick = function(){
+		var i;
+		for(i in rows){
+			rows[i].click();
+		}
+	}
+	div.appendChild(downAll);
 	var pl = document.getElementById("content").firstChild;
 	pl.insertBefore(div, pl.firstChild.nextSibling.nextSibling);
 })();
