@@ -1,3 +1,6 @@
+<html> 
+<meta name="viewport" content="width=480, user-scalable=no, initial-scale=1, minimum-scale=1, maximum-scale=1">
+<body>
 <script src="lib.js"></script>
 <script defer>
 //alert([lib.GE("q","[defer]").constructor==Object, {}.constructor==Object])
@@ -7,12 +10,119 @@ try{
 //alert(document.constructor == HTMLDocument);
 //alert(lib.GE("q","script"))
 //alert(lib.Vectors.Vec([1, 2, 3]))
-with(lib.Vectors){
+
+with(lib){
+with(Vectors){
 with(Vec){
 //var a = Vec(1, 2, 3);
 //a.subSelf(Vec(4, 5));
-alert(sub(Vec(1,2,3), Vec(4, 5)))
-}}
+//alert(sub(Vec(1,2,3), Vec(4, 5)))
+}
+with(SqMatrix){
+//alert(rotMx(deg(180),'xy'))
+//var t = new Transformator();
+//alert(t)
+//alert(t.rot(deg(30),'xy'))
+//t.rot(deg(45))
+//alert(t)
+//alert(1)
+//var v = new Vec(1, 0)
+//alert(2)
+//t.proceedSelf([v]);
+//alert([v.neg(), v])
+//compFloatBits = 8;
+//alert(compFloat(v.dims[0], v.dims[1]))
+//t.rot(deg(30), 'xy');
+//alert(t.rot(deg(330)))
+}
+//alert(0)
+var G = new Graphics(0, Vec(480, 320));
+//alert(1)
+//alert([G.bindView(), Graphics.canvView().CTX])
+//alert(Vec(480, 320))
+G.bindView();
+var ce = G.canv.element;
+//alert([ce, G.canv.CTX, G.canv, getView(document.createElement('canvas')).element]);
+document.body.appendChild(ce);
+//document.write([ce.height, ce.width])
+//G.loadChanges();
+var v = Vec(50, 0), i, m = SqMatrix.rotMx(0.02), p = Vec(50, 50), c =  Graphics.Color([255, 0, 0, 255]);
+for(i = 0; i < 6.3; i += 0.02){
+G.putPixel(Vec.add(v, p), c);
+v.mulSelf(m);
+}
+G.putPixel(Vec(479, 319), c);
+//document.write(G._iData.data);
+G.saveChanges();
+//alert(Graphics.Color([255,255,255,127.5], 0).painted(Graphics.Color([0, 0, 255, 127.5])));
+//alert(Graphics.Color())
+//alert(Timer.getTS());
+//alert(Timer)
+var t = Timer(8000);
+//alert(t.play)
+t.addEventListener('tick', function(e){alert(e.ts)});
+//t.play();
+//alert(t._TO)
+var h = Math.min(window.outerWidth / 480 * 320, window.outerHeight);
+var l = Math.max((window.outerWidth - h / 320 * 480) / 2, 0);
+var sc = 320 / window.outerWidth;
+document.body.style.height = ce.style.height = h + 'px';
+G.wrapX = true;
+var f = function(E){
+//var e = E.touches[0], i; for(i in e){document.write(i + ':' + e[i] + '\<br /\>')}*
+try{
+var t, i;
+for(i in E.touches){
+if(+i!=i) continue;
+t = E.touches[i];
+//var x = (t.pageX - l) / 2, y = t.pageY / 2;
+//G.putPixel(Vec(x, y), c);
+G.putPixel(Vec(G.canv.getRelClickCoords(t, 0.5)), c);
+}
+//alert([x, y, c]);
+G.saveChanges();
+E.preventDefault();
 }catch(e){alert(e)}
+}
+ce.addEventListener('touchstart', f, false);
+ce.addEventListener('touchmove', f, false);
+//ce.style.top = h - window.innerHeight + 'px';
+//setTimeout(function(){alert([outerHeight, innerHeight])}, 2100);
+//ce.onclick = function(){scrollTo(0, Math.round(h - window.innerHeight + 1))};
+//alert(h - window.innerHeight + 1);
+}
+}
+}catch(e){document.write('page' + e)}
 //alert(document.parentNode)
+//document.write(ImageData)
 </script>
+<script>
+
+try{
+//addEventListener('resize', function(){document.write(outerHeight / outerWidth)}, false);
+with(lib, lib.Vectors){
+
+}}catch(e){alert('page' + e)}
+</script>
+<style>
+body {
+position:absolute;
+top:0px;
+bottom:0px;
+left:0px;
+right:0px;
+padding:0px;
+margin:0px;
+text-align:center;
+//border:1pt solid red;
+}
+canvas {
+//border:1pt solid gray;
+background: url('transpbg.svg') repeat;
+position:relative;
+//margin-top:0px;
+//margin-bottom:0px;
+height:90%;
+}
+</style>
+</body></html>
