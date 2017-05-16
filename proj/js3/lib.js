@@ -1,3 +1,4 @@
+
 try {
 	//alert(0)
 	new(function(libName) {
@@ -16,8 +17,10 @@ try {
 		}
 		var lib = this;
 		var Graphics;
+		var Timer;
 		var Vectors;
 		var compFloat;
+		var absMod;
 		var PI = Math.acos(-1);
 		var DEG = PI / 180;
 		var getView;
@@ -29,6 +32,9 @@ try {
 		var withProto, subClass;
 		var View;
 		this.compFloatBits = 16;
+		absMod = function(a, b) {
+			return (a % b + b) % b
+		}
 		compFloat = function(a, b) {
 			var m = 1 << lib.compFloatBits;
 			a = Math.round(a * m) / m;
@@ -79,6 +85,7 @@ try {
 			this.parent = par;
 			this.parentView = parv;
 			el.VIEW = this;
+			this.element = el;
 			this.tagName = TN;
 			this.id = ID;
 			if (el.constructor == HTMLDocument) this.parentView = baseView;
@@ -131,6 +138,11 @@ try {
 			},
 			pushBack: function(e) {
 				this.element.insertBefore(e.element, this.element.firstChild)
+			},
+			getRelClickCoords: function(ev, scale) {
+				var r = this.element.getBoundingClientRect();
+				//alert([r.left, r.top]);
+				return [(ev.clientX - r.left) * scale, (ev.clientY - r.top) * scale];
 			}
 		}
 		getView = function(e) {
@@ -489,9 +501,49 @@ try {
 				return C
 			},
 			getIndex: function(x, y) {
-
+				x = Math.round(x);
+				y = Math.round(y);
+				if (x < 0 || x >= this._iData.width) {
+					if (this.wrapX) {
+						x = absMod(x, this._iData.width)
+					} else {
+						return -1
+					}
+				};
+				if (y < 0 || y >= this._iData.height) {
+					if (this.wrapY) {
+						y = absMod(y, this._iData.height)
+					} else {
+						return -1
+					}
+				};
+				//document.write([x, y]);
 				return this._iData.width * y + x;
-			}
+			},
+			putPixel: function(p, c) {
+				var i = this.getIndex(p.dims[0] || 0, p.dims[1] || 0);
+				if (i == -1) return;
+				this.pixels[i].setColor(c);
+			},
+			saveChanges: function() {
+				this.canv.element.width = this._iData.width;
+				this.canv.element.height = this._iData.height;
+				this.canv.CTX.putImageData(this._iData, 0, 0);
+			},
+			loadChanges: function() {
+				this._iData = this.canv.CTX.getImageData(0, 0, this.canv.element.width, this.canv.element.height);
+				var i, sq = this._iData.height * this._iData.width;
+				for (i = 0; i < sq; i++) {
+					if (i < pixels.length) {
+						this.pixels[i].srcs[0] = this._iData.data;
+					} else {
+						this.pixels.push(new this.constructor.Color(this._iData.data, i * 4));
+					}
+				}
+			},
+			wrapX: false,
+			wrapY: false
+
 		}, function(d, s) {
 			d = d || [0, 1];
 			if (d.split) {
@@ -509,71 +561,178 @@ try {
 					}
 				})
 			};
-			var w = d[0],
-				h = d[1],
+			var w = s.dims[d[0]],
+				h = s.dims[d[1]],
 				i;
 			var sq = h * w;
 
-			this._iData = {
-				height: h,
-				width: w,
-				data: new Array(sq * 4)
-			};
+			this._iData = new ImageData(new Uint8ClampedArray(new ArrayBuffer(4 * sq)), w, h); //, {height: h, width: w, data: new Uint8Array(new ArrayBuffer(4 * sq))});
 			var pixels = new Array(sq);
 			this.pixels = pixels;
-			for (i = 0; i < sq; i++) pixels[i] = new this.constructor.Color(this._iData, i * 4);
-
+			for (i = 0; i < sq; i++) pixels[i] = new this.constructor.Color(this._iData.data, i * 4);
+			//alert(pixels[0].srcs);
 
 		}, {
 			Color: withProto(lib, {
-				getValues: function() {
-					var S = this.srcs;
-					return S[0].slice(S[1], S[1] + 4 - this.noAlpha)
-				},
-				unbind: function() {
-					this.srcs = [this.getValues(), 0]
-				},
-				copy: function() {
-					with(this) {
-						return new constructor(getValues(), 0, noAlpha, isHex)
+					getValues: function() {
+						var S = this.srcs;
+						return [].slice.apply(S[0], [S[1], S[1] + 4 - this.noAlpha])
+					},
+					unbind: function() {
+						this.srcs = [this.getValues(), 0]
+					},
+					copy: function() {
+						with(this) {
+							return new constructor(getValues(), 0, noAlpha, isHex)
+						}
+					},
+					toString: function() {
+						if (!this.isHex) {
+							var v = this.getValues();
+							if (v[3]) v[3] /= 255;
+							return "rgb" + (this.noAlpha ? '' : 'a') + '(' + v.join(", ") + ')'
+						}
+					},
+					getAlpha: function(floatVal) {
+						return (this.noAlpha * 255 || this.srcs[0][this.srcs[1] + 3]) / (floatVal ? 255 : 1)
+					},
+					paintSelf: function(c) {
+						var ch, aa = (1 - c.getAlpha(1)) * this.getAlpha(1),
+							S1 = this.srcs,
+							S2 = c.srcs;
+						for (ch = 0; ch < 3; ch++) {
+							S1[0][S1[1] + ch] = S2[0][S2[1] + ch] + aa * (S1[0][S1[1] + ch] - S2[0][S2[1] + ch])
+						};
+						if (!this.noAlpha) S1[0][S1[1] + 3] = (aa + c.getAlpha(1)) * 255
+					},
+					paintSelfBack(c) {
+						var ch, aa = (1 - this.getAlpha(1)) * c.getAlpha(1),
+							S1 = c.srcs,
+							S2 = this.srcs;
+						for (ch = 0; ch < 3; ch++) {
+							S2[0][S2[1] + ch] = S2[0][S2[1] + ch] + aa * (S1[0][S1[1] + ch] - S2[0][S2[1] + ch])
+						};
+						if (!c.noAlpha) S2[0][S2[1] + 3] = (aa + this.getAlpha(1)) * 255
+					},
+					painted: function(c) {
+						var r = this.copy();
+						r.paintSelf(c);
+						return r
+					},
+					setColor: function(c) {
+						var ch;
+						for (ch = 0; ch < 4; ch++) {
+							this.srcs[0][this.srcs[1] + ch] = c.srcs[0][c.srcs[1] + ch];
+						}
 					}
 				},
-				toString: function() {
-					if (!this.isHex) {
-						var v = this.getValues();
-						if (v[3]) v[3] /= 255;
-						return "rgb" + (this.noAlpha ? '' : 'a') + '(' + v.join(", ") + ')'
-					}
-				},
-				getAlpha: function(floatVal) {
-					return (this.noAlpha * 255 || this.srcs[0][this.srcs[1] + 3]) / (floatVal ? 255 : 1)
-				},
-				paintSelf: function(c) {
-					var ch, aa = (1 - c.getAlpha(1)) * this.getAlpha(1),
-						S1 = this.srcs,
-						S2 = c.srcs;
-					for (ch = 0; ch < 3; ch++) {
-						S1[0][S1[1] + ch] = S2[0][S2[1] + ch] + aa * (S1[0][S1[1] + ch] - S2[0][S2[1] + ch])
-					};
-					if (!this.noAlpha) S1[0][S1[1] + 3] = (aa + c.getAlpha(1)) * 255
-				},
-				painted: function(c) {
-					var r = this.copy();
-					r.paintSelf(c);
-					return r
-				}
-			}, function(arr, off, noAlpha, isHex) {
-				off = off || 0;
-				this.noAlpha = !!noAlpha;
-				this.isHex = !!isHex;
-				this.srcs = [arr, off]
-			}, {}),
+				function(arr, off, noAlpha, isHex) {
+					off = off || 0;
+					this.noAlpha = !!noAlpha;
+					this.isHex = !!isHex;
+					this.srcs = [arr, off]
+				}, {}),
 			canvView: subClass(View, {}, function() {
 				var C = document.createElement("canvas");
 				this.Super(C);
 				this.CTX = C.getContext("2d")
 			}, {})
 		});
+		Timer = withProto(lib, {
+				play: function() {
+					with(this) {
+						if (!isPaused) return;
+						_TO = setTimeout(copyFunc(this, tick), T + _TS - _PTS);
+						isPaused = false;
+						for (var i in _events.play) {
+							try {
+								_events.play[i] && _events.play[i]({
+									timer: this,
+									ts: constructor.getTS()
+								})
+							} catch (e) {}
+						};
+					}
+				},
+				pause: function() {
+					with(this) {
+						if (isPaused) return;
+						clearTimeout(_TO);
+						_PTS = constructor.getTS();
+						isPaused = true;
+						for (var i in _events.pause) {
+							try {
+								_events.pause[i] && _events.pause[i]({
+									timer: this,
+									ts: _PTS
+								})
+							} catch (e) {}
+						};
+					}
+				},
+				upd: function() {
+					with(this) {
+						var i;
+						for (i in reqTimers) {
+							if (reqTimers[i].isPaused) {
+								pause()
+							}
+						}
+					}
+				},
+				tick: function() {
+					with(this) {
+						var ots = _TS,
+							i;
+						_TS = constructor.getTS();
+						for (var i in _events.tick) {
+							try {
+								_events.tick[i] && _events.tick[i]({
+									timer: this,
+									ts: _TS
+								})
+							} catch (e) {}
+						};
+						_TO = setTimeout(copyFunc(this, tick), T);
+					}
+				},
+				addEventListener: function(s, h) {
+					with(this) {
+						_events[s].push(h);
+						return _events[s].length - 1;
+					}
+				},
+				removeEventListener: function(n, ev) {
+					with(this) {
+						var l = _events[n];
+						if (!l) return -1;
+						for (var i in l) {
+							if (i == ev || l[i] == ev) {
+								l[i] = null;
+								return i;
+							}
+						};
+						return -1;
+					}
+				}
+			},
+			function(T) {
+				this.reqTimers = [];
+				this.isPaused = true;
+				this._TO = 0;
+				this._TS = 0;
+				this._PTS = 0;
+				this.T = T;
+				this._events = {
+					pause: [],
+					play: [],
+					tick: []
+				}
+			}, {
+				getTS: function() {
+					return +(new Date())
+				}
+			});
 
 
 		this.R = R;
@@ -582,7 +741,9 @@ try {
 		this.getView = getView;
 		this.Vectors = Vectors;
 		this.Graphics = Graphics;
+		this.Timer = Timer;
 		this.compFloat = compFloat;
+		//this.copyFunc = copyFunc;
 
 		window[libName] = this;
 	})("lib");
