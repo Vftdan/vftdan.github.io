@@ -90,7 +90,10 @@ E.preventDefault();
 }
 ce.addEventListener('touchstart', f, false);
 ce.addEventListener('touchmove', f, false);
-ce.addEventListener('mousedown', function(e){f({touches:[e], preventDefault: copyFunc(e, e.preventDefault)});}, false);
+var mouseHold = false;
+ce.addEventListener('mousedown', function(){mouseHold = true;}, false);
+ce.addEventListener('mouseup', function(){mouseHold = false;}, false);
+ce.addEventListener('mousemove', function(e){if(mouseHold) f({touches:[e], preventDefault: copyFunc(e, e.preventDefault)});}, false);
 //ce.style.top = h - window.innerHeight + 'px';
 //setTimeout(function(){alert([outerHeight, innerHeight])}, 2100);
 //ce.onclick = function(){scrollTo(0, Math.round(h - window.innerHeight + 1))};
