@@ -71,6 +71,7 @@ var Resize = function(){
 document.body.style.height = ce.style.height = h + 'px';
 }
 Resize();
+addEventListener('resize', Resize, false);
 G.wrapX = true;
 var f = function(E){
 //var e = E.touches[0], i; for(i in e){document.write(i + ':' + e[i] + '\<br /\>')}*
