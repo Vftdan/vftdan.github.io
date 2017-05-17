@@ -88,12 +88,12 @@ G.saveChanges();
 E.preventDefault();
 }catch(e){alert(e)}
 }
-ce.addEventListener('touchstart', f, false);
-ce.addEventListener('touchmove', f, false);
+document.body.addEventListener('touchstart', f, false);
+document.body.addEventListener('touchmove', f, false);
 var mouseHold = false;
-ce.addEventListener('mousedown', function(){mouseHold = true;}, false);
-ce.addEventListener('mouseup', function(){mouseHold = false;}, false);
-ce.addEventListener('mousemove', function(e){if(mouseHold) f({touches:[e], preventDefault: copyFunc(e, e.preventDefault)});}, false);
+document.body.addEventListener('mousedown', function(){mouseHold = true;}, false);
+document.body.addEventListener('mouseup', function(){mouseHold = false;}, false);
+document.body.addEventListener('mousemove', function(e){if(mouseHold) f({touches:[e], preventDefault: copyFunc(e, e.preventDefault)});}, false);
 //ce.style.top = h - window.innerHeight + 'px';
 //setTimeout(function(){alert([outerHeight, innerHeight])}, 2100);
 //ce.onclick = function(){scrollTo(0, Math.round(h - window.innerHeight + 1))};
