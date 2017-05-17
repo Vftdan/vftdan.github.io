@@ -89,12 +89,19 @@ G.saveChanges();
 E.preventDefault();
 }catch(e){alert(e)}
 }
-document.body.addEventListener('touchstart', f, false);
-document.body.addEventListener('touchmove', f, false);
 var mouseHold = false;
+document.body.addEventListener('touchstart', function(){mouseHold = true}, false);
+document.body.addEventListener('touchend', function(){mouseHold = false}, false);
+document.body.addEventListener('touchmove', f, false);
 document.body.addEventListener('mousedown', function(){mouseHold = true;}, false);
 document.body.addEventListener('mouseup', function(){mouseHold = false;}, false);
 document.body.addEventListener('mousemove', function(e){if(mouseHold) f({touches:[e], preventDefault: copyFunc(e, e.preventDefault)});}, false);
+G.drawImg(G.canv.element, new Vec(20, 2), 0, 0, new Vec(50, 50), 0.1, new Vec(0, 0));
+G.loadChanges();
+var ta = document.createElement('textarea');
+ta.value = G.toUrl('image/jpeg', 0.1);
+document.body.appendChild(ta);
+//document.write(G.toUrl());
 //ce.style.top = h - window.innerHeight + 'px';
 //setTimeout(function(){alert([outerHeight, innerHeight])}, 2100);
 //ce.onclick = function(){scrollTo(0, Math.round(h - window.innerHeight + 1))};
