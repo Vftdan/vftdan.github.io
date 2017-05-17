@@ -743,7 +743,7 @@ try {
 		this.Graphics = Graphics;
 		this.Timer = Timer;
 		this.compFloat = compFloat;
-		//this.copyFunc = copyFunc;
+		this.copyFunc = copyFunc;
 
 		window[libName] = this;
 	})("lib");
