@@ -1,4 +1,3 @@
-
 try {
 	//alert(0)
 	new(function(libName) {
@@ -534,7 +533,7 @@ try {
 				this._iData = this.canv.CTX.getImageData(0, 0, this.canv.element.width, this.canv.element.height);
 				var i, sq = this._iData.height * this._iData.width;
 				for (i = 0; i < sq; i++) {
-					if (i < pixels.length) {
+					if (i < this.pixels.length) {
 						this.pixels[i].srcs[0] = this._iData.data;
 					} else {
 						this.pixels.push(new this.constructor.Color(this._iData.data, i * 4));
@@ -542,7 +541,45 @@ try {
 				}
 			},
 			wrapX: false,
-			wrapY: false
+			wrapY: false,
+			drawImg: function(img, pos, size, cropStart, cropSize, rot, rcenter) {
+				with(this.canv.CTX) {
+					save();
+					if (!pos) {
+						pos = new Vectors.Vec(0, 0);
+					} else {
+						pos = pos.copy();
+					}
+					if (rot) {
+						if (!rcenter) rcenter = new Vectors.Vec(0, 0);
+						pos.subSelf(rcenter);
+						pos.mulSelf(Vectors.SqMatrix.rotMx(-rot));
+						rotate(rot);
+					}
+					pos.resize(2);
+					if (!cropStart && cropSize) {
+						cropStart = new Vectors.Vec(0, 0);
+						cropStart.resize(2)
+					}
+					if (!size) {
+						if (!cropSize) drawImage(img, pos.dims[0], pos.dims[1]);
+						else {
+							drawImage(img, cropStart.dims[0], cropStart.dims[1], cropSize.dims[0], cropSize.dims[1], pos.dims[0], pos.dims[1], cropSize.dims[0], cropSize.dims[1]); /*alert(0)*/
+						}
+					} else {
+						if (!cropSize) drawImage(img, pos.dims[0], pos.dims[1], size.dims[0], size.dims[1]);
+						else {
+							drawImage(img, cropStart.dims[0], cropStart.dims[1], cropSize.dims[0], cropSize.dims[1], pos.dims[0], pos.dims[1], size.dims[0], size.dims[1]); /*alert(1)*/
+						}
+					}
+					document.write([size, !!size, !!0, cropStart, cropSize]);
+					restore();
+				}
+			},
+			toUrl: function(mime, q) {
+				mime = mime || 'image/png';
+				return this.canv.element.toDataURL(mime, q);
+			}
 
 		}, function(d, s) {
 			d = d || [0, 1];
