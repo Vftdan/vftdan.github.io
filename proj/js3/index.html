@@ -99,8 +99,25 @@ document.body.addEventListener('mousemove', function(e){if(mouseHold) f({touches
 G.drawImg(G.canv.element, new Vec(20, 2), 0, 0, new Vec(50, 50), 0.1, new Vec(0, 0));
 G.loadChanges();
 var ta = document.createElement('textarea');
-ta.value = G.toUrl('image/jpeg', 0.1);
+//ta.value = G.toUrl('image/jpeg', 0.1);
+ta.onblur = function(){this.value = G.toUrl();}
 document.body.appendChild(ta);
+
+//var img = document.createElement('img');
+//img.src = 'atlas.png';
+//img.addEventListener('load', function(){
+//G.saveChanges();
+//document.write(ce);
+//G.drawImg(img, new Vec(10, 10), new Vec(512, 512), 0, new Vec(128, 128));
+//G.loadChanges();
+//}, false);
+
+var atl = new Graphics.TileAtlas(LinkURL('atlas.png'), new Vec(64, 64), 8, 8, 4, function(){
+//document.write('123');
+G.drawImg(atl.canv.element, new Vec(0, 0), new Vec(256, 256), 0, new Vec(256, 256));
+
+});
+//document.write(document.location);
 //document.write(G.toUrl());
 //ce.style.top = h - window.innerHeight + 'px';
 //setTimeout(function(){alert([outerHeight, innerHeight])}, 2100);
