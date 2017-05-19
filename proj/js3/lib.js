@@ -699,20 +699,19 @@ try {
 					c.width = w;
 					c.height = h;
 					var img = document.createElement('img');
-					src.setTo(img);
-					document.write(img.src);
+					src.setTo(img); /*document.write(img.src);*/
 					img.onload = function() {
 						try {
-							c.CTX.drawImage(img, 0, 0, w, h);
+							//c.CTX.drawImage(img, 0, 0, w, h);
+							c.CTX.drawImage(img, 0, 0, size.dims[0], size.dims[1]);
 							if (scale > 1) {
 								var i, j;
-								var idat = c.CTX.getImageData(0, 0, w, h),
-									s2 = scale >> 1;
-								for (i = 0; i < w; i++) {
-									for (j = 0; j < h; j++) {
+								var idat = c.CTX.getImageData(0, 0, w, h) /*, s2 = -1 + scale >> 1*/ ;
+								for (i = w - 1; i >= 0; i--) {
+									for (j = h - 1; j >= 0; j--) {
 										for (k = 0; k < 4; k++) {
-											idat.data[
-												(j * w + i) * 4 + k] = idat.data[((j - j % scale + s2) * w + (i - i % scale + s2)) * 4 + k];
+											//idat.data[(j * w + i) * 4 + k] = idat.data[((j - j % scale + s2) * w + (i - i % scale + s2)) * 4 + k];
+											idat.data[(j * w + i) * 4 + k] = idat.data[(((j - j % scale) / scale) * w + ((i - i % scale) / scale)) * 4 + k];
 										}
 									}
 								}
