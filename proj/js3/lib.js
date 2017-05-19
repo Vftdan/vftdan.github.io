@@ -17,6 +17,7 @@ try {
 		var lib = this;
 		var Graphics;
 		var Timer;
+		var LinkURL;
 		var Vectors;
 		var compFloat;
 		var absMod;
@@ -550,6 +551,7 @@ try {
 					} else {
 						pos = pos.copy();
 					}
+					pos.resize(2);
 					if (rot) {
 						if (!rcenter) rcenter = new Vectors.Vec(0, 0);
 						pos.subSelf(rcenter);
@@ -572,7 +574,7 @@ try {
 							drawImage(img, cropStart.dims[0], cropStart.dims[1], cropSize.dims[0], cropSize.dims[1], pos.dims[0], pos.dims[1], size.dims[0], size.dims[1]); /*alert(1)*/
 						}
 					}
-					document.write([size, !!size, !!0, cropStart, cropSize]);
+					//document.write([size, !!size, !!0, cropStart, cropSize]);
 					restore();
 				}
 			},
@@ -657,6 +659,7 @@ try {
 						return r
 					},
 					setColor: function(c) {
+						if (c == this) return;
 						var ch;
 						for (ch = 0; ch < 4; ch++) {
 							this.srcs[0][this.srcs[1] + ch] = c.srcs[0][c.srcs[1] + ch];
@@ -673,7 +676,57 @@ try {
 				var C = document.createElement("canvas");
 				this.Super(C);
 				this.CTX = C.getContext("2d")
-			}, {})
+			}, {}),
+			TileAtlas: withProto(lib, {
+					getTilePos: function(i) {
+						var v = this.tileSize.copy();
+						v.dims[0] *= Math.ceil(i / width * v.dims[1]);
+						v.dims[1] *= i % (width / v.dims[1]);
+						return v
+					},
+					height: 0,
+					width: 0
+				},
+				function(src, size, hcount, vcount, scale, onload) {
+					size.resize(2);
+					if (!(src instanceof LinkURL)) src = new LinkURL(src.toString());
+					var that = this;
+					this.onload = onload;
+					var c = new Graphics.canvView(),
+						w = size.dims[0] * (scale || 1),
+						h = size.dims[1] * (scale || 1);
+					this.canv = c;
+					c.width = w;
+					c.height = h;
+					var img = document.createElement('img');
+					src.setTo(img);
+					document.write(img.src);
+					img.onload = function() {
+						try {
+							c.CTX.drawImage(img, 0, 0, w, h);
+							if (scale > 1) {
+								var i, j;
+								var idat = c.CTX.getImageData(0, 0, w, h),
+									s2 = scale >> 1;
+								for (i = 0; i < w; i++) {
+									for (j = 0; j < h; j++) {
+										for (k = 0; k < 4; k++) {
+											idat.data[
+												(j * w + i) * 4 + k] = idat.data[((j - j % scale + s2) * w + (i - i % scale + s2)) * 4 + k];
+										}
+									}
+								}
+								//document.write(1);
+								c.CTX.putImageData(idat, 0, 0);
+								//document.write(2);
+							}
+							that.onload();
+							//document.write(3);
+						} catch (e) {
+							document.write(e)
+						}
+					}
+				}, {})
 		});
 		Timer = withProto(lib, {
 				play: function() {
@@ -770,7 +823,27 @@ try {
 					return +(new Date())
 				}
 			});
-
+		LinkURL = withProto(lib, {
+				isCrossOrigin: false,
+				setCrossOrigin: function(elem) {
+					if (elem instanceof View) elem = elem.element;
+					if (this.isCrossOrigin) elem.crossOrigin = this.constructor.crossOrigin;
+					return elem
+				},
+				src: '#',
+				setTo: function(e) {
+					this.setCrossOrigin(e).src = this.src
+				}
+			},
+			function(src, co) {
+				var b = !!co;
+				b |= src.match(/^http:\/\/|^https:\/\/|^\/\//ig) != '';
+				b |= document.location.toString().match(/file:/ig) != '';
+				this.isCrossOrigin = b;
+				this.src = src;
+			}, {
+				crossOrigin: 'Anonymous'
+			});
 
 		this.R = R;
 		this.View = View;
@@ -779,6 +852,7 @@ try {
 		this.Vectors = Vectors;
 		this.Graphics = Graphics;
 		this.Timer = Timer;
+		this.LinkURL = LinkURL;
 		this.compFloat = compFloat;
 		this.copyFunc = copyFunc;
 
