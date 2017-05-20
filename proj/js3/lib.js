@@ -48,15 +48,18 @@ try {
 			if (!el || el.constructor == Object) {
 				opt = opt || el;
 				TN = opt.tagName.toUpperCase();
-				ID = opt.id;
-				par = opt.parent || opt.parentView.element;
+				ID = opt.id || opt.attrs.id;
+				par = opt.parent || (opt.parentView && opt.parentView.element);
 				parv = getView(par);
 				this.parent = par;
 				this.parentView = parv;
 				el = document.createElement(TN);
+				//document.write([TN, el, el]);
+				el.innerHTML = opt.innerHTML || el.innerHTML || '';
 				this.element = el;
 				this.tagName = TN;
 				this.id = ID;
+				for (i in opt.attrs) this.attr(i, opt.attrs[i]);
 				el.VIEW = this;
 				if (el.constructor == HTMLDocument) this.parentView = baseView;
 				return this;
@@ -76,6 +79,9 @@ try {
 				this.id = ID;
 				return this;*/
 			}
+
+			var i;
+			for (i in opt.attrs) this.attr(i, opt.attrs[i]);
 			TN = (el.tagName || "{NONE}").toUpperCase();
 
 			ID = el.id || (el.getAttribute && el.getAttribute("id")) || "";
@@ -88,6 +94,7 @@ try {
 			this.element = el;
 			this.tagName = TN;
 			this.id = ID;
+			//document.write(this.element.getAttribute)
 			if (el.constructor == HTMLDocument) this.parentView = baseView;
 		};
 		View.prototype = {
@@ -111,16 +118,16 @@ try {
 				}
 			},
 			attr: function(k, v) {
-				if (arguments.length == 1) return this.getAttribute(k) || this.hasAttribute(k);
+				if (arguments.length == 1) return this.element.getAttribute(k) || this.element.hasAttribute(k);
 				if (v === false) {
-					this.removeAttribute(k);
+					this.element.removeAttribute(k);
 					return v
 				};
 				if (v === true) {
-					this.setAttribute(k);
+					this.element.setAttribute(k);
 					return v
 				};
-				this.setAttribute(k, v);
+				this.element.setAttribute(k, v);
 				return v;
 			},
 			toString: function(d) {
