@@ -100,7 +100,18 @@ G.drawImg(G.canv.element, new Vec(20, 2), 0, 0, new Vec(50, 50), 0.1, new Vec(0,
 G.loadChanges();
 var ta = document.createElement('textarea');
 //ta.value = G.toUrl('image/jpeg', 0.1);
-ta.onblur = function(){this.value = G.toUrl();}
+ta.onblur = function(){
+try{
+getView(document.body).push(View({attrs:{href: (this.value = G.toUrl()), target: '_blank'}, tagName: 'a', innerHTML: 'image'}));
+//document.write(document.body.lastChild);
+}catch(e){document.write(e)}
+}
+//document.write(document.createElement('div') + 'qwe')
+/*var A = document.createElement('a');
+A.innerHTML = 'ссылка';
+A.setAttribute('href', '//ya.ru');
+document.body.appendChild(A);*/
+
 document.body.appendChild(ta);
 
 //var img = document.createElement('img');
