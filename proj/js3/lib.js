@@ -679,10 +679,30 @@ try {
 			}, {}),
 			TileAtlas: withProto(lib, {
 					getTilePos: function(i) {
-						var v = this.tileSize.copy();
-						v.dims[0] *= Math.ceil(i / width * v.dims[1]);
-						v.dims[1] *= i % (width / v.dims[1]);
+						var v = this.scaledTileSize.copy();
+						v.dims[0] *= i % this.hcount;
+						v.dims[1] *= Math.floor(i / this.hcount);
 						return v
+					},
+					drawTo: function(G, I, pos, hcount, vcount, scale) {
+						if (!pos) {
+							pos = new Vectors.Vec(0, 0)
+						};
+						pos.resize(2); /*document.write(pos);*/
+						var cropPos = this.getTilePos(I),
+							cropSize = this.scaledTileSize;
+						var size = scale ? Vectors.Vec.mul(cropSize, scale) : cropSize;
+						var i, j;
+						var curPos = pos.copy();
+						for (i = 0; i < vcount; i++) {
+							curPos.dims[0] = pos.dims[0]
+							for (j = 0; j < hcount; j++) {
+								G.drawImg(this.canv.element, curPos, size, cropPos, cropSize);
+								curPos.dims[0] += size.dims[0];
+							}
+							curPos.dims[1] += size.dims[1];
+						}
+						/*return([cropSize, cropPos, pos, size]);*/
 					},
 					height: 0,
 					width: 0
@@ -699,7 +719,10 @@ try {
 					c.width = w;
 					c.height = h;
 					var img = document.createElement('img');
+					this.hcount = hcount;
+					this.vcount = vcount;
 					src.setTo(img); /*document.write(img.src);*/
+					this.scaledTileSize = new Vectors.Vec(w / hcount, h / vcount);
 					img.onload = function() {
 						try {
 							//c.CTX.drawImage(img, 0, 0, w, h);
@@ -715,6 +738,7 @@ try {
 										}
 									}
 								}
+
 								//document.write(1);
 								c.CTX.putImageData(idat, 0, 0);
 								//document.write(2);
