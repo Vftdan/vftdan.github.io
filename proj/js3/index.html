@@ -114,8 +114,20 @@ document.body.appendChild(ta);
 
 var atl = new Graphics.TileAtlas(LinkURL('atlas.png'), new Vec(64, 64), 8, 8, 4, function(){
 //document.write('123');
-G.drawImg(atl.canv.element, new Vec(0, 0), new Vec(480, 320), 0, new Vec(240, 160));
+//G.drawImg(atl.canv.element, new Vec(0, 0), new Vec(480, 320), 0, new Vec(240, 160));
+//document.write(0);
+atl.drawTo(G, 4, new Vec([0, 0]), 8, 1, 2);
+atl.drawTo(G, 5, new Vec([0, 64]), 8, 1, 2);
+atl.drawTo(G, 6, new Vec([0, 128]), 8, 1, 2);
+atl.drawTo(G, 7, new Vec([0, 192]), 8, 1, 2);
 
+
+atl.drawTo(G, 0, new Vec([32, 32]), 1, 1, 2);
+atl.drawTo(G, 3, new Vec([64, 64]), 1, 1, 2);
+atl.drawTo(G, 1, new Vec([96, 64]), 2, 1, 2);
+atl.drawTo(G, 2, new Vec([224, 64]), 1, 1, 2);
+G.loadChanges();
+//document.write(1);
 });
 //document.write(document.location);
 //document.write(G.toUrl());
