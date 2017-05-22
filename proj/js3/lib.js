@@ -29,7 +29,7 @@ try {
 			colors: {}
 		};
 		var baseView = {};
-		var withProto, subClass;
+		var withProto, subClass, bufferStruct;
 		var View;
 		this.compFloatBits = 16;
 		absMod = function(a, b) {
@@ -225,9 +225,69 @@ try {
 			c.prototype = descendObj(_super.prototype || _super.proto, p);
 			return c;
 		}
+		/*var _bufStructProto = {
+
+		};*/
+		bufferStruct = function(constr, _static, l) {
+			var C = function() {
+				var r = (this instanceof C) ? this : {
+					_setBufferSize: C.setBufferSize,
+					_appendToBuffer: C._appendToBuffer
+				};
+				if (l) r._setBufferSize(l);
+				constr.apply(r, arguments);
+				return r;
+			}
+			C.prototype = {
+				_setBufferSize: function(l) {
+					if (this.buffer) {
+						this.buffer = ArrayBuffer.transfer(this.buffer, l)
+					} else {
+						this.buffer = new ArrayBuffer(l)
+					}
+				},
+				_appendToBuffer: function(a, l) {
+					if (a.constructor == Number) {
+						var A = new Float32Array(this.buffer, this.__boff, 1);
+						A[0] = a
+					} else if (a.constructor == Array || a.constructor == Float32Array) {
+						var i;
+						l = l || a.length;
+						var A = new Float32Array(this.buffer, this.__boff, l);
+						for (i = 0; i < l; i++) {
+							A[i] = a[i] || 0.0
+						}
+					} else if (a.buffer) {
+						a = new Float32Array(a.buffer);
+						var i;
+						l = l || a.length;
+						var A = new Float32Array(this.buffer, this.__boff, l);
+						for (i = 0; i < l; i++) {
+							A[i] = a[i] || 0.0
+						}
+					} else {
+						l = a.writeToF32Buffer(this.buffer, +this.__boff, l) || l;
+						A = new Float32Array(this.buffer, this.__boff, l)
+					};
+					this.__boff += l << 2;
+					return A
+				},
+				__boff: 0
+			};
+			var i;
+			for (i in _static) C[i] = _static[i];
+			return C;
+		}
 
 		Vectors = {
 			Vec: withProto(lib, {
+				writeToF32Buffer: function(b, o, l) {
+					var a = new Float32Array(b, o, l),
+						i;
+					for (i = 0; i < l; i++) {
+						a[i] = this.dims[i] || 0.0;
+					};
+				},
 				copy: function() {
 					return new Vectors.Vec(this.dims)
 				},
@@ -693,11 +753,12 @@ try {
 					},
 					drawTo: function(G, I, pos, hcount, vcount, scale) {
 						if (!pos) {
-							pos = new Vectors.Vec(0, 0)
+							pos = new Vectors.Vec([0, 0])
 						};
 						pos.resize(2); /*document.write(pos);*/
 						var cropPos = this.getTilePos(I),
 							cropSize = this.scaledTileSize;
+						if (scale == 1) scale = 0;
 						var size = scale ? Vectors.Vec.mul(cropSize, scale) : cropSize;
 						var i, j;
 						var curPos = pos.copy();
@@ -756,7 +817,18 @@ try {
 							document.write(e)
 						}
 					}
-				}, {})
+				}, {}),
+			Shader: withProto(lib, {
+
+				},
+				function() {}, {
+					Ray: bufferStruct(function(orig, dir, dimcount) {
+						dimcount = dimcount || 3;
+						if (dimcount != 3) this._setBufferSize(dimcount << 3);
+						this.origin = this._appendToBuffer(orig, dimcount);
+						this.direction = this._appendToBuffer(dir, dimcount)
+					}, {}, 24)
+				})
 		});
 		Timer = withProto(lib, {
 				play: function() {
