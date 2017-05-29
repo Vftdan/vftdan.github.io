@@ -36,7 +36,8 @@ with(SqMatrix){
 //alert(t.rot(deg(330)))
 }
 //alert(0)
-var G = new Graphics(0, Vec(480, 320));
+var __gsize = new Vec(480, 320);
+var G = new Graphics(0, __gsize), GskyStatic = new Graphics(0, __gsize), Gclouds = new Graphics(0, __gsize);
 //alert(1)
 //alert([G.bindView(), Graphics.canvView().CTX])
 //alert(Vec(480, 320))
@@ -127,25 +128,47 @@ var atl = new Graphics.TileAtlas(LinkURL('atlas.png'), new Vec(64, 64), 8, 8, 4,
 //document.write('123');
 //G.drawImg(atl.canv.element, new Vec(0, 0), new Vec(480, 320), 0, new Vec(240, 160));
 //document.write(0);
-atl.drawTo(G, 4, new Vec([0, 0]), 8, 1, 2);
-atl.drawTo(G, 5, new Vec([0, 64]), 8, 1, 2);
-atl.drawTo(G, 6, new Vec([0, 128]), 8, 1, 2);
-atl.drawTo(G, 7, new Vec([0, 192]), 8, 1, 2);
+//GskyStatic = new Graphics(0, new Vec(480, 320));
+GskyStatic.bindView();
+GskyStatic.saveChanges();
+//document.write(GskyStatic.canv.height)
+atl.drawTo(GskyStatic, 4, new Vec([0, 0]), 8, 1, 2);
+atl.drawTo(GskyStatic, 5, new Vec([0, 64]), 8, 1, 2);
+atl.drawTo(GskyStatic, 6, new Vec([0, 128]), 8, 1, 2);
+atl.drawTo(GskyStatic, 7, new Vec([0, 192]), 8, 1, 2);
 
-
-atl.drawTo(G, 0, new Vec([32, 32]), 1, 1, 2);
-atl.drawTo(G, 3, new Vec([64, 64]), 1, 1, 2);
-atl.drawTo(G, 1, new Vec([96, 64]), 2, 1, 2);
-atl.drawTo(G, 2, new Vec([224, 64]), 1, 1, 2);
-G.loadChanges();
+//Gclouds = new Graphics(0, new Vec(480, 320));
+Gclouds.bindView();
+Gclouds.saveChanges();
+//atl.drawTo(G, 0, new Vec([32, 32]), 1, 1, 2);
+//atl.drawTo(G, 3, new Vec([64, 64]), 1, 1, 2);
+//atl.drawTo(G, 1, new Vec([128, 64]), 2, 1, 2);
+//atl.drawTo(G, 2, new Vec([256, 64]), 1, 1, 2);
+//atl.drawToMany(G, [3, 1, 1, 2, 0], new Vec([64, 64]), 4, 2);
+//G.loadChanges();
 //document.write(1);
+tim.addEventListener('tick', function(e){try{G.cls(1); Gclouds.cls(1);
+//document.write(e.frame);
+ atl.drawTo(Gclouds, 0, new Vec([(e.frame * 3) % 512 - 64, 32]), 1, 1, 2); atl.drawToMany(Gclouds, [3, 1, 1, 2], new Vec([(e.frame * 7) % 736 - 256, 64]), 4, 2);
+ G.drawImg(GskyStatic.canv.element);
+  G.drawImg(Gclouds.canv.element);
+  }catch(exc){document.write(exc)}});
+tim.play();
+
 });
 //document.write(document.location);
 //document.write(G.toUrl());
 //ce.style.top = h - window.innerHeight + 'px';
 //setTimeout(function(){alert([outerHeight, innerHeight])}, 2100);
+var ray = new Graphics.Shader.Ray(new Vec([1, 0, 2]), new Vec([3, 4, 5]));
+//alert([].join.apply(ray.origin, ['']));
+//alert(ray.origin[2])
 //ce.onclick = function(){scrollTo(0, Math.round(h - window.innerHeight + 1))};
 //alert(h - window.innerHeight + 1);
+tim = new Timer(50);
+G.cls();
+//G.saveChanges();
+//document.write(Uint8ClampedArray.prototype.fill)
 }
 }
 }catch(e){document.write('page' + e)}
