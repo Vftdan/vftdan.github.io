@@ -1,5 +1,6 @@
 try {
 	//alert(0)
+
 	new(function(libName) {
 		var copyFunc = function(scope, func) {
 			return function() {
@@ -153,7 +154,7 @@ try {
 			}
 		}
 		getView = function(e) {
-			return e ? (e.constructor == View && e || e.VIEW || View(e)) : "[NONE]";
+			return e ? ((e.constructor == View || e.constructor.__supers && e.constructor.__supers.indexOf(View) != 0) && e || e.VIEW || View(e)) : "[NONE]";
 		}
 		this.defaultViewToStringDepth = 0;
 		baseView = new View(document);
@@ -222,6 +223,8 @@ try {
 			for (i in _static) {
 				c[i] = _static[i]
 			};
+			c.__supers = c.__supers ? c.__supers.slice(0) : [];
+			c.__supers.push(_super);
 			c.prototype = descendObj(_super.prototype || _super.proto, p);
 			return c;
 		}
@@ -648,6 +651,19 @@ try {
 			toUrl: function(mime, q) {
 				mime = mime || 'image/png';
 				return this.canv.element.toDataURL(mime, q);
+			},
+			cls: function(fast) {
+				if (!fast) {
+					var idd = this._iData.data;
+					if (idd.fill) idd.fill(0);
+					else if ([].fill)[].fill.apply(this._iData.data, [0]);
+					else {
+						var i;
+						for (i = 0; i < idd.length; i++) idd[i] = 0
+					}
+				} else {
+					this.canv.CTX.clearRect(0, 0, this.canv.element.width, this.canv.element.height)
+				};
 			}
 
 		}, function(d, s) {
@@ -772,6 +788,37 @@ try {
 						}
 						/*return([cropSize, cropPos, pos, size]);*/
 					},
+					drawToMany: function(G, m, pos, hcount, scale) {
+						if (!pos) {
+							pos = new Vectors.Vec([0, 0])
+						};
+						pos.resize(2);
+						var cropPoss = {};
+						var i;
+						for (i = 0; i < m.length; i++) cropPoss[m[i]] = cropPoss[m[i]] || this.getTilePos(m[i]);
+						var cropSize = this.scaledTileSize;
+						if (scale == 1) scale = 0;
+						var size = scale ? Vectors.Vec.mul(cropSize, scale) : cropSize;
+						var j;
+						var curPos = pos.copy();
+						var vcount = m.length / hcount;
+						var _rest = m.length % hcount;
+						if (_rest) {
+							for (i = hcount; i >= _rest; i--) {
+								m.push(-1)
+							};
+							vcount = Math.ceil(vcount)
+						};
+						var ij = 0;
+						for (i = 0; i < vcount; i++) {
+							curPos.dims[0] = pos.dims[0]
+							for (j = 0; j < hcount; j++, ij++) {
+								if (m[ij] != -1) G.drawImg(this.canv.element, curPos, size, cropPoss[m[ij]], cropSize);
+								curPos.dims[0] += size.dims[0];
+							}
+							curPos.dims[1] += size.dims[1];
+						}
+					},
 					height: 0,
 					width: 0
 				},
@@ -881,11 +928,13 @@ try {
 							try {
 								_events.tick[i] && _events.tick[i]({
 									timer: this,
-									ts: _TS
+									ts: _TS,
+									frame: frameNum
 								})
 							} catch (e) {}
 						};
 						_TO = setTimeout(copyFunc(this, tick), T);
+						frameNum++
 					}
 				},
 				addEventListener: function(s, h) {
@@ -919,7 +968,8 @@ try {
 					pause: [],
 					play: [],
 					tick: []
-				}
+				};
+				this.frameNum = 0;
 			}, {
 				getTS: function() {
 					return +(new Date())
