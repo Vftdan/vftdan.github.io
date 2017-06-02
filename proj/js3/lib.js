@@ -766,6 +766,8 @@ try {
 						var v = this.scaledTileSize.copy();
 						v.dims[0] *= i % this.hcount;
 						v.dims[1] *= Math.floor(i / this.hcount);
+						v.dims[0] -= 1;
+						v.dims[1] -= 1;
 						return v
 					},
 					drawTo: function(G, I, pos, hcount, vcount, scale) {
