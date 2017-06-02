@@ -758,7 +758,8 @@ try {
 			canvView: subClass(View, {}, function() {
 				var C = document.createElement("canvas");
 				this.Super(C);
-				this.CTX = C.getContext("2d")
+				this.CTX = C.getContext("2d");
+				this.CTX.imageSmoothingEnabled = false;
 			}, {}),
 			TileAtlas: withProto(lib, {
 					getTilePos: function(i) {
