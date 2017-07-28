@@ -1,5 +1,4 @@
 try {
-	//alert(0)
 
 	new(function(libName) {
 		var copyFunc = function(scope, func) {
@@ -55,7 +54,6 @@ try {
 				this.parent = par;
 				this.parentView = parv;
 				el = document.createElement(TN);
-				//document.write([TN, el, el]);
 				el.innerHTML = opt.innerHTML || el.innerHTML || '';
 				this.element = el;
 				this.tagName = TN;
@@ -67,18 +65,6 @@ try {
 			}
 			if (!opt && el.constructor != Object) {
 				return new View(el, {});
-				/*TN = el.tagName.toUpperCase();
-				ID = el.id || el.getAttribute("id");
-				//alert([el,el.parentNode])
-				par = el.parentNode;
-				parv = getView(parv);
-				this.parent = par;
-				this.parentView = parv;
-				el.VIEW = this;
-				this.element = el;
-				this.tagName = TN;
-				this.id = ID;
-				return this;*/
 			}
 
 			var i;
@@ -88,14 +74,12 @@ try {
 			ID = el.id || (el.getAttribute && el.getAttribute("id")) || "";
 			par = el.parentNode;
 			parv = getView(par);
-			//alert([par, parv, View(document)])
 			this.parent = par;
 			this.parentView = parv;
 			el.VIEW = this;
 			this.element = el;
 			this.tagName = TN;
 			this.id = ID;
-			//document.write(this.element.getAttribute)
 			if (el.constructor == HTMLDocument) this.parentView = baseView;
 		};
 		View.prototype = {
@@ -113,10 +97,10 @@ try {
 						if (i != s.length - 1) {
 							s[i + 1] = s[i + 1].toUpperCase()
 						};
-						k = s.join('');
-						this.element.style[k] = v.toString();
 					}
 				}
+				k = s.join('');
+				this.element.style[k] = v.toString();
 			},
 			attr: function(k, v) {
 				if (arguments.length == 1) return this.element.getAttribute(k) || this.element.hasAttribute(k);
@@ -135,9 +119,7 @@ try {
 				var shPar = true;
 				if (!d && d !== 0) d = lib.defaultViewToStringDepth;
 				if (d == 0) shPar = false;
-				//alert(lib.defaultViewToStringDepth);
 				with(this) {
-					//if(element.constructor == HTMLDocument)
 					return "[VIEW tagName=\"" + tagName + "\" id=\"" + id + (shPar ? "\" parentView=\"" + parentView.toString(d - 1) : '') + "\"]"
 				}
 			},
@@ -149,7 +131,6 @@ try {
 			},
 			getRelClickCoords: function(ev, scale) {
 				var r = this.element.getBoundingClientRect();
-				//alert([r.left, r.top]);
 				return [(ev.clientX - r.left) * scale, (ev.clientY - r.top) * scale];
 			}
 		}
@@ -162,7 +143,13 @@ try {
 			return "[VIEW baseView]"
 		};
 		var GE = function(t, s) {
-			var e = GE[t](s);
+			var e = GE[t](s),
+				i;
+			if (['tagName', 'name'].indexOf(t) != -1) {
+				e = [].slice.apply(e, [0]);
+				for (i = 0; i < e.length; i++) e[i] = getView(e[i]);
+				return e;
+			}
 			return getView(e);
 		}
 		GE.id = copyFunc(document, document.getElementById);
@@ -174,7 +161,6 @@ try {
 			var c, i;
 			_static = _static || {};
 			c = function() {
-				//alert(arguments.length);
 				var args = arguments;
 				var a = function() {
 					return c.apply(this, args)
@@ -184,7 +170,6 @@ try {
 					return new a()
 				};
 				this.constructor = c;
-				//alert(f.apply)
 				return f.apply(this, arguments) || this;
 			};
 			c.toString = copyFunc(f, f.toString);
@@ -228,9 +213,6 @@ try {
 			c.prototype = descendObj(_super.prototype || _super.proto, p);
 			return c;
 		}
-		/*var _bufStructProto = {
-
-		};*/
 		bufferStruct = function(constr, _static, l) {
 			var C = function() {
 				var r = (this instanceof C) ? this : {
@@ -350,10 +332,19 @@ try {
 					var v = this.copy();
 					v.mulSelf(-1);
 					return v
+				},
+				abs: function() {
+					var i, s = 0;
+					for (i = 0; i < this.d; i++) {
+						s += this.dims[i] * this.dims[i];
+					}
+					return Math.sqrt(s);
+				},
+				normSelf: function() {
+					this.mulSelf(1 / this.abs());
 				}
 			}, function(a) {
 				var L;
-				//alert(a)
 				if (!a) a = [];
 				if (a.constructor != [].constructor) {
 					a = [].slice.call(arguments, 0)
@@ -535,7 +526,8 @@ try {
 							b[i] = c.mul(a[i], this.m);
 							if (b[i].addSelf) b[i].addSelf(this.v)
 						}
-					}
+					};
+					return b
 				}
 			}, function() {
 				var m = new Vectors.SqMatrix();
@@ -587,7 +579,6 @@ try {
 						return -1
 					}
 				};
-				//document.write([x, y]);
 				return this._iData.width * y + x;
 			},
 			putPixel: function(p, c) {
@@ -610,6 +601,12 @@ try {
 						this.pixels.push(new this.constructor.Color(this._iData.data, i * 4));
 					}
 				}
+			},
+			putTo: function(c, v) {
+				if (c.constructor == Graphics) return this.putTo(c.canv, v);
+				v = v || new Vectors.Vec([0, 0]);
+				v.expandTo(2);
+				c.CTX.putImageData(this._iData, v.dims[0], v.dims[1]);
 			},
 			wrapX: false,
 			wrapY: false,
@@ -644,7 +641,6 @@ try {
 							drawImage(img, cropStart.dims[0], cropStart.dims[1], cropSize.dims[0], cropSize.dims[1], pos.dims[0], pos.dims[1], size.dims[0], size.dims[1]); /*alert(1)*/
 						}
 					}
-					//document.write([size, !!size, !!0, cropStart, cropSize]);
 					restore();
 				}
 			},
@@ -692,7 +688,6 @@ try {
 			var pixels = new Array(sq);
 			this.pixels = pixels;
 			for (i = 0; i < sq; i++) pixels[i] = new this.constructor.Color(this._iData.data, i * 4);
-			//alert(pixels[0].srcs);
 
 		}, {
 			Color: withProto(lib, {
@@ -755,19 +750,83 @@ try {
 					this.isHex = !!isHex;
 					this.srcs = [arr, off]
 				}, {}),
+			ColorTransformator: withProto(lib, {
+				hasAlpha: true,
+				xch: true,
+				proceedTo(src, trg) {
+					var srgba = src.getValues();
+					if (srgba.length < 4) srgba.push(255);
+					var mx = this.mx;
+					var trgba = [mx.rr * srgba[0] + mx.or, mx.gg * srgba[1] + mx.og, mx.bb * srgba[2] + mx.ob, this.hasAlpha ? mx.rr * srgba[3] + mx.oa : 255];
+					if (this.xch) {
+						trgba[0] += gr * srgba[1] + br * srgba[2];
+						trgba[1] += rg * srgba[0] + bg * srgba[2];
+						trgba[2] += rb * srgba[0] + gb * srgba[1];
+					};
+				}
+			}, function(ha, xch, r, g, b, a) {
+				var mx;
+				if (xch) {
+					mx = {
+						rr: r[0] || 0,
+						gr: r[1] || 0,
+						br: r[2] || 0,
+						ar: ha ? r[3] || 0 : 0,
+						or: ha ? r[4] || 0 : (r[3] || 0),
+						rg: g[0] || 0,
+						gg: g[1] || 0,
+						bg: g[2] || 0,
+						ag: ha ? g[3] || 0 : 0,
+						og: ha ? g[4] || 0 : (g[3] || 0),
+						rb: b[0] || 0,
+						gb: b[1] || 0,
+						bb: b[2] || 0,
+						ab: ha ? b[3] || 0 : 0,
+						ob: ha ? b[4] || 0 : (b[3] || 0),
+						ra: ha ? a[0] || 0 : 0,
+						ga: ha ? a[1] || 0 : 0,
+						ba: ha ? a[2] || 0 : 0,
+						aa: ha ? a[3] || 0 : 1,
+						oa: ha ? a[4] || 0 : 0
+					}
+				} else {
+					mx = {
+						rr: r[0] || 0,
+						gg: g[0] || 0,
+						bb: b[0] || 0,
+						aa: ha ? a[0] || 0 : 0,
+						or: r[1] || 0,
+						og: g[1] || 0,
+						ob: b[1] || 0,
+						oa: a[1] || 0,
+						gr: 0,
+						br: 0,
+						ar: 0,
+						rg: 0,
+						bg: 0,
+						ag: 0,
+						rb: 0,
+						gb: 0,
+						ab: 0,
+						ra: 0,
+						ga: 0,
+						ba: 0
+					}
+				};
+				this.mx = mx;
+				this.hasAlpha = !!(mx.ar || mx.ag || mx.ab || (mx.aa - 1) || mx.ra || mx.ga || mx.ba);
+				this.xch = !!(mx.gr || mx.br || mx.ar || mx.rg || mx.bg || mx.ag || mx.rb || mx.gb || mx.ab || mx.ra || mx.ga || mx.ba);
+			}, {}),
 			canvView: subClass(View, {}, function() {
 				var C = document.createElement("canvas");
 				this.Super(C);
-				this.CTX = C.getContext("2d");
-				this.CTX.imageSmoothingEnabled = false;
+				this.CTX = C.getContext("2d")
 			}, {}),
 			TileAtlas: withProto(lib, {
 					getTilePos: function(i) {
 						var v = this.scaledTileSize.copy();
 						v.dims[0] *= i % this.hcount;
-						v.dims[1] *= Math.floor(i / this.hcount);
-						v.dims[0] -= 1;
-						v.dims[1] -= 1;
+						v.dims[1] *= Math.floor(i / this.hcount); /*v.dims[0] -=1; v.dims[1] -=1;*/
 						return v
 					},
 					drawTo: function(G, I, pos, hcount, vcount, scale) {
@@ -843,7 +902,6 @@ try {
 					this.scaledTileSize = new Vectors.Vec(w / hcount, h / vcount);
 					img.onload = function() {
 						try {
-							//c.CTX.drawImage(img, 0, 0, w, h);
 							c.CTX.drawImage(img, 0, 0, size.dims[0], size.dims[1]);
 							if (scale > 1) {
 								var i, j;
@@ -851,18 +909,13 @@ try {
 								for (i = w - 1; i >= 0; i--) {
 									for (j = h - 1; j >= 0; j--) {
 										for (k = 0; k < 4; k++) {
-											//idat.data[(j * w + i) * 4 + k] = idat.data[((j - j % scale + s2) * w + (i - i % scale + s2)) * 4 + k];
 											idat.data[(j * w + i) * 4 + k] = idat.data[(((j - j % scale) / scale) * w + ((i - i % scale) / scale)) * 4 + k];
 										}
 									}
 								}
-
-								//document.write(1);
 								c.CTX.putImageData(idat, 0, 0);
-								//document.write(2);
 							}
 							that.onload();
-							//document.write(3);
 						} catch (e) {
 							document.write(e)
 						}
