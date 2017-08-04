@@ -1,4 +1,5 @@
 try {
+	//alert(0)
 
 	new(function(libName) {
 		var copyFunc = function(scope, func) {
@@ -31,6 +32,7 @@ try {
 		var baseView = {};
 		var withProto, subClass, bufferStruct;
 		var View;
+		var Network;
 		this.compFloatBits = 16;
 		absMod = function(a, b) {
 			return (a % b + b) % b
@@ -54,6 +56,7 @@ try {
 				this.parent = par;
 				this.parentView = parv;
 				el = document.createElement(TN);
+				//document.write([TN, el, el]);
 				el.innerHTML = opt.innerHTML || el.innerHTML || '';
 				this.element = el;
 				this.tagName = TN;
@@ -65,6 +68,18 @@ try {
 			}
 			if (!opt && el.constructor != Object) {
 				return new View(el, {});
+				/*TN = el.tagName.toUpperCase();
+				ID = el.id || el.getAttribute("id");
+				//alert([el,el.parentNode])
+				par = el.parentNode;
+				parv = getView(parv);
+				this.parent = par;
+				this.parentView = parv;
+				el.VIEW = this;
+				this.element = el;
+				this.tagName = TN;
+				this.id = ID;
+				return this;*/
 			}
 
 			var i;
@@ -74,12 +89,14 @@ try {
 			ID = el.id || (el.getAttribute && el.getAttribute("id")) || "";
 			par = el.parentNode;
 			parv = getView(par);
+			//alert([par, parv, View(document)])
 			this.parent = par;
 			this.parentView = parv;
 			el.VIEW = this;
 			this.element = el;
 			this.tagName = TN;
 			this.id = ID;
+			//document.write(this.element.getAttribute)
 			if (el.constructor == HTMLDocument) this.parentView = baseView;
 		};
 		View.prototype = {
@@ -119,7 +136,9 @@ try {
 				var shPar = true;
 				if (!d && d !== 0) d = lib.defaultViewToStringDepth;
 				if (d == 0) shPar = false;
+				//alert(lib.defaultViewToStringDepth);
 				with(this) {
+					//if(element.constructor == HTMLDocument)
 					return "[VIEW tagName=\"" + tagName + "\" id=\"" + id + (shPar ? "\" parentView=\"" + parentView.toString(d - 1) : '') + "\"]"
 				}
 			},
@@ -131,6 +150,7 @@ try {
 			},
 			getRelClickCoords: function(ev, scale) {
 				var r = this.element.getBoundingClientRect();
+				//alert([r.left, r.top]);
 				return [(ev.clientX - r.left) * scale, (ev.clientY - r.top) * scale];
 			}
 		}
@@ -161,6 +181,7 @@ try {
 			var c, i;
 			_static = _static || {};
 			c = function() {
+				//alert(arguments.length);
 				var args = arguments;
 				var a = function() {
 					return c.apply(this, args)
@@ -170,6 +191,7 @@ try {
 					return new a()
 				};
 				this.constructor = c;
+				//alert(f.apply)
 				return f.apply(this, arguments) || this;
 			};
 			c.toString = copyFunc(f, f.toString);
@@ -213,6 +235,9 @@ try {
 			c.prototype = descendObj(_super.prototype || _super.proto, p);
 			return c;
 		}
+		/*var _bufStructProto = {
+
+		};*/
 		bufferStruct = function(constr, _static, l) {
 			var C = function() {
 				var r = (this instanceof C) ? this : {
@@ -345,6 +370,7 @@ try {
 				}
 			}, function(a) {
 				var L;
+				//alert(a)
 				if (!a) a = [];
 				if (a.constructor != [].constructor) {
 					a = [].slice.call(arguments, 0)
@@ -579,6 +605,7 @@ try {
 						return -1
 					}
 				};
+				//document.write([x, y]);
 				return this._iData.width * y + x;
 			},
 			putPixel: function(p, c) {
@@ -605,12 +632,13 @@ try {
 			putTo: function(c, v) {
 				if (c.constructor == Graphics) return this.putTo(c.canv, v);
 				v = v || new Vectors.Vec([0, 0]);
-				v.expandTo(2);
+				v.resize(2);
 				c.CTX.putImageData(this._iData, v.dims[0], v.dims[1]);
 			},
 			wrapX: false,
 			wrapY: false,
 			drawImg: function(img, pos, size, cropStart, cropSize, rot, rcenter) {
+				if (img.constructor == Graphics) return this.drawImg(img.canv.element, pos, size, cropStart, cropSize, rot, rcenter);
 				with(this.canv.CTX) {
 					save();
 					if (!pos) {
@@ -630,6 +658,8 @@ try {
 						cropStart = new Vectors.Vec(0, 0);
 						cropStart.resize(2)
 					}
+					//if(cropStart) {cropStart.dims[0] -= 1; cropStart.dims[1] -= 1}
+					/*console.log(cropStart + '', cropSize + '');*/
 					if (!size) {
 						if (!cropSize) drawImage(img, pos.dims[0], pos.dims[1]);
 						else {
@@ -641,6 +671,7 @@ try {
 							drawImage(img, cropStart.dims[0], cropStart.dims[1], cropSize.dims[0], cropSize.dims[1], pos.dims[0], pos.dims[1], size.dims[0], size.dims[1]); /*alert(1)*/
 						}
 					}
+					//document.write([size, !!size, !!0, cropStart, cropSize]);
 					restore();
 				}
 			},
@@ -688,6 +719,7 @@ try {
 			var pixels = new Array(sq);
 			this.pixels = pixels;
 			for (i = 0; i < sq; i++) pixels[i] = new this.constructor.Color(this._iData.data, i * 4);
+			//alert(pixels[0].srcs);
 
 		}, {
 			Color: withProto(lib, {
@@ -835,7 +867,7 @@ try {
 						};
 						pos.resize(2); /*document.write(pos);*/
 						var cropPos = this.getTilePos(I),
-							cropSize = this.scaledTileSize;
+							cropSize = this.scaledTileSize; /*console.log(cropPos + '');*/
 						if (scale == 1) scale = 0;
 						var size = scale ? Vectors.Vec.mul(cropSize, scale) : cropSize;
 						var i, j;
@@ -843,6 +875,7 @@ try {
 						for (i = 0; i < vcount; i++) {
 							curPos.dims[0] = pos.dims[0]
 							for (j = 0; j < hcount; j++) {
+								/*console.log(cropPos + '', cropSize + '', curPos + '', size + '');*/
 								G.drawImg(this.canv.element, curPos, size, cropPos, cropSize);
 								curPos.dims[0] += size.dims[0];
 							}
@@ -902,6 +935,7 @@ try {
 					this.scaledTileSize = new Vectors.Vec(w / hcount, h / vcount);
 					img.onload = function() {
 						try {
+							//c.CTX.drawImage(img, 0, 0, w, h);
 							c.CTX.drawImage(img, 0, 0, size.dims[0], size.dims[1]);
 							if (scale > 1) {
 								var i, j;
@@ -909,13 +943,18 @@ try {
 								for (i = w - 1; i >= 0; i--) {
 									for (j = h - 1; j >= 0; j--) {
 										for (k = 0; k < 4; k++) {
+											//idat.data[(j * w + i) * 4 + k] = idat.data[((j - j % scale + s2) * w + (i - i % scale + s2)) * 4 + k];
 											idat.data[(j * w + i) * 4 + k] = idat.data[(((j - j % scale) / scale) * w + ((i - i % scale) / scale)) * 4 + k];
 										}
 									}
 								}
+
+								//document.write(1);
 								c.CTX.putImageData(idat, 0, 0);
+								//document.write(2);
 							}
 							that.onload();
+							//document.write(3);
 						} catch (e) {
 							document.write(e)
 						}
@@ -1045,13 +1084,105 @@ try {
 			},
 			function(src, co) {
 				var b = !!co;
-				b |= src.match(/^http:\/\/|^https:\/\/|^\/\//ig) != '';
+				b |= src.match(/^http:\/\/|^https:\/\/|^\/\//i) != '';
 				b |= document.location.toString().match(/file:/ig) != '';
 				this.isCrossOrigin = b;
 				this.src = src;
 			}, {
 				crossOrigin: 'Anonymous'
 			});
+
+		Network = {
+			Request: withProto(lib, {
+				lock: function() {
+					this.__locked = true;
+				},
+				unlock: function() {
+					this.__locked = false;
+				},
+				getUnlocked: function() {
+					if (this.__locked) return this.copy();
+					return this;
+				},
+				recreate: function() {
+					return new this.constructor(this.__opts);
+				},
+				copy: function() {
+					var r = this.recreate();
+					r.handlers = this.handlers;
+					return r;
+				},
+				addHeader: function(k, v) {
+					if (!this.headers[k]) this.headers[k] = [];
+					this.headers[k].push(v);
+				},
+				remHeader: function(k, v) {
+					if (!v) {
+						this.headers[k] = [];
+						return;
+					}
+					if (!this.headers[k]) return;
+					var i = this.headers[k].indexOf(v);
+					if (i == -1) return;
+					this.headers[k].splice(i, 1);
+				},
+				clearHandlers: function() {
+					var i;
+					this.stateHandlers = this.stateHandlers || [];
+					for (i = 0; i < 5; i++) {
+						this.stateHandlers[i] = [];
+					}
+				},
+				addStateHandler: function(f, s) {
+					var i;
+					s = s || [4];
+					for (i = 0; i < 5; i++) {
+						if (s.indexOf(i) != -1) {
+							this.stateHandlers.push(f);
+						}
+					}
+				},
+				remStateHandler: function(f, s) {
+					var i, j;
+					var sh = this.stateHandlers;
+					s = s || [0, 1, 2, 3, 4];
+					for (i = 0; i < 5; i++) {
+						if (s.indexOf(i) != -1) {
+							j = sh[i].indexOf(f);
+							if (j != -1) sh.splice(j, 1);
+						}
+					}
+				}
+			}, function(opts) {
+				var i, sh;
+				var url = opts.url || '#';
+				if (!url || url.constructor != LinkURL && (!url.__supers || url.__supers.indexOf(LinkURL) == -1)) url = new LinkURL(url);
+				this.url = url;
+				this.data = opts.data;
+				this.method = opts.method || opts.data && 'POST' || 'GET';
+				this.async = opts.noAsync ? this.constructor.defaultAsync : false;
+				this.__locked = false;
+				this.__opts = descendObj(opts, {
+					copyDepth: (opts.copyDepth || 0) + 1
+				});
+				this.headers = opts.headers || {};
+				this.clearHandlers();
+				sh = opts.stateHandlers;
+				if (sh) {
+					for (i = 0; i < sh.length; i++) {
+						this.addStateHandler(sh[0], sh[1]);
+					}
+				}
+			}, {
+				defaultAsync: true
+			}),
+			sendRequest: function(r, f) {
+				r = r.getUnlocked();
+				var xhr = new XMLHttpRequest();
+				r.xhr = xhr;
+				r.addStateHandler(f);
+			}
+		};
 
 		this.R = R;
 		this.View = View;
@@ -1063,6 +1194,7 @@ try {
 		this.LinkURL = LinkURL;
 		this.compFloat = compFloat;
 		this.copyFunc = copyFunc;
+		this.Network = Network;
 
 		window[libName] = this;
 	})("lib");
