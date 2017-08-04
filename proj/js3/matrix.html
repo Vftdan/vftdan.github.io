@@ -1,0 +1,112 @@
+<head>
+	<script src="lib.js"></script>
+	<style>
+		canvas {
+			background: gray;
+		}
+	</style>
+</head>
+
+<body>
+	<script defer>
+		try {
+			with(lib) {
+				with(Vectors) {
+					with(Graphics) {
+						var glyphUrl = (function(first, w, h, lw, lh) {
+							var G = new Graphics(0, new Vec([w * lw, h * lh]));
+							G.bindView();
+							G.saveChanges();
+							//GE('q', 'body').push(G.canv);
+							var i, j, l = first;
+							G.canv.CTX.fillStyle = Color([0, 191, 0, 255]).toString();
+							G.canv.CTX.font = '12px sans-serif bold';
+							for (i = 0; i < h; i++) {
+								for (j = 0; j < w; j++) {
+									G.canv.CTX.fillText(String.fromCharCode(l++), (j + .2) * lw, (i + .7) * lh);
+								}
+							}
+							//G.loadChanges();
+							//for(i in G){
+							//document.write(i + ': ' + typeof G[i] + '<br />');
+							//}
+							//window.gg = G;
+							return G.toUrl();
+						})(0x0021, 16, 16, 16, 16);
+						var darkColor = new Color([0, 0, 0, 35]),
+							dg = new Graphics(0, new Vec([16, 64])),
+							eg = new Graphics(0, new Vec([16, 16]));
+						dg.bindView();
+						//GE('q', 'body').push(dg.canv);
+						var i;
+						for (i in dg.pixels) dg.pixels[i].setColor(darkColor);
+						dg.saveChanges();
+						var T = new Timer(500);
+						var MAX_X = 30,
+							MAX_Y = 20;
+						var G = new Graphics(0, new Vec(MAX_X * 16, MAX_Y * 16));
+						G.bindView();
+						G.saveChanges();
+						G.canv.setStyle('background', 'black');
+						GE('q', 'body').push(G.canv);
+						var putChar, drawTrace;
+						var glyph = new TileAtlas(LinkURL(glyphUrl), new Vec([256, 256]), 16, 16, 1, function() {
+							try {
+								//G.drawImg(gg, Vec([16, 0]), Vec([16, 16]), Vec([48, 192]), Vec([16, 16]));
+								putChar = function(c, x, y) {
+									var v = new Vec([x * 16, y * 16]);
+									//for(i in v){
+									//document.write(i + ': ' + typeof v[i] + '<br />');
+									//}
+									//console.log(c);
+									if (y < MAX_Y) {
+										eg.putTo(G, v);
+										glyph.drawTo(G, c, v, 1, 1, 1);
+									}
+									if (y > 0) {
+										v.dims[1] -= 64;
+										G.drawImg(dg, v);
+									}
+								}
+								drawTrace = function(x, y, s) {
+									var i;
+									s = s || 0;
+									for (i = s; i <= y; i++) putChar((Math.random() * 128) | 0, x, i);
+								}
+								//putChar(0, 0, 0);
+								//putChar(1, 0, 2);
+								//drawTrace(1, 10);
+								var traces = [],
+									i;
+								var f = function() {
+									try {
+										var i, j, s;
+										for (i = 0; i < MAX_X; i++) {
+											if (!traces[i]) traces[i] = [];
+											if (traces[i].length && (traces[i][0] == traces[i][1])) traces[i].pop();
+											if (Math.random() < .3 && (traces[i][traces[i].length - 1] > 2) || (traces[i].length == 0) && Math.random() < 0.8) traces[i].push(0);
+											//document.write(traces[i].length);
+											for (j = 0; j < traces[i].length; j++) {
+												drawTrace(i, traces[i][j]++, traces[i][j + 1]);
+												if (traces[i][j] - 4 > MAX_Y) traces[i][j] = MAX_Y + 4;
+											}
+										}
+									} catch (e) {
+										document.write(e)
+									}
+								}
+								T.addEventListener('tick', f);
+								T.play();
+							} catch (e) {
+								document.write(e);
+							}
+						});
+
+					}
+				}
+			}
+		} catch (e) {
+			document.write(e);
+		}
+	</script>
+</body>
