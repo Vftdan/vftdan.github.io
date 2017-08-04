@@ -32,7 +32,7 @@
 							//}
 							//window.gg = G;
 							return G.toUrl();
-						})(0x0021, 16, 16, 16, 16);
+						})(0x00A1, 16, 16, 16, 16);
 						var darkColor = new Color([0, 0, 0, 35]),
 							dg = new Graphics(0, new Vec([16, 64])),
 							eg = new Graphics(0, new Vec([16, 16]));
@@ -41,7 +41,7 @@
 						var i;
 						for (i in dg.pixels) dg.pixels[i].setColor(darkColor);
 						dg.saveChanges();
-						var T = new Timer(500);
+						var T = new Timer(800);
 						var MAX_X = 30,
 							MAX_Y = 20;
 						var G = new Graphics(0, new Vec(MAX_X * 16, MAX_Y * 16));
@@ -97,6 +97,9 @@
 								}
 								T.addEventListener('tick', f);
 								T.play();
+								G.canv.element.addEventListener('click', function() {
+									window.open(G.toUrl(), '_blanl')
+								}, false);
 							} catch (e) {
 								document.write(e);
 							}
