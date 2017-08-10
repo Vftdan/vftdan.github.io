@@ -1,0 +1,85 @@
+@charset "UTF-8";
+*{
+  margin:0px;
+  padding:0px;
+}
+body{
+  font-family:Helvetica,sans-serif;
+  background:rgba(0,0,0,0.08);
+}
+[vdz~="overlay"]{
+position:fixed;
+top:0px;
+bottom:0px;
+left:0px;
+right:0px;
+z-index:4;
+background:rgba(0,0,0,0.6);
+}
+[vdz~="win"]{
+  z-index:5;
+  position:fixed;
+}
+[vdz~="outset"]{
+  box-shadow:0pt 1.5pt 4pt -0.3pt black;
+  z-index:2;
+}
+[vdz~="win"],[vdz~="tile"],[vdz~="padding"]{
+  padding:1em;
+}
+[vdz~="hpadding"]{
+padding:0em 1em;
+}
+[vdz~="vpadding"]{
+padding:1em 0em;
+}
+[vdz~="round"]{
+ border-radius:1ex; 
+}
+[vdz~="uround"]{
+ border-radius-top-left:1ex;
+ border-radius-top-right:1ex; 
+}
+[vdz~="bround"]{
+ border-radius-bottom-left:1ex;
+ border-radius-bottom-right:1ex; 
+}
+[vdz~="hover"]:hover,[vdz~="hover>"]>*:hover,[vdz~="hover>1"]>*:first-child:hover{
+background:rgba(0,0,0,0.13); 
+}
+[vdz~="white"]{
+  background:#fefefe;
+}
+[vdz~="bwhite"]{
+  background:white;
+}
+[vdz^="strimg/"]{
+display:inline-block;
+height:1em;
+width:1em;
+background-size:100%;
+position:relative;
+top:0.125em;
+}
+[vdz~="dark"]{
+background:#101010;
+color:white;
+}
+[vdz~="fullwidth"]{
+width:100%;
+}
+[vdz~="fullheight"]{
+height:100%;
+}
+
+[vdz~="col"]{
+height:100%;
+border:0pt solid #999999;
+display:inline-block;
+float:left;
+}
+[vdz~="col"]:not(:first-child){
+
+border-left-width:1pt;
+
+}
