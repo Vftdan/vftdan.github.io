@@ -33,7 +33,16 @@ try {
 		var withProto, subClass, bufferStruct;
 		var View;
 		var Network;
+		var Calc;
+		var swapArrs;
 		this.compFloatBits = 16;
+		swapArrs = function(a, b, l) {
+			var i;
+			for (i = 0; i < l; i++) {
+				a ^= b ^= a;
+				b ^= a;
+			}
+		}
 		absMod = function(a, b) {
 			return (a % b + b) % b
 		}
@@ -155,7 +164,7 @@ try {
 			}
 		}
 		getView = function(e) {
-			return e ? ((e.constructor == View || e.constructor.__supers && e.constructor.__supers.indexOf(View) != 0) && e || e.VIEW || View(e)) : "[NONE]";
+			return e ? ((e.constructor == View || e.constructor.__supers && e.constructor.__supers.indexOf(View) != -1) && e || e.VIEW || View(e)) : "[NONE]";
 		}
 		this.defaultViewToStringDepth = 0;
 		baseView = new View(document);
@@ -176,6 +185,49 @@ try {
 		GE.tagName = copyFunc(document, document.getElementsByTagName);
 		GE.name = copyFunc(document, document.getElementsByName);
 		GE.q = copyFunc(document, document.querySelector);
+
+		Calc = (function(f) {
+			var C, c, i;
+			C = function(args) {
+				return f.apply(C, args);
+			}
+			c = {
+				ifNaN: function(a, b) {
+					a = Number(a);
+					return a == a ? a : b
+				},
+				pow: function(b, e) {
+					return Math.pow(b, this.ifNaN(e, 2))
+				},
+				root: function(b, e) {
+					return this.pow(b, e ? 1 / e : .5)
+				},
+				pythag: function(a, d) {
+					if (!Array.isArray(a)) return this.pythag([].slice.call(arguments, 0));
+					var i, n, s = 0;
+					for (i = 0; i < a.length; i++) {
+						n = Number(a[i]);
+						if (n != n) {
+							if (d == d && d != undefined) n = d;
+							else return NaN;
+						};
+						s += this.pow(n);
+					}
+					return this.root(s);
+				},
+				clamp: function(a, b, c) {
+					a = +a || 0;
+					b = +b || 0;
+					c = +c || 0;
+					return a + b + c - Math.max(a, b, c) - Math.min(a, b, c);
+				}
+			};
+			for (i in c) C[i] = c[i];
+			return C;
+
+		})(function(s) {
+
+		});
 
 		withProto = function(scope, p, f, _static) {
 			var c, i;
@@ -616,6 +668,7 @@ try {
 			saveChanges: function() {
 				this.canv.element.width = this._iData.width;
 				this.canv.element.height = this._iData.height;
+				if (!this.canv.CTX) return;
 				this.canv.CTX.putImageData(this._iData, 0, 0);
 			},
 			loadChanges: function() {
@@ -722,6 +775,36 @@ try {
 			//alert(pixels[0].srcs);
 
 		}, {
+			WebGL: withProto(lib, {
+				graphics: null,
+				canv: null,
+				gl: null,
+				bindTarget: function(t) {
+					if (!t) return;
+					if (t.constructor == Graphics) {
+						this.graphics = t;
+						return this.bindTarget(t.canv);
+					}
+					if (t.constructor == View || t.constructor.__supers && t.constructor.__supers.indexOf(View) != -1) {
+						this.canv = t;
+					}
+					if (t.constructor == HTMLCanvasElement) {
+						return this.bindTarget(getView(t));
+					}
+				},
+				initGl: function() {
+					var gl, i, n = this.constructor.contextNames;
+					for (i = 0; i < n.length; i++) {
+						gl = this.canv.element.getContext(n[i]);
+						if (gl) break;
+					}
+					this.gl = gl;
+				}
+			}, function() {
+
+			}, {
+				contextNames: ['webgl', 'experimental-webgl']
+			}),
 			Color: withProto(lib, {
 					getValues: function() {
 						var S = this.srcs;
@@ -740,7 +823,21 @@ try {
 							var v = this.getValues();
 							if (v[3]) v[3] /= 255;
 							return "rgb" + (this.noAlpha ? '' : 'a') + '(' + v.join(", ") + ')'
+						} else {
+							var v = this.getValues();
+							var n = 1;
+							for (i = 0; i < v.length; i++) n = n << 8 | v[i];
+							return n.toString(16).replace(/^1/, '#')
 						}
+					},
+					getRed: function(floatVal) {
+						return this.srcs[0][this.srcs[1]] / (floatVal ? 255 : 1)
+					},
+					getGreen: function(floatVal) {
+						return this.srcs[0][this.srcs[1] + 1] / (floatVal ? 255 : 1)
+					},
+					getBlue: function(floatVal) {
+						return this.srcs[0][this.srcs[1] + 2] / (floatVal ? 255 : 1)
 					},
 					getAlpha: function(floatVal) {
 						return (this.noAlpha * 255 || this.srcs[0][this.srcs[1] + 3]) / (floatVal ? 255 : 1)
@@ -781,7 +878,79 @@ try {
 					this.noAlpha = !!noAlpha;
 					this.isHex = !!isHex;
 					this.srcs = [arr, off]
-				}, {}),
+				}, {
+					rgba: function(r, g, b, a) {
+						r = Calc.clamp(r, 0, 255);
+						g = Calc.clamp(g, 0, 255);
+						b = Calc.clamp(b, 0, 255);
+						a = Calc.clamp(a, 0, 255);
+						return new this([r, g, b, a]);
+					},
+					rgb: function(r, g, b) {
+						r = Calc.clamp(r, 0, 255);
+						g = Calc.clamp(g, 0, 255);
+						b = Calc.clamp(b, 0, 255);
+						return new this([r, g, b], 0, 1);
+					},
+					hex: function(s, hasAlpha) {
+						if (typeof s == 'string') {
+							s = s.replace(/^#/, '').replace(/[^0-9a-f]/ig, '0');
+							if (s.length == 3) s = s.replace(/(.)/g, '$1$1');
+							s = parseInt(s, 16);
+						}
+						s = +s || 0;
+						var r, g, b, a;
+						if (hasAlpha) {
+							a = s & 255;
+							b = s >>> 8 & 255;
+							g = s >>> 16 & 255;
+							r = s >>> 24 & 255;
+							return new this([r, g, b, a], 0, 0, 1)
+						} else {
+							b = s & 255;
+							g = s >>> 8 & 255;
+							r = s >>> 16 & 255;
+							return new this([r, g, b], 0, 1, 1)
+						}
+					},
+					dist: function(c1, c2) {
+						return Calc.pythag([c1.getRed() - c2.getRed(), c1.getGreen() - c2.getGreen(), c1.getBlue() - c2.getBlue(), c1.getAlpha() - c2.getAlpha()], 255);
+					},
+					smartDist: function(c1, c2) {
+						return (c1.getAlpha() && c2.getAlpha() ? this.dist(c1, c2) : 510) * Math.max(c1.getAlpha(1), c2.getAlpha(1));
+					},
+					nearest: function(c, a) {
+						var i, m = 511,
+							mi = -1,
+							d;
+						for (i = 0; i < a.length; i++) {
+							d = this.smartDist(c, a[i]);
+							if (d < m) {
+								mi = i;
+								m = d;
+							}
+							if (d == 0) break;
+						}
+						return {
+							index: mi,
+							result: a[mi],
+							dist: m
+						};
+					}
+				}),
+			ColorEffect: withProto(lib, {
+
+			}, function() {
+
+			}, {
+				band: function(maxCount, pixels, height) {
+					with(Graphics.Color) {
+						//color, nearest_index, distance
+						maxCount = maxCount >= 1 ? maxCount | 0 : 1;
+						var clist = [pixels[0], -1, 511];
+					}
+				}
+			}),
 			ColorTransformator: withProto(lib, {
 				hasAlpha: true,
 				xch: true,
@@ -849,10 +1018,11 @@ try {
 				this.hasAlpha = !!(mx.ar || mx.ag || mx.ab || (mx.aa - 1) || mx.ra || mx.ga || mx.ba);
 				this.xch = !!(mx.gr || mx.br || mx.ar || mx.rg || mx.bg || mx.ag || mx.rb || mx.gb || mx.ab || mx.ra || mx.ga || mx.ba);
 			}, {}),
-			canvView: subClass(View, {}, function() {
+			canvView: subClass(View, {}, function(opts) {
+				opts = opts || {};
 				var C = document.createElement("canvas");
 				this.Super(C);
-				this.CTX = C.getContext("2d")
+				if (!opts.noCtx) this.CTX = C.getContext("2d")
 			}, {}),
 			TileAtlas: withProto(lib, {
 					getTilePos: function(i) {
@@ -1156,7 +1326,7 @@ try {
 			}, function(opts) {
 				var i, sh;
 				var url = opts.url || '#';
-				if (!url || url.constructor != LinkURL && (!url.__supers || url.__supers.indexOf(LinkURL) == -1)) url = new LinkURL(url);
+				if (!url || url.constructor != LinkURL && (!url.constructor.__supers || url.constructor.__supers.indexOf(LinkURL) == -1)) url = new LinkURL(url);
 				this.url = url;
 				this.data = opts.data;
 				this.method = opts.method || opts.data && 'POST' || 'GET';
@@ -1195,6 +1365,8 @@ try {
 		this.compFloat = compFloat;
 		this.copyFunc = copyFunc;
 		this.Network = Network;
+		this.Calc = Calc;
+		this.swapArrs = swapArrs;
 
 		window[libName] = this;
 	})("lib");
