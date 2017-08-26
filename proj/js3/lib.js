@@ -30,7 +30,7 @@ try {
 			colors: {}
 		};
 		var baseView = {};
-		var withProto, subClass, bufferStruct;
+		var withProto, subClass, bufferStruct, isInstanceOf;
 		var View;
 		var Network;
 		var Calc;
@@ -164,7 +164,7 @@ try {
 			}
 		}
 		getView = function(e) {
-			return e ? ((e.constructor == View || e.constructor.__supers && e.constructor.__supers.indexOf(View) != -1) && e || e.VIEW || View(e)) : "[NONE]";
+			return e ? (isInstanceOf(e, View) && e || e.VIEW || View(e)) : "[NONE]";
 		}
 		this.defaultViewToStringDepth = 0;
 		baseView = new View(document);
@@ -339,6 +339,11 @@ try {
 			var i;
 			for (i in _static) C[i] = _static[i];
 			return C;
+		}
+		isInstanceOf = function(e, c) {
+			if (e instanceof c || (typeof e) == c) return true;
+			if (e.constructor == c || e.constructor.__supers && e.constructor.__supers.indexOf(c) != -1) return true;
+			return false;
 		}
 
 		Vectors = {
@@ -568,7 +573,7 @@ try {
 			}),
 			Transformator: withProto(lib, {
 				toString: function() {
-					return 'Transformator:{\n' + this.m + '\n' + this.v + '\n}'
+					return 'Transformator:{\n' + ([this.m, this.v, this.dv, this.dn]).join('\n') + '\n}'
 				},
 				mulMx: function(m) {
 					this.m.mulSelf(m);
@@ -611,7 +616,11 @@ try {
 				var m = new Vectors.SqMatrix();
 				this.m = m;
 				var v = new Vectors.Vec();
-				this.v = v
+				this.v = v;
+				var dn = 1.0;
+				this.dn = dn;
+				var dv = new Vectors.Vec();
+				this.dv = dv;
 			}),
 			Perspective: withProto(lib, {
 				proceed: function(a) {
@@ -779,13 +788,14 @@ try {
 				graphics: null,
 				canv: null,
 				gl: null,
+				program: null,
 				bindTarget: function(t) {
 					if (!t) return;
 					if (t.constructor == Graphics) {
 						this.graphics = t;
 						return this.bindTarget(t.canv);
 					}
-					if (t.constructor == View || t.constructor.__supers && t.constructor.__supers.indexOf(View) != -1) {
+					if (isInstanceOf(t, View)) {
 						this.canv = t;
 					}
 					if (t.constructor == HTMLCanvasElement) {
@@ -799,7 +809,66 @@ try {
 						if (gl) break;
 					}
 					this.gl = gl;
+					this.Shader.gl = gl;
+				},
+				calcTexSlots: function() {
+					var i;
+					for (i = 0;; i++) {
+						if (!(('TEXTURE' + i) in this.gl)) return i;
+					}
+				},
+				Shader: withProto(lib, {
+					_shdObj: null,
+					setSrc: function(s) {
+						var gl = this.constructor.gl;
+						gl.shaderSource(this._shdObj, s);
+						gl.compileShader(this._shdObj);
+					},
+					getCompileStatus: function() {
+						var gl = this.constructor.gl;
+						return gl.getShaderParameter(this._shdObj, gl.COMPILE_STATUS);
+					},
+					getInfoLog: function() {
+						return this.constructor.gl.getShaderInfoLog(this._shdObj);
+					}
+				}, function(shdType, src) {
+					var gl = this.constructor.gl;
+					if (typeof shdType == 'string') {
+						shdType = shdType.match(/[a-z]+/i)[0].toLowerCase();
+						if (shdType == 'vertex') shdType = this.constructor.VERTEX();
+						if (shdType == 'fragment') shdType = this.constructor.FRAGMENT();
+					}
+					var so = gl.createShader(shdType);
+					this._shdObj = so;
+					if (src) this.setSrc(src);
+				}, {
+					gl: null,
+					VERTEX: function() {
+						return gl.VERTEX_SHADER
+					},
+					FRAGMENT: function() {
+						return gl.FRAGMENT_SHADER
+					}
+				}),
+				genProgram: function(opts) {
+					var gl = this.gl;
+					var p = gl.createProgram(),
+						S = this.Shader;
+					var sv = opts.vertex,
+						sf = opts.fragment;
+					if (typeof sv == 'string') sv = new S(S.VERTEX(), sv);
+					if (typeof sf == 'string') sf = new S(S.FRAGMENT(), sf);
+					gl.attachShader(p, sv._shdObj || sv);
+					gl.attachShader(p, sf._shdObj || sf);
+					gl.linkProgram(p);
+					return p;
+				},
+				setProgram: function(p) {
+					if (!this.gl.isProgram(p)) p = this.genProgram(p);
+					this.gl.useProgram(p);
+					this.program = p;
 				}
+
 			}, function() {
 
 			}, {
@@ -1326,7 +1395,7 @@ try {
 			}, function(opts) {
 				var i, sh;
 				var url = opts.url || '#';
-				if (!url || url.constructor != LinkURL && (!url.constructor.__supers || url.constructor.__supers.indexOf(LinkURL) == -1)) url = new LinkURL(url);
+				if (!url || !isInstanceOf(url, LinkURL)) url = new LinkURL(url);
 				this.url = url;
 				this.data = opts.data;
 				this.method = opts.method || opts.data && 'POST' || 'GET';
