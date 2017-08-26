@@ -220,6 +220,9 @@ try {
 					b = +b || 0;
 					c = +c || 0;
 					return a + b + c - Math.max(a, b, c) - Math.min(a, b, c);
+				},
+				divide: function(a, b, d) {
+					return b ? a / b : (d || 0);
 				}
 			};
 			for (i in c) C[i] = c[i];
@@ -293,8 +296,8 @@ try {
 		bufferStruct = function(constr, _static, l) {
 			var C = function() {
 				var r = (this instanceof C) ? this : {
-					_setBufferSize: C.setBufferSize,
-					_appendToBuffer: C._appendToBuffer
+					_setBufferSize: C.prototype._setBufferSize,
+					_appendToBuffer: C.prototype._appendToBuffer
 				};
 				if (l) r._setBufferSize(l);
 				constr.apply(r, arguments);
@@ -389,12 +392,15 @@ try {
 							this.dims[i] = 0
 						}
 					}
-					switch (m.constructor) {
-						case Number:
+					var _type = 0;
+					if (isInstanceOf(m, Number)) _type = 1;
+					if (isInstanceOf(m, Vectors.SqMatrix)) _type = 2;
+					switch (_type) {
+						case 1:
 							var i;
 							for (i = 0; i < this.d; i++) this.dims[i] *= m;
 							break;
-						case Vectors.SqMatrix:
+						case 2:
 							var i, j, l = this.d;
 							m.expandTo(l);
 							var a = this.dims.slice(0),
@@ -424,6 +430,30 @@ try {
 				},
 				normSelf: function() {
 					this.mulSelf(1 / this.abs());
+				},
+				mulEachSelf: function(v2) {
+					var i;
+					v2 = v2.copy();
+					Vectors.Vec.toMaxDimNum(this, v2);
+					for (i = 0; i < this.d; i++) {
+						this.dims[i] *= v2.dims[i]
+					}
+				},
+				mulScal: function(v2) {
+					return Vectors.Vec.mulEach(this, v2).abs();
+				},
+				rmulSelf: function(m) {
+					if (!isInstanceOf(m, Vectors.SqMatrix)) return;
+					var i, j, l = this.d;
+					m.expandTo(l);
+					var a = this.dims.slice(0),
+						b = m.vals;
+					for (i = 0; i < l; i++) {
+						this.dims[i] = 0;
+						for (j = 0; j < l; j++) {
+							this.dims[i] += a[j] * b[j][i]
+						}
+					};
 				}
 			}, function(a) {
 				var L;
@@ -462,6 +492,21 @@ try {
 				mul: function(v1, v2) {
 					v1 = v1.copy();
 					v1.mulSelf(v2);
+					return v1
+				},
+				norm: function(v) {
+					v = v.copy();
+					v.normSelf();
+					return v
+				},
+				mulEach: function(v1, v2) {
+					v1 = v1.copy();
+					v1.mulEachSelf(v2);
+					return v1
+				},
+				rmul: function(v1, v2) {
+					v1 = v1.copy();
+					v1.rmulSelf(v2);
 					return v1
 				}
 			}),
@@ -591,26 +636,31 @@ try {
 					return this
 				},
 				rotAround: function(v, a, d) {},
+				div: function(a) {
+					this.dn *= a;
+					this.dv.mulSelf(a)
+				},
 				proceedSelf: function(a) {
-					var i;
+					var i, d;
 					for (i = 0; i < a.length; i++) {
-						if (a[i].mulSelf) a[i].mulSelf(this.m);
-						if (a[i].addSelf) a[i].addSelf(this.v)
+						if (isInstanceOf(a[i], Vectors.Vec)) {
+							d = this.dn + this.dv.mulScal(a[i]);
+							a[i].mulSelf(this.m);
+							a[i].addSelf(this.v);
+							a[i].mulSelf(Calc.divide(1, d, (this.dn > 0) ? (-1 >>> 1) : ~(-1 >>> 1)))
+						} else if (isInstanceOf(a[i], Vectors.SqMatrix)) {
+							a[i].mulSelf(this.m)
+						}
 					};
 					return a
 				},
 				proceed: function(a) {
-					var i, b = [],
-						c;
+					var i, b = [];
 					for (i = 0; i < a.length; i++) {
 						if (!a[i]) continue;
-						c = a[i].constructor;
-						if (c.mul) {
-							b[i] = c.mul(a[i], this.m);
-							if (b[i].addSelf) b[i].addSelf(this.v)
-						}
+						b[i] = a[i].copy()
 					};
-					return b
+					return this.proceedSelf(b)
 				}
 			}, function() {
 				var m = new Vectors.SqMatrix();
@@ -621,26 +671,8 @@ try {
 				this.dn = dn;
 				var dv = new Vectors.Vec();
 				this.dv = dv;
-			}),
-			Perspective: withProto(lib, {
-				proceed: function(a) {
-					var i, j, b = [];
-					for (i = 0; i < a.length; i++) {
-						if (!a[i].dims) {
-							b[i] = a[i].copy && a[i].copy() || a[i]
-						} else {
-							b[i] = a[i].copy();
-							for (j in b[i].dims) {
-								if (j != this.di) b[i].dims[j] /= b[i].dims[this.di] / this.dist;
-							}
-						}
-					};
-					return b
-				}
-			}, function(di, dist) {
-				this.di = di;
-				this.dist = dist
-			}, {})
+			})
+			//,Perspective: withProto(lib, {proceed: function(a){var i, j, b=[]; for(i=0; i<a.length; i++){if(!a[i].dims){b[i] = a[i].copy&&a[i].copy()||a[i]}else{b[i] = a[i].copy(); for(j in b[i].dims){if(j!=this.di)b[i].dims[j] /= b[i].dims[this.di] / this.dist;}}}; return b }}, function(di, dist) {this.di = di; this.dist = dist}, {})
 		}
 		Graphics = withProto(lib, {
 			bindView: function(C) {
