@@ -518,7 +518,7 @@ try {
 					var m = [],
 						i;
 					for (i = 0; i < this.length; i++) {
-						m[i] = this.m[i].slice(0)
+						m[i] = this.vals[i].slice(0)
 					};
 					return new this.constructor(m)
 				},
@@ -547,6 +547,21 @@ try {
 					var m1 = this.constructor.mul(this, m2);
 					this.length = m1.length;
 					this.vals = m1.vals
+				},
+				transposeSelf: function() {
+					var t, i, j, l = this.length;
+					for (i = 0; i < l; i++) {
+						for (j = 0; j < i; j++) {
+							t = this.vals[i][j];
+							this.vals[i][j] = this.vals[j][i];
+							this.vals[j][i] = t;
+						}
+					}
+				},
+				transpose: function() {
+					var m = this.copy();
+					m.transposeSelf();
+					return m
 				}
 			}, function(m) {
 				if (arguments.length == 0) m = [];
@@ -620,6 +635,17 @@ try {
 				toString: function() {
 					return 'Transformator:{\n' + ([this.m, this.v, this.dv, this.dn]).join('\n') + '\n}'
 				},
+				setTransformator: function(t) {
+					this.m = t.m.copy();
+					this.v = t.v.copy();
+					this.dv = t.dv.copy();
+					this.dn = t.dn
+				},
+				copy: function() {
+					var t = new this.constructor();
+					t.setTransformator(this);
+					return t
+				},
 				mulMx: function(m) {
 					this.m.mulSelf(m);
 					this.v.mulSelf(m);
@@ -639,6 +665,9 @@ try {
 				div: function(a) {
 					this.dn *= a;
 					this.dv.mulSelf(a)
+				},
+				addDivVec: function(v) {
+					this.dv.addSelf(v)
 				},
 				proceedSelf: function(a) {
 					var i, d;
