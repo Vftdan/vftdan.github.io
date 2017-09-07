@@ -1,7 +1,7 @@
 <html><head><script defer>window.onload = function(){try{
 var href = 'http://127.0.0.1:8080/vk1/index.html' + location.search;
 var a = document.createElement('a');
-a.setAttribute('href', href);a.setAttribute('target', '_self');a.innerHTML = 'redir';document.body.appendChild(a);
+a.setAttribute('href', href);a.setAttribute('target', '_self');a.innerHTML = 'redir';document.body.appendChild(a);if(confirm('open')) window.open('href', '_blank');
   }catch(e){document.write(e)}}</script></head>
 <body></body>
 </html>
