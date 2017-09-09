@@ -16,6 +16,7 @@ height: 40%;
 pre {
 height: 50%;
 overflow: auto;
+white-space: pre-wrap;
 }
 form {
 height: 10%;
