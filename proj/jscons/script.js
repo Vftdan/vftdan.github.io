@@ -90,7 +90,11 @@ cons.err('Unknown command: ' + kv[0]);
 }
 } else {
 var i;
+if(c.replace(/^\s*/, '')[0] == '{') {
 c = '(' + c + ')';
+} else {
+c = ' ' + c + ' ';
+}
 for(i in def) {
 c = c.replace(def[i][0], def[i][1]);
 }
