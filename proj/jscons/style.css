@@ -1,0 +1,28 @@
+﻿* {
+margin: 0px;
+padding: 0px;
+width: 100%;
+background: transparent;
+color: inherit;
+}
+body {
+position: fixed;
+top: 0px;
+bottom: 0px;
+}
+iframe {
+height: 40%;
+}
+pre {
+height: 50%;
+overflow: auto;
+}
+form {
+height: 10%;
+}
+input {
+height: 100%;
+}
+iframe, hr, input {
+border: 1pt solid #777788;
+}
