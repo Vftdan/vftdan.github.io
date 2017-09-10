@@ -174,7 +174,7 @@ W: W,
 exec: exec,
 styles: styles
 };
-W.eval("addEventListener('load', function(){var init = VK.init; VK.init = function(){init.call(this, [].slice.call(arguments, 0)); VK._Rpc = top;}}, false)");
+//W.eval("window.addEventListener('load', function(){var init = VK.init; VK.init = function(){init.call(this, [].slice.call(arguments, 0)); VK._Rpc = top;}}, false)");
 //exec('#include data:text/javascript;utf8,window.console.err(window.document.write(1))');
 //doc.write(1);
 return JsConsole;
