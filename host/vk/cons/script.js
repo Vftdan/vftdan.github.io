@@ -98,7 +98,7 @@ c = ' ' + c + ' ';
 for(i in def) {
 c = c.replace(def[i][0], def[i][1]);
 }
-cons.dir(W.eval(c));
+cons.dir(w.eval(c));
 }
 } catch(e) {
 cons.err(e);
