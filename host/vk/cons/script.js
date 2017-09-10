@@ -1,6 +1,6 @@
 ﻿try {
 var JsConsole = (function(target, href, window){
-var JsConsole, W, exec, tools, doc, cons, escapeHtml, styles, appendHtml, prefix_i, prefix_o, def;
+var JsConsole, W, exec, tools, doc, cons, escapeHtml, styles, appendHtml, prefix_i, prefix_o, def, i, w;
 def = [];
 escapeHtml = function(s) {
 return (s + '').replace(/\&/g, '&amp;').replace(/\>/g, '&gt;').replace(/\</g, '&lt;').replace(/\n/g, '<br />');
@@ -126,7 +126,15 @@ s += '<br />}';
 appendHtml(s, prefix_o);
 }
 }
-W['console'] = cons;
+w = {
+console: cons,
+document: doc,
+}
+w.window = w;
+for(i in W) {
+if(!(i in w)) w[i] = W[i];
+}
+W._window = w;
 styles = {
 'object': ['color: #2222ff'],
 'number': ['color: #0000ff'],
