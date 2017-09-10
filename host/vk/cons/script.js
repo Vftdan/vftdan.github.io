@@ -1,7 +1,16 @@
 ﻿try {
 var JsConsole = (function(target, href, window){
-var JsConsole, W, exec, tools, doc, cons, escapeHtml, styles, appendHtml, prefix_i, prefix_o, def, i, w, evalWrap, getWindow;
+var JsConsole, W, exec, tools, doc, cons, escapeHtml, styles, appendHtml, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr;
 def = [];
+tryToStr = function(o) {
+var s;
+try {
+s = o + '';
+} catch(e) {
+s = '[Access denied, ' + (typeof o) + ']';
+}
+return s;
+}
 evalWrap = function(s, window) {
 try{
 with(this) {
@@ -22,9 +31,6 @@ prefix_i = escapeHtml('>>> ');
 prefix_o = escapeHtml('<<< ');
 W = window.open(href, target);
 doc = W.document;
-getWindow = function() {
-return W;
-}
 tools = {
 '#include': function(src) {
 try {
@@ -123,20 +129,20 @@ cons.err(e);
 }
 cons = {
 'err': function(s) {
-appendHtml('<span style="color: #ff2222">' + escapeHtml(s) + '</span>', prefix_o);
+appendHtml('<span style="color: #ff2222">' + escapeHtml(tryToStr(s)) + '</span>', prefix_o);
 },
 'log': function(r) {
 var t = r === null ? 'null' : typeof r;
-r = '<span style="' + styles[t].join(';') + '">' + escapeHtml(r) + '</span>';
+r = '<span style="' + styles[t].join(';') + '">' + escapeHtml(tryToStr(r)) + '</span>';
 appendHtml(r, prefix_o);
 },
 'dir': function(o) {
-if((typeof o) != 'object' || o === null) return this.log(o); 
+if((typeof o) != 'object' || o === null || tryToStr(o) == '[Access denied, object]') return this.log(o); 
 var t, r, i, s = '{';
 for(i in o) {
 r = o[i];
 t = r === null ? 'null' : typeof r;
-r = '<span style="' + styles[t].join(';') + '">' + escapeHtml(r) + '</span>';
+r = '<span style="' + styles[t].join(';') + '">' + escapeHtml(tryToStr(r)) + '</span>';
 s += '<br />"' + escapeHtml(i.replace(/\"/g, "\\\"")) + '": ' + r + ',';
 }
 s += '<br />}';
@@ -153,7 +159,6 @@ if(!(i in w)) w[i] = W[i];
 }
 w.eval = W.eval;
 W._window = w;
-W.location.window = doc.window = W;
 W.name = window.name;
 styles = {
 'object': ['color: #2222ff'],
