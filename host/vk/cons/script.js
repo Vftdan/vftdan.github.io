@@ -1,6 +1,6 @@
 ﻿try {
 var JsConsole = (function(target, href, window){
-var JsConsole, W, exec, tools, doc, cons, escapeHtml, styles, appendHtml, prefix_i, prefix_o, def, i, w, evalWrap;
+var JsConsole, W, exec, tools, doc, cons, escapeHtml, styles, appendHtml, prefix_i, prefix_o, def, i, w, evalWrap, getWindow;
 def = [];
 evalWrap = function(s, window) {
 try{
@@ -22,6 +22,10 @@ prefix_i = escapeHtml('>>> ');
 prefix_o = escapeHtml('<<< ');
 W = window.open(href, target);
 doc = W.document;
+getWindow = function() {
+return W;
+}
+W.getWindow = getWindow;
 tools = {
 '#include': function(src) {
 try {
