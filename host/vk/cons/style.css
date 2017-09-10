@@ -12,6 +12,7 @@ bottom: 0px;
 }
 iframe {
 height: 40%;
+overflow: auto;
 }
 pre {
 height: 50%;

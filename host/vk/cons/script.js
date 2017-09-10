@@ -80,12 +80,12 @@ window.document.getElementById('output').innerHTML = '';
 },
 '#define' : function(s) {
 var a;
-a = s.match(/^([\w_]+)\s+(.*)$/);
+a = s.match(/^([\w_\$]+)\s+(.*)$/);
 if(!a) {
 cons.err('Wrong arguments');
 return;
 }
-def.push([new RegExp('([^\\w_])' + a[1] + '(?![\\w_])', ''), '$1' + a[2].replace(/\$/g, '$$$$')]);
+def.push([new RegExp('([^\\w_\\$])' + a[1] + '(?![\\w_\\$])', ''), '$1' + a[2].replace(/\$/g, '$$$$')]);
 },
 '#runbase64': function(s) {
 s = atob(s).split('\n');
@@ -179,7 +179,7 @@ styles: styles
 //doc.write(1);
 return JsConsole;
 })('targetifr', 'frame.html' + location.search, window);
-if(location.search && location.search.match(/(?:[\?\&])hash\=([^\&]*)/)) JsConsole.exec('#runbase64 ' + decodeURI(location.search.match(/(?:[\?\&])hash\=([^\&]*)/)[1]));
+if(location.search && location.search.match(/(?:[\?\&])hash\=([^\&]*)/)) window.addEventListener('load', function(){JsConsole.exec('#runbase64 ' + decodeURI(location.search.match(/(?:[\?\&])hash\=([^\&]*)/)[1]))}, false);
 throw '';
 } catch(e) {
 document.getElementById('output').innerHTML = e;
