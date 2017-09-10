@@ -25,7 +25,6 @@ doc = W.document;
 getWindow = function() {
 return W;
 }
-W.getWindow = getWindow;
 tools = {
 '#include': function(src) {
 try {
