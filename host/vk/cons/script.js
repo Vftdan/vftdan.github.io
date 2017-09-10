@@ -3,9 +3,13 @@ var JsConsole = (function(target, href, window){
 var JsConsole, W, exec, tools, doc, cons, escapeHtml, styles, appendHtml, prefix_i, prefix_o, def, i, w, evalWrap;
 def = [];
 evalWrap = function(s, window) {
+try{
 with(this) {
 var a = this.eval(s);
 return a;
+}
+}catch(e){
+cons.err(e);
 }
 }
 escapeHtml = function(s) {
