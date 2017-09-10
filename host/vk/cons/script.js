@@ -150,7 +150,8 @@ if(!(i in w)) w[i] = W[i];
 }
 w.eval = W.eval;
 W._window = w;
-W.location.window = W;
+W.location.window = doc.window = W;
+W.name = window.name;
 styles = {
 'object': ['color: #2222ff'],
 'number': ['color: #0000ff'],
