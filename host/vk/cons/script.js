@@ -134,6 +134,7 @@ w.window = w;
 for(i in W) {
 if(!(i in w)) w[i] = W[i];
 }
+w.eval = W.eval;
 W._window = w;
 styles = {
 'object': ['color: #2222ff'],
