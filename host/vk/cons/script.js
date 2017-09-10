@@ -1,7 +1,13 @@
 ﻿try {
 var JsConsole = (function(target, href, window){
-var JsConsole, W, exec, tools, doc, cons, escapeHtml, styles, appendHtml, prefix_i, prefix_o, def, i, w;
+var JsConsole, W, exec, tools, doc, cons, escapeHtml, styles, appendHtml, prefix_i, prefix_o, def, i, w, evalWrap;
 def = [];
+evalWrap = function(s, window) {
+with(this) {
+var a = this.eval(s);
+return a;
+}
+}
 escapeHtml = function(s) {
 return (s + '').replace(/\&/g, '&amp;').replace(/\>/g, '&gt;').replace(/\</g, '&lt;').replace(/\n/g, '<br />');
 }
@@ -14,10 +20,14 @@ W = window.open(href, target);
 doc = W.document;
 tools = {
 '#include': function(src) {
+try {
 var s = doc.createElement('script');
 s.src = src;
 s.setAttribute('defer', '');
 doc.lastChild.appendChild(s);
+} catch(e) {
+cons.err(e);
+}
 },
 '#prefixi': function(s) {
 prefix_i = escapeHtml(s);
@@ -98,7 +108,7 @@ c = ' ' + c + ' ';
 for(i in def) {
 c = c.replace(def[i][0], def[i][1]);
 }
-cons.dir(w.eval(c));
+cons.dir(evalWrap.call(W, c, W));
 }
 } catch(e) {
 cons.err(e);
