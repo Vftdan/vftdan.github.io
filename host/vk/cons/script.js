@@ -179,7 +179,7 @@ styles: styles
 //doc.write(1);
 return JsConsole;
 })('targetifr', 'frame.html' + location.search, window);
-if(location.search && location.search.match(/(?:[\?\&])hash\=([^\&]*)/)) window.addEventListener('load', function(){JsConsole.exec('#runbase64 ' + decodeURI(location.search.match(/(?:[\?\&])hash\=([^\&]*)/)[1]))}, false);
+if(location.search && location.search.match(/(?:[\?\&])hash\=([^\&]+)/)) window.addEventListener('load', function(){JsConsole.exec('#runbase64 ' + decodeURI(location.search.match(/(?:[\?\&])hash\=([^\&]+)/)[1]))}, false);
 throw '';
 } catch(e) {
 document.getElementById('output').innerHTML = e;
