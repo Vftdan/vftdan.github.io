@@ -18,7 +18,7 @@ var a = this.eval(s);
 return a;
 }
 }catch(e){
-cons.err(e);
+cons.error(e);
 }
 }
 escapeHtml = function(s) {
@@ -39,7 +39,7 @@ s.src = src;
 s.setAttribute('defer', '');
 doc.lastChild.appendChild(s);
 } catch(e) {
-cons.err(e);
+cons.error(e);
 }
 },
 '#prefixi': function(s) {
@@ -82,7 +82,7 @@ window.document.getElementById('output').innerHTML = '';
 var a;
 a = s.match(/^([\w_\$]+)\s+(.*)$/);
 if(!a) {
-cons.err('Wrong arguments');
+cons.error('Wrong arguments');
 return;
 }
 def.push([new RegExp('([^\\w_\\$])' + a[1] + '(?![\\w_\\$])', ''), '$1' + a[2].replace(/\$/g, '$$$$')]);
@@ -102,14 +102,14 @@ if(c[0] == '#') {
 try{
 var kv = [].slice.call(c.match(/^(\#\w*)\s*(.*)$/), 1);
 } catch(e) {
-cons.err('Cannot parse: ' + c);
+cons.error('Cannot parse: ' + c);
 return;
 }
 kv[0] = kv[0].toLowerCase();
 if(tools[kv[0]]) {
 tools[kv[0]](kv[1]);
 } else {
-cons.err('Unknown command: ' + kv[0]);
+cons.error('Unknown command: ' + kv[0]);
 }
 } else {
 var i;
@@ -124,11 +124,11 @@ c = c.replace(def[i][0], def[i][1]);
 cons.dir(evalWrap.call(W, c, W));
 }
 } catch(e) {
-cons.err(e);
+cons.error(e);
 }
 }
 cons = {
-'err': function(s) {
+'error': function(s) {
 appendHtml('<span style="color: #ff2222">' + escapeHtml(tryToStr(s)) + '</span>', prefix_o);
 },
 'log': function(r) {
@@ -149,7 +149,7 @@ s += '<br />}';
 appendHtml(s, prefix_o);
 }
 }
-w = {
+/*w = {
 console: cons,
 document: doc,
 }
@@ -158,8 +158,14 @@ for(i in W) {
 if(!(i in w)) w[i] = W[i];
 }
 w.eval = W.eval;
-W._window = w;
+W._window = w;*/
 W.name = window.name;
+W.addEventListener('load', function() {
+var w = document.getElementByName(target).contentWindow, i;
+for(i in cons) {
+w.console[i] = cons[i];
+}
+}, false);
 styles = {
 'object': ['color: #2222ff'],
 'number': ['color: #0000ff'],
@@ -175,7 +181,7 @@ exec: exec,
 styles: styles
 };
 //W.eval("window.addEventListener('load', function(){var init = VK.init; VK.init = function(){init.call(this, [].slice.call(arguments, 0)); VK._Rpc = top;}}, false)");
-//exec('#include data:text/javascript;utf8,window.console.err(window.document.write(1))');
+//exec('#include data:text/javascript;utf8,window.console.error(window.document.write(1))');
 //doc.write(1);
 return JsConsole;
 })('targetifr', 'frame.html' + location.search, window);
