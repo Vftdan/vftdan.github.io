@@ -161,11 +161,14 @@ w.eval = W.eval;
 W._window = w;*/
 W.name = window.name;
 W.addEventListener('load', function() {
+try {
 var w = document.getElementByName(target).contentWindow, i;
 for(i in cons) {
-w.console[i] = cons[i];
+w.__mutateObject ("console." + i, cons[i]);
 }
-}, false);
+} catch(e) {
+cons.error(e);
+}}, false);
 styles = {
 'object': ['color: #2222ff'],
 'number': ['color: #0000ff'],
