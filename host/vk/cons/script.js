@@ -160,7 +160,7 @@ if(!(i in w)) w[i] = W[i];
 w.eval = W.eval;
 W._window = w;*/
 W.name = window.name;
-W.addEventListener('load', function() {
+/*W.addEventListener('load', function() {
 try {
 var w = document.getElementByName(target).contentWindow, i;
 for(i in cons) {
@@ -168,7 +168,7 @@ w.__mutateObject ("console." + i, cons[i]);
 }
 } catch(e) {
 cons.error(e);
-}}, false);
+}}, false);*/
 styles = {
 'object': ['color: #2222ff'],
 'number': ['color: #0000ff'],
@@ -181,7 +181,8 @@ styles = {
 JsConsole = {
 W: W,
 exec: exec,
-styles: styles
+styles: styles,
+cons: cons
 };
 //W.eval("window.addEventListener('load', function(){var init = VK.init; VK.init = function(){init.call(this, [].slice.call(arguments, 0)); VK._Rpc = top;}}, false)");
 //exec('#include data:text/javascript;utf8,window.console.error(window.document.write(1))');
