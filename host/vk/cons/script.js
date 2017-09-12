@@ -37,10 +37,6 @@ doc = W.document;
 tools = {
 '#include': function(src) {
 try {
-/*var s = doc.createElement('script');
-s.src = src;
-s.setAttribute('defer', '');
-doc.getElementsByTagName('head')[0].appendChild(s);*/
 W.eval("(function() {var s = document.createElement('script');s.src = '" + escapeStr(src) + "';s.setAttribute('defer', '');document.getElementsByTagName('head')[0].appendChild(s);})()");
 } catch(e) {
 cons.error(e);
