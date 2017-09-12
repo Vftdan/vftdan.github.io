@@ -107,7 +107,11 @@ return;
 }
 kv[0] = kv[0].toLowerCase();
 if(tools[kv[0]]) {
+try {
 tools[kv[0]](kv[1]);
+} catch(e) {
+cons.error(e);
+}
 } else {
 cons.error('Unknown command: ' + kv[0]);
 }
