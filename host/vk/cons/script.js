@@ -186,7 +186,8 @@ JsConsole = {
 W: W,
 exec: exec,
 styles: styles,
-cons: cons
+cons: cons,
+tools: tools
 };
 //W.eval("window.addEventListener('load', function(){var init = VK.init; VK.init = function(){init.call(this, [].slice.call(arguments, 0)); VK._Rpc = top;}}, false)");
 //exec('#include data:text/javascript;utf8,window.console.error(window.document.write(1))');
