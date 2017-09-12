@@ -1,6 +1,6 @@
 ﻿try {
 var JsConsole = (function(target, href, window){
-var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeStr styles, appendHtml, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr;
+var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeStr, styles, appendHtml, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr;
 def = [];
 tryToStr = function(o) {
 var s;
@@ -25,7 +25,7 @@ escapeHtml = function(s) {
 return (s + '').replace(/\&/g, '&amp;').replace(/\>/g, '&gt;').replace(/\</g, '&lt;').replace(/\n/g, '<br />');
 }
 escapeStr = function(s) {
-return (s + '').replace(/\\/g, '\\\\').replace(/\'/g, '\'').replace(/\"/g, '\"');
+return (s + '').replace(/\\/g, '\\\\').replace(/\'/g, '\\\'').replace(/\"/g, '\\\"');
 }
 appendHtml = function(h, p) {
 window.document.getElementById('output').innerHTML += '<hr />' + (p || '') + h;
