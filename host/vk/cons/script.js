@@ -37,7 +37,7 @@ try {
 var s = doc.createElement('script');
 s.src = src;
 s.setAttribute('defer', '');
-doc.lastChild.appendChild(s);
+doc.getElementsByTagName('head')[0].appendChild(s);
 } catch(e) {
 cons.error(e);
 }
