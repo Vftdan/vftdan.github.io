@@ -1,6 +1,6 @@
 ﻿try {
 var JsConsole = (function(target, href, window){
-var JsConsole, W, exec, tools, doc, cons, escapeHtml, styles, appendHtml, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr;
+var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeStr styles, appendHtml, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr;
 def = [];
 tryToStr = function(o) {
 var s;
@@ -24,6 +24,9 @@ cons.error(e);
 escapeHtml = function(s) {
 return (s + '').replace(/\&/g, '&amp;').replace(/\>/g, '&gt;').replace(/\</g, '&lt;').replace(/\n/g, '<br />');
 }
+escapeStr = function(s) {
+return (s + '').replace(/\\/g, '\\\\').replace(/\'/g, '\'').replace(/\"/g, '\"');
+}
 appendHtml = function(h, p) {
 window.document.getElementById('output').innerHTML += '<hr />' + (p || '') + h;
 }
@@ -34,10 +37,11 @@ doc = W.document;
 tools = {
 '#include': function(src) {
 try {
-var s = doc.createElement('script');
+/*var s = doc.createElement('script');
 s.src = src;
 s.setAttribute('defer', '');
-doc.getElementsByTagName('head')[0].appendChild(s);
+doc.getElementsByTagName('head')[0].appendChild(s);*/
+W.eval("(function() {var s = document.createElement('script');s.src = '" + escapeStr(src) + "';s.setAttribute('defer', '');document.getElementsByTagName('head')[0].appendChild(s);})()");
 } catch(e) {
 cons.error(e);
 }
