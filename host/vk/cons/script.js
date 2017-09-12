@@ -174,8 +174,8 @@ w.__mutateObject ("console." + i, cons[i]);
 cons.error(e);
 }}, false);*/
 styles = {
-'object': ['color: #2222dd'],
-'number': ['color: #0000ff'],
+'object': ['color: #5555dd'],
+'number': ['color: #3333ff'],
 'boolean': ['color: #882222'],
 'string': ['color: #22dd22'],
 'undefined': ['color: #888888'],
