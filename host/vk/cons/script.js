@@ -187,6 +187,7 @@ W: W
 ,exec: exec
 ,styles: styles
 ,cons: cons
+,escapeStr: escapeStr
 //,tools: tools
 };
 //W.eval("window.addEventListener('load', function(){var init = VK.init; VK.init = function(){init.call(this, [].slice.call(arguments, 0)); VK._Rpc = top;}}, false)");
