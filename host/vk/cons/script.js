@@ -1,7 +1,27 @@
 ﻿try {
 var JsConsole = (function(target, href, window){
-var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeStr, styles, appendHtml, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr;
+var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeStr, styles, appendHtml, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr, toEval = [], enqueueEval, dequeueEval;
 def = [];
+dequeueEval = function(ttl) {
+if(toEval.length) {
+ttl = +ttl || 0;
+var s = toEval.shift();
+try {
+eval(s);
+} catch(e) {
+cons.error(e);
+}
+if(ttl) {
+setTimeout(dequeueEval.bind(this, ttl - 1), 1);
+}
+}
+}
+enqueueEval = function(s, ttl) {
+toEval.push(s);
+if(ttl) {
+dequeueEval(ttl - 1 || 0);
+}
+}
 tryToStr = function(o) {
 var s;
 try {
@@ -188,6 +208,7 @@ W: W
 ,styles: styles
 ,cons: cons
 ,escapeStr: escapeStr
+,enqueueEval: enqueueEval
 //,tools: tools
 };
 //W.eval("window.addEventListener('load', function(){var init = VK.init; VK.init = function(){init.call(this, [].slice.call(arguments, 0)); VK._Rpc = top;}}, false)");
