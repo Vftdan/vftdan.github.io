@@ -48,7 +48,10 @@ escapeStr = function(s) {
 return (s + '').replace(/\\/g, '\\\\').replace(/\'/g, '\\\'').replace(/\"/g, '\\\"');
 }
 appendHtml = function(h, p) {
-window.document.getElementById('output').innerHTML += '<hr />' + (p || '') + h;
+var d = window.document.getElementById('output');
+var sh = d.scrollHeight;
+d.innerHTML += '<hr />' + (p || '') + h;
+d.scrollTop += d.scrollHeight - sh;
 }
 prefix_i = escapeHtml('>>> ');
 prefix_o = escapeHtml('<<< ');
