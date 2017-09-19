@@ -34,8 +34,8 @@ return s;
 evalWrap = function(s, window) {
 try{
 with(this) {
-var a = this.eval(s);
-return a;
+var __LAST = this.eval(s);
+return __LAST;
 }
 }catch(e){
 cons.error(e);
