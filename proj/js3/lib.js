@@ -446,7 +446,7 @@ try {
 					}
 					return Math.sqrt(s);
 				},
-				abs: function() {
+				taxicabAbs: function() {
 					var i, s = 0;
 					for (i = 0; i < this.d; i++) {
 						s += this.dims[i];
@@ -466,6 +466,9 @@ try {
 				},
 				mulScal: function(v2) {
 					return Vectors.Vec.mulEach(this, v2).taxicabAbs();
+				},
+				cos: function(v2) {
+					return this.mulScal(v2) / this.abs() / v2.abs();
 				},
 				rmulSelf: function(m) {
 					if (!isInstanceOf(m, Vectors.SqMatrix)) return;
