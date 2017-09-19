@@ -313,12 +313,12 @@ try {
 				},
 				_appendToBuffer: function(a, l) {
 					if (a.constructor == Number) {
-						var A = new Float32Array(this.buffer, this.__boff, 1);
+						var A = new Float32Array(this.buffer, this.byteOffset, 1);
 						A[0] = a
 					} else if (a.constructor == Array || a.constructor == Float32Array) {
 						var i;
 						l = l || a.length;
-						var A = new Float32Array(this.buffer, this.__boff, l);
+						var A = new Float32Array(this.buffer, this.byteOffset, l);
 						for (i = 0; i < l; i++) {
 							A[i] = a[i] || 0.0
 						}
@@ -326,18 +326,18 @@ try {
 						a = new Float32Array(a.buffer);
 						var i;
 						l = l || a.length;
-						var A = new Float32Array(this.buffer, this.__boff, l);
+						var A = new Float32Array(this.buffer, this.byteOffset, l);
 						for (i = 0; i < l; i++) {
 							A[i] = a[i] || 0.0
 						}
 					} else {
-						l = a.writeToF32Buffer(this.buffer, +this.__boff, l) || l;
-						A = new Float32Array(this.buffer, this.__boff, l)
+						l = a.writeToF32Buffer(this.buffer, +this.byteOffset, l) || l;
+						A = new Float32Array(this.buffer, this.byteOffset, l)
 					};
-					this.__boff += l << 2;
+					this.byteOffset += l << 2;
 					return A
 				},
-				__boff: 0
+				byteOffset: 0
 			};
 			var i;
 			for (i in _static) C[i] = _static[i];
@@ -352,10 +352,28 @@ try {
 		Vectors = {
 			Vec: withProto(lib, {
 				writeToF32Buffer: function(b, o, l) {
-					var a = new Float32Array(b, o, l),
-						i;
+					var a, i;
+					if (Array.isArray(b)) {
+						if (o % 4) throw 'Cannot use offset of ' + o + ' bytes in dynamic array';
+						a = {
+							set: function(i, v) {
+								b[(o >> 2) + i] = v
+							}
+						}
+					} else {
+						if (b.buffer) {
+							b = b.buffer;
+							o += (+b.byteOffset) || 0;
+						};
+						b = new Float32Array(b, o, l);
+						a = {
+							set: function(i, v) {
+								b[i] = v
+							}
+						}
+					};
 					for (i = 0; i < l; i++) {
-						a[i] = this.dims[i] || 0.0;
+						a.set(i, this.dims[i] || 0.0);
 					};
 				},
 				copy: function() {
@@ -428,6 +446,13 @@ try {
 					}
 					return Math.sqrt(s);
 				},
+				abs: function() {
+					var i, s = 0;
+					for (i = 0; i < this.d; i++) {
+						s += this.dims[i];
+					}
+					return s;
+				},
 				normSelf: function() {
 					this.mulSelf(1 / this.abs());
 				},
@@ -440,7 +465,7 @@ try {
 					}
 				},
 				mulScal: function(v2) {
-					return Vectors.Vec.mulEach(this, v2).abs();
+					return Vectors.Vec.mulEach(this, v2).taxicabAbs();
 				},
 				rmulSelf: function(m) {
 					if (!isInstanceOf(m, Vectors.SqMatrix)) return;
@@ -690,6 +715,23 @@ try {
 						b[i] = a[i].copy()
 					};
 					return this.proceedSelf(b)
+				},
+				transposeSelf: function() {
+					var v = this.v;
+					this.m.tansposeSelf();
+					this.v = this.dv;
+					this.dv = v;
+				},
+				transpose: function() {
+					var t = this.copy();
+					t.transposeSelf();
+					return t
+				},
+				appendTransform: function(t) {
+					if (isInstanceOf(t, Vectors.Transformator)) {
+						this.m.mulSelf(t.m);
+						this.dn *= t.dn;
+					}
 				}
 			}, function() {
 				var m = new Vectors.SqMatrix();
@@ -864,13 +906,19 @@ try {
 					}
 				},
 				initGl: function() {
-					var gl, i, n = this.constructor.contextNames;
-					for (i = 0; i < n.length; i++) {
-						gl = this.canv.element.getContext(n[i]);
-						if (gl) break;
+					if (!this.gl) {
+						var gl, i, n = this.constructor.contextNames;
+						for (i = 0; i < n.length; i++) {
+							gl = this.canv.element.getContext(n[i]);
+							if (gl) break;
+						}
+						this.gl = gl;
 					}
-					this.gl = gl;
-					this.Shader.gl = gl;
+					this.Shader.gl = this.gl;
+				},
+				initBlend: function() {
+					this.gl.enable(this.gl.BLEND);
+					this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
 				},
 				calcTexSlots: function() {
 					var i;
@@ -928,6 +976,16 @@ try {
 					if (!this.gl.isProgram(p)) p = this.genProgram(p);
 					this.gl.useProgram(p);
 					this.program = p;
+				},
+				getCtx2d: function() {
+					var ctx = {},
+						gl = this.gl;
+					ctx.getImageData = function(x, y, w, h) {
+						var a = new UInt8ClampedArray(4 * w * h);
+						gl.readPixels(x, y, w, h, gl.RGBA, gl.UNSIGNED_BYTE, a);
+						return new ImageData(a, w, h);
+					};
+					return ctx;
 				}
 
 			}, function() {
@@ -939,6 +997,16 @@ try {
 					getValues: function() {
 						var S = this.srcs;
 						return [].slice.apply(S[0], [S[1], S[1] + 4 - this.noAlpha])
+					},
+					setValues: function(v) {
+						this.srcs[0].set([].slice.apply(v, [0, 4 - this.noAlpha]), this.srcs[1])
+					},
+					setInt24: function(n) {
+						this.setValues([(n >> 16) & 255, (n >> 8) & 255, n & 255, 255])
+					},
+					getInt24: function() {
+						var v = this.getValues();
+						return (v[0] << 16) | (v[1] << 8) | v[2]
 					},
 					unbind: function() {
 						this.srcs = [this.getValues(), 0]
@@ -1259,18 +1327,14 @@ try {
 							document.write(e)
 						}
 					}
-				}, {}),
-			Shader: withProto(lib, {
-
-				},
-				function() {}, {
-					Ray: bufferStruct(function(orig, dir, dimcount) {
-						dimcount = dimcount || 3;
-						if (dimcount != 3) this._setBufferSize(dimcount << 3);
-						this.origin = this._appendToBuffer(orig, dimcount);
-						this.direction = this._appendToBuffer(dir, dimcount)
-					}, {}, 24)
-				})
+				}, {})
+			/*, Shader: withProto(lib, {
+			 
+			 }, 
+			 function(){}, {
+			     Ray: bufferStruct(function(orig, dir, dimcount){dimcount = dimcount || 3; if(dimcount != 3) this._setBufferSize(dimcount << 3); this.origin = this._appendToBuffer(orig, dimcount); this.direction = this._appendToBuffer(dir, dimcount)},
+			                         {}, 24)
+			 })*/
 		});
 		Timer = withProto(lib, {
 				play: function() {
