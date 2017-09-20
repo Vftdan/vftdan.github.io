@@ -449,6 +449,13 @@ try {
 				taxicabAbs: function() {
 					var i, s = 0;
 					for (i = 0; i < this.d; i++) {
+						s += Math.abs(this.dims[i]);
+					}
+					return s;
+				},
+				sum: function() {
+					var i, s = 0;
+					for (i = 0; i < this.d; i++) {
 						s += this.dims[i];
 					}
 					return s;
@@ -465,7 +472,7 @@ try {
 					}
 				},
 				mulScal: function(v2) {
-					return Vectors.Vec.mulEach(this, v2).taxicabAbs();
+					return Vectors.Vec.mulEach(this, v2).sum();
 				},
 				cos: function(v2) {
 					return this.mulScal(v2) / this.abs() / v2.abs();
