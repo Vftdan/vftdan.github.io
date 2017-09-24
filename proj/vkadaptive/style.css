@@ -1,0 +1,38 @@
+@media screen and (max-aspect-ratio: 7/8) {
+  #side_bar {
+    width: 63px;
+    overflow: hidden;
+    opacity: .7;
+    padding-left: 8px;
+    position: absolute;
+    left: 0px;
+    transition: opacity .7s, background 1=.7s;
+  }
+  #side_bar_inner {
+    border-right: 8px solid transparent;
+    transition: border .7s, background .7s;
+  }
+  #side_bar:hover {
+    width: auto;
+    opacity: 1;
+    background: white;
+  }
+  #side_bar:hover > #side_bar_inner {
+    background: white;
+    border-right: 8px solid white;
+  }
+  #page_body {
+    float:none;
+    position: relative;
+    left: 63px;
+  }
+  #page_layout {
+    position: fixed;
+    top: 42px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    width: auto;
+    overflow: scroll;
+  }
+}
