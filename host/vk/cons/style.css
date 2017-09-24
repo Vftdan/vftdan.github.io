@@ -24,6 +24,7 @@ height: 10%;
 }
 input {
 height: 100%;
+font-size: 5mm;
 }
 iframe, hr, input {
 border: 1pt solid #777788;
