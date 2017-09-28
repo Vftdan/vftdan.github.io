@@ -47,6 +47,14 @@ x.open('GET', url, true);
 x.onreadystatechange = function() {
 if(x.readyState != 4) return;
 try {
+if(!x.status) {
+ff = new FontFace(name, url);
+document.fonts.add(ff);
+result.included = true;
+result.ff = ff;
+if(callback) callback(result);
+return;
+}
 data = btoaBinary(x.responseText);
 result.downloaded = true;
 if(localStorage) {
