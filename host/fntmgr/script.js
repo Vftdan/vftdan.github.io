@@ -17,12 +17,11 @@ var btoaBinary = function(s) {
 return btoa(unescape(encodeURIComponent(s)));
 }
 var includeFont = function(props) {
-var name, url, crossorigin, callback, result = {included: false, saved: false, downloaded: false, exception: null, ff: null}, key, data, ff, mime;
+var name, url, callback, result = {included: false, saved: false, downloaded: false, exception: null, ff: null}, key, data, ff, mime;
 name = props.name;
 if(!name) throw 'No name';
 name += '';
 url = props.url;
-//crossorigin = props.crossorigin;
 callback = props.callback;
 mime = props.mime?getMime(props.mime):((url&&(url + '').match(/\.[\w+-]$/))?(getMime((url+'').match(/\.[\w+-]$/)[0])):getMime('ttf'));
 if((typeof callback) != 'function') callback = null;
