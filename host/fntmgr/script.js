@@ -62,7 +62,7 @@ localStorage.setItem(key, data);
 result.saved = true;
 } catch(e) {}
 }
-ff = new FontFace(name, 'url(data:' + mime + ';base64,' + data + ')');
+ff = new FontFace(name, 'url(data:' + mime + ';charset=utf8;base64,' + data + ')');
 document.fonts.add(ff);
 result.included = true;
 result.ff = ff;
