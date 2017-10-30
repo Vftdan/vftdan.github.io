@@ -1,7 +1,11 @@
 ﻿try {
 var JsConsole = (function(target, href, window){
-var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeStr, styles, appendHtml, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr, toEval = [], enqueueEval, dequeueEval;
+var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeStr, styles, appendHtml, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr, toEval = [], enqueueEval, dequeueEval, spaceSplit, $range;
 def = [];
+spaceSplit = function(s, c) {
+return s.replace(/^\s+|\s+$/g, '').split(/\s+/, c);
+}
+$range = "(function(a, b, s){a = +a || 0; b = +b || 0; if(a == b) return []; s = +s || 1;})";
 dequeueEval = function(ttl) {
 if(toEval.length) {
 ttl = +ttl || 0;
@@ -111,16 +115,25 @@ return;
 def.push([new RegExp('([^\\w_\\$])' + a[1] + '(?![\\w_\\$])', ''), '$1' + a[2].replace(/\$/g, '$$$$')]);
 },
 '#runbase64': function(s) {
-s = atob(s).split('\n');
+s = decodeURIComponent(escape(atob(s))).split('\n');
 var i;
 for(i in s) {
 exec(s[i]);
 }
-}
-}
-exec = function(c) {
+},
+'#range': function(a) {
 try {
-appendHtml(escapeHtml(c), prefix_i);
+a = spaceSplit(a);
+
+} catch(e) {
+cons.error(e);
+}
+}
+}
+exec = function(c, asVoid) {
+try {
+if(c[0] == '@') return exec(c, true);
+if(!asVoid) appendHtml(escapeHtml(c), prefix_i);
 if(c[0] == '#') {
 try{
 var kv = [].slice.call(c.match(/^(\#\w*)\s*(.*)$/), 1);
@@ -219,7 +232,7 @@ W: W
 //doc.write(1);
 return JsConsole;
 })('targetifr', 'frame.html' + location.search, window);
-if(location.search && location.search.match(/(?:[\?\&])hash\=([^\&]+)/)) window.addEventListener('load', function(){JsConsole.exec('#runbase64 ' + decodeURI(location.search.match(/(?:[\?\&])hash\=([^\&]+)/)[1]))}, false);
+if(location.search && location.search.match(/(?:[\?\&])hash\=([^\&]+)/)) window.addEventListener('load', function(){JsConsole.exec('#runbase64 ' + decodeURIComponent(location.search.match(/(?:[\?\&])hash\=([^\&]+)/)[1]))}, false);
 throw '';
 } catch(e) {
 document.getElementById('output').innerHTML = e;
