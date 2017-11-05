@@ -35,10 +35,10 @@ s = '[Access denied, ' + (typeof o) + ']';
 }
 return s;
 }
-evalWrap = function(s, window) {
+evalWrap = function(__COMMAND, window) {
 try{
 with(this) {
-var __LAST = this.eval(s);
+var __LAST = this.eval(__COMMAND);
 return __LAST;
 }
 }catch(e){
