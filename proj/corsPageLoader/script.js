@@ -42,7 +42,7 @@ var pReplacer = (function(){
             try {
                 cb(x.responseText);
             } catch(e) {
-                document.write(e);
+                console.err(e);
             }
         }
         x.send();
@@ -57,5 +57,12 @@ var pReplacer = (function(){
             cb(s);
         });
     }
-    return getContent;
+    function replace(url) {
+        getContent(url, function(t) {
+            document.open('text/html', 'replace');
+            document.write(t);
+        });
+    }
+    return {getContent: getContent,
+            replace: replace};
 })();
