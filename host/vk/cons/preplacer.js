@@ -57,10 +57,11 @@ var pReplacer = (function(){
             cb(s);
         });
     }
-    function replace(url) {
+    function replace(url, cb) {
         getContent(url, function(t) {
             document.open('text/html', 'replace');
             document.write(t);
+            if(typeof cb == 'function') cb();
         });
     }
     return {getContent: getContent,
