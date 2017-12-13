@@ -16,6 +16,7 @@ var pReplacer = (function(){
                 }
             }
         } else {
+            if(rel.match(/https?\:\/{2}/)) return rel;
             if(base[base.length - 1] != '/') base += '/';
             return base + rel;
         }
