@@ -8,7 +8,7 @@ return s.replace(/^\s+|\s+$/g, '').split(/\s+/, c);
 $range = "(function(a, b, s){a = +a || 0; b = +b || 0; if(a == b) return []; s = +s || 1;})";
 getFieldR = function(t, p) {
 p = p.split('.')
-while(p) {
+while(p.length) {
 t = t[p.shift()];
 }
 return t;
