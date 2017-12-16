@@ -285,7 +285,7 @@ window.beforeunload = window.onbeforeunload = function(e) {
 var s = 'Leave?';
 e.returnValue = s;
 if(confirm(s)) e.preventDefault();
-return false;
+return s;
 }
 throw '';
 } catch(e) {
