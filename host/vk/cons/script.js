@@ -281,6 +281,12 @@ W: W
 return JsConsole;
 })('targetifr', 'frame.html' + location.search, window);
 if(location.search && location.search.match(/(?:[\?\&])hash\=([^\&]+)/)) window.addEventListener('load', function(){JsConsole.exec('#runbase64 ' + decodeURIComponent(location.search.match(/(?:[\?\&])hash\=([^\&]+)/)[1]))}, false);
+window.beforeunload = window.onbeforeunload = function(e) {
+var s = 'Leave?';
+e.returnValue = s;
+if(confirm(s)) e.preventDefault();
+return false;
+}
 throw '';
 } catch(e) {
 document.getElementById('output').innerHTML = e;
