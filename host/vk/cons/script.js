@@ -1,6 +1,6 @@
 ﻿try {
 var JsConsole = (function(target, href, window){
-var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeStr, styles, appendHtml, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr, toEval = [], enqueueEval, dequeueEval, spaceSplit, $range;
+var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeStr, styles, appendHtml, domTree, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr, toEval = [], enqueueEval, dequeueEval, spaceSplit, $range;
 def = [];
 spaceSplit = function(s, c) {
 return s.replace(/^\s+|\s+$/g, '').split(/\s+/, c);
@@ -58,6 +58,26 @@ var w = document.createElement('div');
 w.innerHTML = '<hr />' + (p || '') + h;
 d.appendChild(w);
 d.scrollTop += d.scrollHeight - sh;
+}
+domTree = function(e) {
+if(!e.tagName) return escapeHtml(e.textContent);
+var pre, mid, pst, s, c, i, a;
+pre = '<div><input type="checkbox" /><label>';
+mid = '</label><div treespoiler>';
+pst = '</div></div>';
+s = [pre, e.tagName];
+a = e.attributes;
+for(i = 0; i < a.length; i++) {
+s.push(' ' + escapeHtml(a[i].name) + '="' + escapeHtml(escapeStr(a[i].value)) + '"');
+}
+s.push(mid);
+c = e.firstChild;
+while(c) {
+s.push(domTree(c));
+c = c.nextSibling;
+}
+s.push(pst);
+return s.join('');
 }
 prefix_i = escapeHtml('>>> ');
 prefix_o = escapeHtml('<<< ');
@@ -129,6 +149,21 @@ a = spaceSplit(a);
 
 } catch(e) {
 cons.error(e);
+}
+},
+'#inspect': function(a) {
+try { 
+a = spaceSplit(a);
+var el;
+if(a[0] == '@') {
+a.shift();
+el = document.querySelector(a.join(' '));
+} else {
+el = W[a[0]];
+}
+appendHtml('<div tree>' + domTree(el) + '</div>');
+} catch(e) {
+cons.err(e);
 }
 }
 }
