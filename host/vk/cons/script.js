@@ -76,8 +76,10 @@ mid = '</label><div treespoiler>';
 pst = '</div></div>';
 s = [pre, e.nodeName];
 a = e.attributes;
+if(a) {
 for(i = 0; i < a.length; i++) {
 s.push(' ' + escapeHtml(a[i].name) + '="' + escapeHtml(escapeStr(a[i].value)) + '"');
+}
 }
 s.push(mid);
 c = e.firstChild;
@@ -172,7 +174,7 @@ el = getFieldR(W, a[0]);
 }
 appendHtml('<div tree>' + domTree(el) + '</div>');
 } catch(e) {
-cons.err(e);
+cons.error(e);
 }
 }
 }
