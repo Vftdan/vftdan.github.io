@@ -1,11 +1,18 @@
 ﻿try {
 var JsConsole = (function(target, href, window){
-var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeStr, styles, appendHtml, domTree, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr, toEval = [], enqueueEval, dequeueEval, spaceSplit, $range;
+var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeStr, styles, appendHtml, domTree, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr, toEval = [], enqueueEval, dequeueEval, spaceSplit, getFieldR, $range;
 def = [];
 spaceSplit = function(s, c) {
 return s.replace(/^\s+|\s+$/g, '').split(/\s+/, c);
 }
 $range = "(function(a, b, s){a = +a || 0; b = +b || 0; if(a == b) return []; s = +s || 1;})";
+getFieldR = funxtion(t, p) {
+p = p.split('.')
+while(p) {
+t = t[p.shift()];
+}
+return t;
+}
 dequeueEval = function(ttl) {
 if(toEval.length) {
 ttl = +ttl || 0;
@@ -60,12 +67,12 @@ d.appendChild(w);
 d.scrollTop += d.scrollHeight - sh;
 }
 domTree = function(e) {
-if(!e.tagName) return escapeHtml(e.textContent);
+if(!e.tagName && e.nodyType != 9) return escapeHtml(e.textContent);
 var pre, mid, pst, s, c, i, a;
 pre = '<div><input type="checkbox" /><label>';
 mid = '</label><div treespoiler>';
 pst = '</div></div>';
-s = [pre, e.tagName];
+s = [pre, e.nodeName];
 a = e.attributes;
 for(i = 0; i < a.length; i++) {
 s.push(' ' + escapeHtml(a[i].name) + '="' + escapeHtml(escapeStr(a[i].value)) + '"');
@@ -157,9 +164,9 @@ a = spaceSplit(a);
 var el;
 if(a[0] == '@') {
 a.shift();
-el = document.querySelector(a.join(' '));
+el = doc.querySelector(a.join(' '));
 } else {
-el = W[a[0]];
+el = getFieldR(W, a[0]);
 }
 appendHtml('<div tree>' + domTree(el) + '</div>');
 } catch(e) {
