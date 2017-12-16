@@ -6,7 +6,7 @@ spaceSplit = function(s, c) {
 return s.replace(/^\s+|\s+$/g, '').split(/\s+/, c);
 }
 $range = "(function(a, b, s){a = +a || 0; b = +b || 0; if(a == b) return []; s = +s || 1;})";
-getFieldR = funxtion(t, p) {
+getFieldR = function(t, p) {
 p = p.split('.')
 while(p) {
 t = t[p.shift()];
@@ -67,7 +67,9 @@ d.appendChild(w);
 d.scrollTop += d.scrollHeight - sh;
 }
 domTree = function(e) {
-if(!e.tagName && e.nodyType != 9) return escapeHtml(e.textContent);
+if(!e.tagName && e.nodeType != 9) {
+return escapeHtml(e.textContent);
+}
 var pre, mid, pst, s, c, i, a;
 pre = '<div><input type="checkbox" /><label>';
 mid = '</label><div treespoiler>';
