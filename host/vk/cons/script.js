@@ -54,7 +54,9 @@ return (s + '').replace(/\\/g, '\\\\').replace(/\'/g, '\\\'').replace(/\"/g, '\\
 appendHtml = function(h, p) {
 var d = window.document.getElementById('output');
 var sh = d.scrollHeight;
-d.innerHTML += '<hr />' + (p || '') + h;
+var w = document.createElement('div');
+w.innerHTML = '<hr />' + (p || '') + h;
+d.appendChild(w);
 d.scrollTop += d.scrollHeight - sh;
 }
 prefix_i = escapeHtml('>>> ');
