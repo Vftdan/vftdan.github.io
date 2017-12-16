@@ -68,7 +68,11 @@ d.scrollTop += d.scrollHeight - sh;
 }
 domTree = function(e) {
 if(!e.tagName && e.nodeType != 9) {
-return escapeHtml(e.textContent);
+var s = escapeHtml(e.textContent);
+if(e.nodeType == 8) {
+return '<div><input type="checkbox" /><label>&lt;!-- --&gt;</label><div treespoiler>' + s + '</div></div>';
+}
+return s;
 }
 var pre, mid, pst, s, c, i, a;
 pre = '<div><input type="checkbox" /><label>';
