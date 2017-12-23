@@ -1,6 +1,6 @@
 ﻿try {
 var JsConsole = (function(target, href, window){
-var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeStr, styles, appendHtml, domTree, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr, toEval = [], enqueueEval, dequeueEval, spaceSplit, getFieldR, $range;
+var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeStr, styles, appendHtml, domTree, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr, toEval = [], enqueueEval, dequeueEval, spaceSplit, getFieldR, $range, docCheck, docChangeListeners = [];
 def = [];
 spaceSplit = function(s, c) {
 return s.replace(/^\s+|\s+$/g, '').split(/\s+/, c);
@@ -97,7 +97,25 @@ return s.join('');
 prefix_i = escapeHtml('>>> ');
 prefix_o = escapeHtml('<<< ');
 W = window.open(href, target);
-doc = W.document;
+docCheck = function() {
+var d = W.document;
+if(d != doc) {
+var o = doc;
+doc = d;
+var i;
+for(i in docChangeListeners) {
+try {
+docChangeListeners[i]({'before': o, 'after': d});
+} catch(e) {
+if(cons && typeof cons.error == 'function') {
+cons.error(e);
+}
+}
+}
+}
+}
+docCheck();
+//doc = W.document;
 tools = {
 '#include': function(src) {
 try {
@@ -170,6 +188,7 @@ cons.error(e);
 try { 
 a = spaceSplit(a);
 var el;
+docCheck();
 if(a[0] == '@') {
 a.shift();
 el = doc.querySelector(a.join(' '));
