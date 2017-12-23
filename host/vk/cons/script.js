@@ -195,7 +195,7 @@ el = doc.querySelector(a.join(' '));
 } else {
 el = getFieldR(W, a[0]);
 }
-appendHtml('<div tree>' + domTree(el) + '</div>');
+appendHtml('<div tree style="width: 100%; overflow: auto;">' + domTree(el) + '</div>');
 } catch(e) {
 cons.error(e);
 }
