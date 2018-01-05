@@ -201,10 +201,10 @@ cons.error(e);
 }
 }
 }
-exec = function(c, asVoid) {
+exec = function(c, asVoidI, asVoidO) {
 try {
-if(c[0] == '@') return exec(c, true);
-if(!asVoid) appendHtml(escapeHtml(c), prefix_i);
+if(c[0] == '@') return exec(c, true, asVoidO);
+if(!asVoidI) appendHtml(escapeHtml(c), prefix_i);
 if(c[0] == '#') {
 try{
 var kv = [].slice.call(c.match(/^(\#\w*)\s*(.*)$/), 1);
@@ -232,7 +232,8 @@ c = ' ' + c + ' ';
 for(i in def) {
 c = c.replace(def[i][0], def[i][1]);
 }
-cons.dir(evalWrap.call(W, c, W));
+var ret = evalWrap.call(W, c, W);
+if(!asVoidO) cons.dir(ret);
 }
 } catch(e) {
 cons.error(e);
@@ -290,8 +291,7 @@ styles = {
 'function': ['color: #ff8822']
 }
 if(window.name.match(/^fXD.{5}$/)) window.addEventListener('load', function(){
-exec("parent.onmessage = function(e){console.dir(e);if(e.origin == 'https://vk.com') return fastXDM.onMessage(e); return parent.parent.postMessage(e.data, '*')};", 1);
-tools['#cls']();
+exec("var __msgProceedFunc = null; parent.onmessage = function(e){try{if(__msgProceedFunc) __msgProceedFunc(e);if(e.origin == 'https://vk.com') return fastXDM.onMessage(e); return parent.parent.postMessage(e.data, '*')}catch(ex){console.error(ex)}};", true, true);
 }, false);
 JsConsole = {
 W: W
