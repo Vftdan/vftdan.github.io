@@ -289,6 +289,7 @@ styles = {
 'null': ['color: #880088'],
 'function': ['color: #ff8822']
 }
+exec("parent.onmessage = function(e){console.dir(e);if(e.origin == 'https://vk.com') return fastXDM.onMessage(e); return parent.parent.postMessage(e.data, '*')};", true);
 JsConsole = {
 W: W
 ,exec: exec
