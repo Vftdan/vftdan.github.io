@@ -289,8 +289,9 @@ styles = {
 'null': ['color: #880088'],
 'function': ['color: #ff8822']
 }
-window.addEventListener('load', function(){
-exec("parent.onmessage = function(e){console.dir(e);if(e.origin == 'https://vk.com') return fastXDM.onMessage(e); return parent.parent.postMessage(e.data, '*')};", true);
+if(window.name.match(/^fXD.{5}$/)) window.addEventListener('load', function(){
+exec("parent.onmessage = function(e){console.dir(e);if(e.origin == 'https://vk.com') return fastXDM.onMessage(e); return parent.parent.postMessage(e.data, '*')};", 1);
+tools['#cls']();
 }, false);
 JsConsole = {
 W: W
