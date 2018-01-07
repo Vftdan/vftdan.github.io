@@ -65,6 +65,7 @@ var w = document.createElement('div');
 w.innerHTML = '<hr />' + (p || '') + h;
 d.appendChild(w);
 d.scrollTop += d.scrollHeight - sh;
+return w;
 }
 domTree = function(e) {
 if(!e.tagName && e.nodeType != 9) {
@@ -170,11 +171,15 @@ return;
 def.push([new RegExp('([^\\w_\\$])' + a[1] + '(?![\\w_\\$])', ''), '$1' + a[2].replace(/\$/g, '$$$$')]);
 },
 '#runbase64': function(s) {
-s = decodeURIComponent(escape(atob(s))).split('\n');
-var i;
-for(i in s) {
-exec(s[i]);
+s = decodeURIComponent(escape(atob(s)));
+appendHtml("<button>Click to execute</button><code style='" + styles.string.join(';') + "'>" + escapeHtml(s) + "</code>").firstChild.nextSibling.addEventListener('click', function(e){
+if(confirm('Execute code?')) {
+var i, l = s.split('\n');
+for(i in l) {
+exec(l[i]);
 }
+}
+}, false);
 },
 '#range': function(a) {
 try {
