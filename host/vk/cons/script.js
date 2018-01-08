@@ -312,7 +312,7 @@ W: W
 //doc.write(1);
 return JsConsole;
 })('targetifr', 'frame.html' + location.search, window);
-if(location.search && location.search.match(/(?:[\?\&])hash\=([^\&]+)/)) window.addEventListener('load', function(){JsConsole.exec('#runbase64 ' + decodeURIComponent(location.search.match(/(?:[\?\&])hash\=([^\&]+)/)[1]))}, false);
+if(location.search && location.search.match(/(?:[\?\&])hash\=([^\&]+)/)) window.addEventListener('load', function(){JsConsole.exec('#runbase64 ' + decodeURIComponent(location.search.match(/(?:[\?\&])hash\=([^\&]+)/)[1]), true)}, false);
 window.beforeunload = window.onbeforeunload = function(e) {
 var s = 'Leave?';
 e.returnValue = s;
