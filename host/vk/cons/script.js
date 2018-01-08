@@ -208,7 +208,7 @@ cons.error(e);
 }
 exec = function(c, asVoidI, asVoidO) {
 try {
-if(c[0] == '@') return exec(c, true, asVoidO);
+if(c[0] == '@') return exec(c.substr(1), true, asVoidO);
 if(!asVoidI) appendHtml(escapeHtml(c), prefix_i);
 if(c[0] == '#') {
 try{
