@@ -1,6 +1,6 @@
 ﻿try {
 var JsConsole = (function(target, href, window){
-var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeStr, styles, appendHtml, domTree, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr, toEval = [], enqueueEval, dequeueEval, spaceSplit, getFieldR, $range, docCheck, docChangeListeners = [];
+var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeStr, styles, appendHtml, domTree, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr, toEval = [], enqueueEval, dequeueEval, spaceSplit, getFieldR, $range, docCheck, docChangeListeners = [], lastVar = '__LAST';
 def = [];
 spaceSplit = function(s, c) {
 return s.replace(/^\s+|\s+$/g, '').split(/\s+/, c);
@@ -44,10 +44,9 @@ return s;
 }
 evalWrap = function(__COMMAND, window) {
 try{
-with(this) {
 var __LAST = this.eval(__COMMAND);
+if(lastVar) this[lastVar] = __LAST;
 return __LAST;
-}
 }catch(e){
 cons.error(e);
 }
@@ -201,6 +200,13 @@ el = doc.querySelector(a.join(' '));
 el = getFieldR(W, a[0]);
 }
 appendHtml('<div tree style="width: 100%; overflow: auto;">' + domTree(el) + '</div>');
+} catch(e) {
+cons.error(e);
+}
+},
+'#lastvar': function(a) {
+try {
+lastVar = spaceSplit(a)[0];
 } catch(e) {
 cons.error(e);
 }
