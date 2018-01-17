@@ -65,6 +65,7 @@ var pReplacer = (function(){
             if(typeof cb == 'function') cb();
         });
     }
-    return {getContent: getContent,
-            replace: replace};
+    return {getHtml: getContent,
+            replace: replace,
+            getRaw: getWeb};
 })();
