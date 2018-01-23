@@ -42,7 +42,7 @@ dequeueEval(ttl - 1 || 0);
 tryToStr = function(o) {
 var s;
 try {
-s = o + '';
+s = (o && typeof o.toString == 'function') ? o.toString() : o + '';
 } catch(e) {
 s = '[Cannot convert to string, ' + (typeof o) + ']';
 }
