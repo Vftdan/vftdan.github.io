@@ -1,7 +1,13 @@
 ﻿try {
 var JsConsole = (function(target, href, window){
-var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeStr, styles, appendHtml, domTree, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr, toEval = [], enqueueEval, dequeueEval, spaceSplit, getFieldR, $range, docCheck, docChangeListeners = [], lastVar = '__LAST';
+var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeStr, styles, appendHtml, domTree, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr, toEval = [], enqueueEval, dequeueEval, spaceSplit, getFieldR, $range, docCheck, docChangeListeners = [], lastVar = '__LAST', clipCopyStr, domInsert;
 def = [];
+clipCopyStr = function(s) {
+var a = document.getElementById('cbbuf');
+a.value = s;
+a.select();
+return document.execCommand('copy');
+};
 spaceSplit = function(s, c) {
 return s.replace(/^\s+|\s+$/g, '').split(/\s+/, c);
 }
@@ -57,14 +63,41 @@ return (s + '').replace(/\&/g, '&amp;').replace(/\>/g, '&gt;').replace(/\</g, '&
 escapeStr = function(s) {
 return (s + '').replace(/\\/g, '\\\\').replace(/\'/g, '\\\'').replace(/\"/g, '\\\"');
 }
+domInsert = function(p, c, ind) {
+var cc = p.firstChild, i;
+for(i = 0; i < ind; i++) {
+if(!cc) break;
+cc = cc.nextSibling;
+}
+if(cc) return p.insertBefore(c, cc);
+else return p.appendChild(c);
+}
 appendHtml = function(h, p) {
+try {
 var d = window.document.getElementById('output');
 var sh = d.scrollHeight;
 var w = document.createElement('div');
-w.innerHTML = '<hr />' + (p || '') + h;
+var wd = document.createElement('span');
+var lew = document.createElement('div');
+wd.innerHTML = h;
+lew.setAttribute('lewrap', '');
+var btns = [['copy', function(){clipCopyStr(wd.innerText)}]];
+var i;
+for(i in btns) {
+var bt = document.createElement('div');
+bt.setAttribute('lebtn', btns[i][0]);
+bt.onclick = btns[i][1];
+lew.appendChild(bt);
+}
+w.innerHTML = '<hr />' + (p || '');
+domInsert(w, lew, 1);
+w.appendChild(wd);
 d.appendChild(w);
 d.scrollTop += d.scrollHeight - sh;
 return w;
+} catch(e) {
+alert(e);
+}
 }
 domTree = function(e) {
 if(!e.tagName && e.nodeType != 9) {

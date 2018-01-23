@@ -1,0 +1,23 @@
+﻿[lewrap] {
+    height: 0px;
+    width: 100%;
+    overflow: visible;
+}
+[lebtn] {
+    height: 1em;
+    width: 1em;
+    margin-top: .1em;
+    float: right;
+    border-left: 1px solid #aaaabb;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+[lebtn]:hover {
+    background-color: rgba(0, 0, 0, .1);
+}
+[lebtn]:active {
+    background-color: rgba(0, 0, 0, .2);
+}
+[lebtn='copy'] {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABhElEQVR4Xu2aYQ4BMRCFSUTCRTiP2zgDR3EgToIgDPGDstq+t3ZKn2R/mc5Mv76ZabLb71X+61e+/54ASAGVE1AJVC4ANUGVgEqgcgIqAUAAa1szAdalLNmY0TTFsC0bRAHntoI3+EFyglNCggkAjDu+8CdLAFFRHEVHFkjyYQkgPjraXjwMkjwL4GBpDeKpQRanXN8eAIpqogIACI0tASkggI6o8NEFdSBIcCqgZc6uD0VL+ROAAnoAcggqgQcCKgGmqSLyo4irCWoKaAyyJaR7QECAAqomqItQPgFKchqDGoMag2wJaQxqDD4ToBSle0D+FHxpYjEXRzNY2jO/G1In9iYY5a8NBcQAXP/f2jOuGcDONj/6FwAr28jMnlT1XF9XLf6pBFIk/8mGqtkSeoAAkAR+/tUYuf/sMZobL7U33fxmGedm0mBfvQL2BmbYEszQTScfSHwpdx+3HiXgs9OGqAJQ1HE4JCMFOEAvKqQUUNRxOCQjBThALyqkFFDUcTgkcwFwGmhBa/kUVQAAAABJRU5ErkJggg==');
+}

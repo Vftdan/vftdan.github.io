@@ -29,3 +29,9 @@ font-size: 5mm;
 iframe, hr, input {
 border: 1pt solid #777788;
 }
+#cbbuf {
+overflow: hidden;
+outline: none;
+border: none;
+opacity: 0;
+}
