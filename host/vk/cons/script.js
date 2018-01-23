@@ -44,7 +44,7 @@ var s;
 try {
 s = o + '';
 } catch(e) {
-s = '[Access denied, ' + (typeof o) + ']';
+s = '[Cannot convert to string, ' + (typeof o) + ']';
 }
 return s;
 }
@@ -204,7 +204,7 @@ def.push([new RegExp('([^\\w_\\$])' + a[1] + '(?![\\w_\\$])', ''), '$1' + a[2].r
 },
 '#runbase64': function(s) {
 s = decodeURIComponent(escape(atob(s)));
-appendHtml("<code style='" + styles.string.join(';') + "'>" + escapeHtml(s) + "</code>", "<button>Click to execute</button>").firstChild.nextSibling.nextSibling.firstChild.addEventListener('click', function(e){
+appendHtml("<code style='" + styles.string.join(';') + "'>" + escapeHtml(s) + "</code>", "<button>Click to execute</button>").firstChild.nextSibling.nextSibling.addEventListener('click', function(e){
 if(confirm('Execute code?')) {
 var i, l = s.split('\n');
 for(i in l) {
@@ -332,7 +332,8 @@ styles = {
 'string': ['color: #22dd22'],
 'undefined': ['color: #888888'],
 'null': ['color: #880088'],
-'function': ['color: #ff8822']
+'function': ['color: #ff8822'],
+'symbol': ['color: #557788'],
 }
 if(window.name.match(/^fXD.{5}$/)) window.addEventListener('load', function(){
 exec("var __msgProceedFunc = null; parent.onmessage = function(e){try{if(__msgProceedFunc) __msgProceedFunc(e);if(e.origin == 'https://vk.com') return fastXDM.onMessage(e); return parent.parent.postMessage(e.data, '*')}catch(ex){console.error(ex)}};", true, true);
