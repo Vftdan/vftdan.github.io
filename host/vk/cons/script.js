@@ -1,7 +1,10 @@
 ﻿try {
 var JsConsole = (function(target, href, window){
-var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeStr, styles, appendHtml, domTree, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr, toEval = [], enqueueEval, dequeueEval, spaceSplit, getFieldR, $range, docCheck, docChangeListeners = [], lastVar = '__LAST', clipCopyStr, domInsert;
+var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeStr, styles, appendHtml, domTree, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr, toEval = [], enqueueEval, dequeueEval, spaceSplit, getFieldR, $range, docCheck, docChangeListeners = [], lastVar = '__LAST', clipCopyStr, domInsert, libAliases, trim;
 def = [];
+trim = function(s) {
+return s.replace(/^[\s\x00-\x20]+|[\s\x00-\x20]+$/g, '');
+}
 clipCopyStr = function(s) {
 var a = document.getElementById('cbbuf');
 a.value = s;
@@ -152,6 +155,11 @@ docCheck();
 tools = {
 '#include': function(src) {
 try {
+src = trim(src);
+if(src[0] == '<' && src[src.length - 1] == '>') {
+if(src in libAliases) src = libAliases[src];
+else throw 'Include not found';
+}
 W.eval("(function() {var s = document.createElement('script');s.src = '" + escapeStr(src) + "';s.setAttribute('defer', '');document.getElementsByTagName('head')[0].appendChild(s);})()");
 } catch(e) {
 cons.error(e);
@@ -203,7 +211,7 @@ return;
 def.push([new RegExp('([^\\w_\\$])' + a[1] + '(?![\\w_\\$])', ''), '$1' + a[2].replace(/\$/g, '$$$$')]);
 },
 '#runbase64': function(s) {
-s = decodeURIComponent(escape(atob(s)));
+s = decodeURIComponent(escape(atob(trim(s))));
 appendHtml("<code style='" + styles.string.join(';') + "'>" + escapeHtml(s) + "</code>", "<button>Click to execute</button>").firstChild.nextSibling.nextSibling.addEventListener('click', function(e){
 if(confirm('Execute code?')) {
 var i, l = s.split('\n');
@@ -293,7 +301,7 @@ r = '<span style="' + styles[t].join(';') + '">' + escapeHtml(tryToStr(r)) + '</
 appendHtml(r, prefix_o);
 },
 'dir': function(o) {
-if((typeof o) != 'object' || o === null || tryToStr(o) == '[Access denied, object]') return this.log(o); 
+if((typeof o) != 'object' || o === null || tryToStr(o).match(/\[Cannot\sconvert\sto\sstring\,\s\w*\]/)) return this.log(o); 
 var t, r, i, s = '{';
 for(i in o) {
 r = o[i];
@@ -334,6 +342,14 @@ styles = {
 'null': ['color: #880088'],
 'function': ['color: #ff8822'],
 'symbol': ['color: #557788'],
+}
+libAliases = {
+'<preplacer>': './preplacer.js',
+'<jquery>': 'https://code.jquery.com/jquery.min.js',
+'<js3>': '/proj/js3/lib.js',
+'<vk>': 'https://vk.com/js/api/openapi.js',
+'<dummyneko>': 'https://b1nary.tk/dummyneko.js',
+'<petooh>': 'http://ky6uk.github.io/PETOOH/js/petooh.min.js',
 }
 if(window.name.match(/^fXD.{5}$/)) window.addEventListener('load', function(){
 exec("var __msgProceedFunc = null; parent.onmessage = function(e){try{if(__msgProceedFunc) __msgProceedFunc(e);if(e.origin == 'https://vk.com') return fastXDM.onMessage(e); return parent.parent.postMessage(e.data, '*')}catch(ex){console.error(ex)}};", true, true);
