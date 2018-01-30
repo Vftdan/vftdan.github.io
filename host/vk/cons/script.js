@@ -1,7 +1,10 @@
 ﻿try {
 var JsConsole = (function(target, href, window){
-var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeStr, styles, appendHtml, domTree, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr, toEval = [], enqueueEval, dequeueEval, spaceSplit, getFieldR, $range, docCheck, docChangeListeners = [], lastVar = '__LAST', clipCopyStr, domInsert, libAliases, trim;
+var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeStr, styles, appendHtml, domTree, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr, toEval = [], enqueueEval, dequeueEval, spaceSplit, getFieldR, $range, docCheck, docChangeListeners = [], lastVar = '__LAST', clipCopyStr, domInsert, libAliases, trim, conInput;
 def = [];
+window.addEventListener('load', function() {
+conInput = document.getElementById('coninput');
+}, false);
 trim = function(s) {
 return s.replace(/^[\s\x00-\x20]+|[\s\x00-\x20]+$/g, '');
 }
@@ -84,7 +87,7 @@ var wd = document.createElement('span');
 var lew = document.createElement('div');
 wd.innerHTML = h;
 lew.setAttribute('lewrap', '');
-var btns = [['copy', function(){clipCopyStr(wd.innerText)}]];
+var btns = [['addInput', function() {conInput.value += wd.innerText}], ['setInput', function() {conInput.value = wd.innerText}], ['copy', function(){clipCopyStr(wd.innerText)}]];
 var i;
 for(i in btns) {
 var bt = document.createElement('div');
