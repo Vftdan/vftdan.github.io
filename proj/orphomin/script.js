@@ -1,11 +1,16 @@
 ﻿function OrphominInit(elWord, elInput) {
+    var fcontent = '', loadFile, words, parseFile, reload, ruUp = /[А-ЯЁ]/g, ruLo = /[а-яё]/g, getRandWord, trim, showWord, nextWord, submit, cdiv, sbgc, escapeHtml;
     var Orphomin = {faddr: '/proj/orphomin/custom.txt'
-                    ,
+                    ,getSubmit: function() {
+                        return submit;
+                    }
                     };
-    var fcontent = '', loadFile, words, parseFile, reload, ruUp = /[А-ЯЁ]/g, ruLo = /[а-яё]/g, getRandWord, trim, showWord, cdiv, sbgc;
     trim = function(s) {
         return (s + '').replace(/^\s*|\s*$/g, '');
-    }
+    };
+    escapeHtml = function(s) {
+        return s.replace(/\&/g, '&amp;').replace(/\</g, '&lt;').replace(/\>/g, '&gt;');
+    };
     loadFile = function(cb, onerr) {
         var x = new XMLHttpRequest();
         x.open('GET', Orphomin.faddr);
@@ -46,7 +51,7 @@
     };
     sbgc = function(s, c) {
         return '<span style="background:' + c + '">' + s + '</span>';
-    }
+    };
     showWord = function(w, prevs) {
         elWord.innerHTML = '';
         if(prevs) {
@@ -75,6 +80,35 @@
         elWord.appendChild(d);
         return cor;
     };
+    nextWord = function(s) {
+        var w = getRandWord();
+        var cor;
+        submit = function() {
+            if(cor === undefined || elInput.innerText.length == 0) return;
+            var c = cor == parseInt(elInput.innerText);
+            elInput.innerText = '';
+            nextWord(c ? 'Ok' : 'Fail');
+        };
+        cor = showWord(w, s);
+    };
+    
+    elInput.addEventListener('keydown', function(e){
+        if(e.keyCode == 10 || e.keyCode == 13) {
+            if(submit) {
+                try {
+                    submit();
+                } catch(e) {
+                    alert(e);
+                }
+            }
+            e.preventDefault();
+        }
+    }, false);
+    
+    submit = function() {
+        if(words) nextWord();
+    };
+    reload();
     alert(0);
-    loadFile(function(){try{parseFile();alert(showWord(getRandWord(), 'Ok'))}catch(e){document.write(e)}}, alert)
+    //loadFile(function(){try{parseFile();alert(showWord(getRandWord(), 'Ok'))}catch(e){document.write(e)}}, alert)
 }
