@@ -45,8 +45,7 @@ body {
     padding-left: .5em;
     height: 1em;
     width: 2em;
-    position: relative;
-    top: 1em;
+    padding-top: 1em;
 }
 
 #word .word .lw .li {
@@ -57,5 +56,5 @@ body {
 }
 
 #word .word .lw .li + .ll {
-    top: 0em;
+    padding-top: 0em;
 }

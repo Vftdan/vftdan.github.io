@@ -109,6 +109,6 @@
         if(words) nextWord();
     };
     reload();
-    alert(0);
+    //alert(0);
     //loadFile(function(){try{parseFile();alert(showWord(getRandWord(), 'Ok'))}catch(e){document.write(e)}}, alert)
 }
