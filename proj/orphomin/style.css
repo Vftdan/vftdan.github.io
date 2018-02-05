@@ -1,0 +1,61 @@
+﻿* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    position: fixed;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    font-family: sans-serif;
+}
+
+#word {
+    height: 70%;
+    width: 100%;
+    padding: 1em;
+}
+
+#input {
+    height: 30%;
+    width: 100%;
+}
+
+#word .status {
+    width: calc(100% - 4em);
+    margin: 1em;
+    padding: .5em;
+    background: #ffffcc;
+    border: 1pt solid #eeeeaa;
+}
+
+#word .word .lw {
+    display: inline-block;
+    height: 2em;
+    width: 2em;
+}
+
+#word .word .lw + .lw {
+    border-left: 1pt solid #aaaaaa;
+}
+
+#word .word .lw .ll {
+    padding-left: .5em;
+    height: 1em;
+    width: 2em;
+    position: relative;
+    top: 1em;
+}
+
+#word .word .lw .li {
+    padding-left: .5em;
+    height: 1em;
+    width: 2em;
+    font-weight: bold;
+}
+
+#word .word .lw .li + .ll {
+    top: 0em;
+}

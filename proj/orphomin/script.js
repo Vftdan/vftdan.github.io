@@ -2,7 +2,7 @@
     var Orphomin = {faddr: '/proj/orphomin/custom.txt'
                     ,
                     };
-    var fcontent = '', loadFile, words, parseFile, reload, ruUp = /[А-ЯЁ]/g, ruLo = /[а-яё]/g, getRandWord, trim, showWord, cdiv;
+    var fcontent = '', loadFile, words, parseFile, reload, ruUp = /[А-ЯЁ]/g, ruLo = /[а-яё]/g, getRandWord, trim, showWord, cdiv, sbgc;
     trim = function(s) {
         return (s + '').replace(/^\s*|\s*$/g, '');
     }
@@ -43,12 +43,15 @@
         var d = document.createElement('div');
         if(cn) d.setAttribute('class', cn);
         return d;
+    };
+    sbgc = function(s, c) {
+        return '<span style="background:' + c + '">' + s + '</span>';
     }
     showWord = function(w, prevs) {
         elWord.innerHTML = '';
         if(prevs) {
             var pd = cdiv('status');
-            pd.innerText = prevs;
+            pd.innerHTML = prevs;
             elWord.appendChild(pd);
         }
         var d = cdiv('word');
@@ -71,7 +74,7 @@
         }
         elWord.appendChild(d);
         return cor;
-    }
+    };
     alert(0);
     loadFile(function(){try{parseFile();alert(showWord(getRandWord(), 'Ok'))}catch(e){document.write(e)}}, alert)
 }
