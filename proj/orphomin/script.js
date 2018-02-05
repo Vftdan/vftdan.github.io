@@ -1,5 +1,5 @@
 ﻿function OrphominInit(elWord, elInput) {
-    var fcontent = '', loadFile, words, parseFile, reload, ruUp = /[А-ЯЁ]/g, ruLo = /[а-яё]/g, getRandWord, trim, showWord, nextWord, submit, cdiv, sbgc, escapeHtml;
+    var fcontent = '', loadFile, words, parseFile, reload, ruUp = /[А-ЯЁ]/g, ruLo = /[а-яё]/g, getRandWord, trim, showWord, nextWord, submit, cdiv, sbgc, escapeHtml, ACCENT = String.fromCharCode(714);
     var Orphomin = {faddr: '/proj/orphomin/custom.txt'
                     ,getSubmit: function() {
                         return submit;
@@ -61,12 +61,13 @@
         }
         var d = cdiv('word');
         var ls = w[0].split('');
-        var i, j = 0, cor;
+        var i, j = 0, cor, lmap = {};
         for(i = 0; i < ls.length; i++) {
             var lw = cdiv('lw');
             if(ls[i].match(ruLo)) {
                 var li = cdiv('li');
                 li.innerText = ++j + '';
+                lmap[j] = i;
                 if(i == w[1]) {
                     cor = j;
                 }
@@ -78,18 +79,33 @@
             d.appendChild(lw);
         }
         elWord.appendChild(d);
-        return cor;
+        return [cor, lmap];
     };
     nextWord = function(s) {
         var w = getRandWord();
-        var cor;
+        var cor, lmap, ret;
         submit = function() {
             if(cor === undefined || elInput.innerText.length == 0) return;
-            var c = cor == parseInt(elInput.innerText);
+            var val = parseInt(elInput.innerText);
+            if(lmap[val] === undefined) return;
+            var c = cor == val;
             elInput.innerText = '';
-            nextWord(c ? 'Ok' : 'Fail');
+            var wl = w[0].split('');
+            var i;
+            for(i = 0; i < wl.length; i++) {
+                wl[i] = escapeHtml(wl[i]);
+            }
+            if(c) {
+                wl[w[1]] = sbgc(wl[w[1]] + ACCENT, '#ddffee');
+            } else {
+                wl[w[1]] += ACCENT;
+                wl[lmap[val]] = sbgc(wl[lmap[val]], '#ffdddd');
+            }
+            nextWord((c ? 'Ok, ' : 'Fail, ') + wl.join(''));
         };
-        cor = showWord(w, s);
+        ret = showWord(w, s);
+        cor = ret[0];
+        lmap = ret[1];
     };
     
     elInput.addEventListener('keydown', function(e){
