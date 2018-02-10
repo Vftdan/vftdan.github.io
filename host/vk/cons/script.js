@@ -1,10 +1,32 @@
 ﻿try {
 var JsConsole = (function(target, href, window){
-var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeStr, styles, appendHtml, domTree, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr, toEval = [], enqueueEval, dequeueEval, spaceSplit, getFieldR, $range, docCheck, docChangeListeners = [], lastVar = '__LAST', clipCopyStr, domInsert, libAliases, trim, conInput;
+var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeStr, styles, appendHtml, domTree, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr, toEval = [], enqueueEval, dequeueEval, spaceSplit, getFieldR, $range, docCheck, docChangeListeners = [], lastVar = '__LAST', clipCopyStr, domInsert, libAliases, trim, conInput, extKeys = true, gopn, getKeys;
 def = [];
 window.addEventListener('load', function() {
 conInput = document.getElementById('coninput');
 }, false);
+gopn = Object.getOwnPropertyNames || Object.keys;
+getKeys = function(o, depth) {
+if(depth > 255) return [];
+depth = depth || 0;
+if(!extKeys) return Object.keys(o);
+var pn = gopn(o);
+ko = {};
+if(o.__proto__) {
+pn = pn.concat(getKeys(o.__proto__, depth + 1));
+} else if(o.constructor && o.constructor.prototype) {
+pn = pn.concat(getKeys(o.constructor.prototype, depth + 1));
+}
+var i;
+for(i = 0; i < pn.length; i++) {
+if(pn[i] in o) ko['@' + pn[i]] = true;
+}
+pn = [];
+for(i in ko) {
+if(i[0] == '@') pn.push(i.slice(1));
+}
+return pn;
+};
 trim = function(s) {
 return s.replace(/^[\s\x00-\x20]+|[\s\x00-\x20]+$/g, '');
 }
@@ -305,12 +327,13 @@ appendHtml(r, prefix_o);
 },
 'dir': function(o) {
 if((typeof o) != 'object' || o === null || tryToStr(o).match(/\[Cannot\sconvert\sto\sstring\,\s\w*\]/)) return this.log(o); 
-var t, r, i, s = '{';
-for(i in o) {
-r = o[i];
+var t, r, i, k, s = '{';
+k = getKeys(o);
+for(i = 0; i < k.length; i++) {
+r = o[k[i]];
 t = r === null ? 'null' : typeof r;
 r = '<span style="' + styles[t].join(';') + '">' + escapeHtml(tryToStr(r)) + '</span>';
-s += '<br />"' + escapeHtml(i.replace(/\"/g, "\\\"")) + '": ' + r + ',';
+s += '<br />"' + escapeHtml(k[i].replace(/\"/g, "\\\"")) + '": ' + r + ',';
 }
 s += '<br />}';
 appendHtml(s, prefix_o);
