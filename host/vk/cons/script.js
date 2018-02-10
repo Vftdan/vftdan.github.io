@@ -1,6 +1,6 @@
 ﻿try {
 var JsConsole = (function(target, href, window){
-var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeStr, styles, appendHtml, domTree, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr, toEval = [], enqueueEval, dequeueEval, spaceSplit, getFieldR, $range, docCheck, docChangeListeners = [], lastVar = '__LAST', clipCopyStr, domInsert, libAliases, trim, conInput, extKeys = true, gopn, getKeys;
+var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeStr, styles, appendHtml, domTree, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr, toEval = [], enqueueEval, dequeueEval, spaceSplit, getFieldR, $range, docCheck, docChangeListeners = [], lastVar = '__LAST', clipCopyStr, domInsert, libAliases, trim, conInput, extKeys = true, gopn, getKeys, parseBool;
 def = [];
 window.addEventListener('load', function() {
 conInput = document.getElementById('coninput');
@@ -29,7 +29,16 @@ return pn;
 };
 trim = function(s) {
 return s.replace(/^[\s\x00-\x20]+|[\s\x00-\x20]+$/g, '');
-}
+};
+parseBool = function(s) {
+s = trim(s).toLowerCase();
+if(s.length == 0) return null;
+if('ty+'.indexOf(s[0]) + 1) return true;
+if('fn-'.indexOf(s[0]) + 1) return false;
+var n = +s;
+if(n == n) return !!n;
+return null;
+};
 clipCopyStr = function(s) {
 var a = document.getElementById('cbbuf');
 a.value = s;
@@ -276,7 +285,16 @@ lastVar = spaceSplit(a)[0];
 } catch(e) {
 cons.error(e);
 }
+},
+'#extkeys': function(a) {
+try {
+var b = parseBool(spaceSplit(a)[0]);
+if(b === null) throw 'Cannot parse boolean';
+extKeys = b;
+} catch(e) {
+cons.error(e);
 }
+},
 }
 exec = function(c, asVoidI, asVoidO) {
 try {
