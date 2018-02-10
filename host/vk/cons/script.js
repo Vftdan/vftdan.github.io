@@ -376,6 +376,7 @@ libAliases = {
 '<vk>': 'https://vk.com/js/api/openapi.js',
 '<dummyneko>': 'https://b1nary.tk/dummyneko.js',
 '<petooh>': 'http://ky6uk.github.io/PETOOH/js/petooh.min.js',
+'<polyfill>': 'https://cdn.polyfill.io/v2/polyfill.min.js',
 }
 if(window.name.match(/^fXD.{5}$/)) window.addEventListener('load', function(){
 exec("var __msgProceedFunc = null; parent.onmessage = function(e){try{if(__msgProceedFunc) __msgProceedFunc(e);if(e.origin == 'https://vk.com') return fastXDM.onMessage(e); return parent.parent.postMessage(e.data, '*')}catch(ex){console.error(ex)}};", true, true);
