@@ -1,10 +1,12 @@
 ﻿try {
 var JsConsole = (function(target, href, window){
-var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeStr, styles, appendHtml, domTree, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr, toEval = [], enqueueEval, dequeueEval, spaceSplit, getFieldR, $range, docCheck, docChangeListeners = [], lastVar = '__LAST', clipCopyStr, domInsert, libAliases, trim, conInput, extKeys = true, gopn, getKeys, parseBool;
+var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeStr, styles, appendHtml, domTree, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr, toEval = [], enqueueEval, dequeueEval, spaceSplit, getFieldR, $range, docCheck, docChangeListeners = [], lastVar = '__LAST', clipCopyStr, domInsert, libAliases, trim, conInput, extKeys = true, gopn, getKeys, parseBool, npRe, npEsc;
 def = [];
 window.addEventListener('load', function() {
 conInput = document.getElementById('coninput');
 }, false);
+npRe = /[\x00-\x1f\u2000-\u200f\u2028-\u202f\u205f-\u206f]/g;
+npEsc = function(c){c = c.charCodeAt(0); if(c>255)return '\\u' + (0x10000 + c).toString(16).slice(1); else return '\\x' + (0x100 + c).toString(16).slice(1)};
 gopn = Object.getOwnPropertyNames || Object.keys;
 getKeys = function(o, depth) {
 if(depth > 255) return [];
@@ -98,7 +100,7 @@ escapeHtml = function(s) {
 return (s + '').replace(/\&/g, '&amp;').replace(/\>/g, '&gt;').replace(/\</g, '&lt;').replace(/\n/g, '<br />');
 }
 escapeStr = function(s) {
-return (s + '').replace(/\\/g, '\\\\').replace(/\'/g, '\\\'').replace(/\"/g, '\\\"');
+return (s + '').replace(/\\/g, '\\\\').replace(/\'/g, '\\\'').replace(/\"/g, '\\\"').replace(npRe, npEsc);
 }
 domInsert = function(p, c, ind) {
 var cc = p.firstChild, i;
@@ -351,7 +353,7 @@ for(i = 0; i < k.length; i++) {
 r = o[k[i]];
 t = r === null ? 'null' : typeof r;
 r = '<span style="' + styles[t].join(';') + '">' + escapeHtml(tryToStr(r)) + '</span>';
-s += '<br />"' + escapeHtml(k[i].replace(/\"/g, "\\\"")) + '": ' + r + ',';
+s += '<br />"' + escapeHtml(escapeStr(k[i])) + '": ' + r + ',';
 }
 s += '<br />}';
 appendHtml(s, prefix_o);
