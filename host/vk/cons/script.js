@@ -346,7 +346,7 @@ r = '<span style="' + styles[t].join(';') + '">' + escapeHtml(tryToStr(r)) + '</
 appendHtml(r, prefix_o);
 },
 'dir': function(o) {
-if((typeof o) != 'object' || o === null || tryToStr(o).match(/\[Cannot\sconvert\sto\sstring\,\s\w*\]/)) return this.log(o); 
+if(!((typeof o) in {'object': null, 'function': null}) || o === null || tryToStr(o).match(/\[Cannot\sconvert\sto\sstring\,\s\w*\]/)) return this.log(o); 
 var t, r, i, k, s = '{';
 k = getKeys(o);
 for(i = 0; i < k.length; i++) {
@@ -356,6 +356,7 @@ r = '<span style="' + styles[t].join(';') + '">' + escapeHtml(tryToStr(r)) + '</
 s += '<br />"' + escapeHtml(escapeStr(k[i])) + '": ' + r + ',';
 }
 s += '<br />}';
+if(typeof o == 'function') s = '<span style="' + styles.function.join(';') + '">' + escapeHtml(tryToStr(o)) + '</span><br />' + s
 appendHtml(s, prefix_o);
 }
 }
