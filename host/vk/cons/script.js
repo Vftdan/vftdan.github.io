@@ -350,10 +350,15 @@ if(!((typeof o) in {'object': null, 'function': null}) || o === null || tryToStr
 var t, r, i, k, s = '{';
 k = getKeys(o);
 for(i = 0; i < k.length; i++) {
+try {
 r = o[k[i]];
 t = r === null ? 'null' : typeof r;
 r = '<span style="' + styles[t].join(';') + '">' + escapeHtml(tryToStr(r)) + '</span>';
 s += '<br />"' + escapeHtml(escapeStr(k[i])) + '": ' + r + ',';
+} catch(e) {
+r = '<span style="' + styles.undefined.join(';') + '">Cannot access</span>';
+s += '<br />"' + escapeHtml(escapeStr(k[i])) + '": ' + r + ',';
+}
 }
 s += '<br />}';
 if(typeof o == 'function') s = '<span style="' + styles.function.join(';') + '">' + escapeHtml(tryToStr(o)) + '</span><br />' + s
