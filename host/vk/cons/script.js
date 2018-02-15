@@ -147,9 +147,9 @@ return '<div><input type="checkbox" /><label>&lt;!-- --&gt;</label><div treespoi
 return s;
 }
 var pre, mid, pst, s, c, i, a;
-pre = '<div><input type="checkbox" /><label>';
-mid = '</label><div treespoiler>';
-pst = '</div></div>';
+pre = '<div><label><input type="checkbox" /><span>';
+mid = '</span><div treespoiler>';
+pst = '</div></label></div>';
 s = [pre, e.nodeName];
 a = e.attributes;
 if(a) {
