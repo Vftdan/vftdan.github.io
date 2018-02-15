@@ -148,8 +148,8 @@ return s;
 }
 var pre, mid, pst, s, c, i, a;
 pre = '<div><label><input type="checkbox" /><span>';
-mid = '</span><div treespoiler>';
-pst = '</div></label></div>';
+mid = '</span><label treespoiler>';
+pst = '</label></label></div>';
 s = [pre, e.nodeName];
 a = e.attributes;
 if(a) {
