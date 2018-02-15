@@ -297,6 +297,24 @@ extKeys = b;
 cons.error(e);
 }
 },
+'#showdoc': function(a) {
+try {
+var b = parseBool(spaceSplit(a)[0]);
+if(b === null) throw 'Cannot parse boolean';
+document.body.setAttribute('jsconsHidedoc', !b);
+} catch(e) {
+cons.error(e);
+}
+},
+'#showout': function(a) {
+try {
+var b = parseBool(spaceSplit(a)[0]);
+if(b === null) throw 'Cannot parse boolean';
+document.body.setAttribute('jsconsHideout', !b);
+} catch(e) {
+cons.error(e);
+}
+},
 }
 exec = function(c, asVoidI, asVoidO) {
 try {

@@ -29,6 +29,21 @@ font-size: 5mm;
 iframe, hr, input {
 border: 1pt solid #777788;
 }
+[jsconsHidedoc="true"] pre {
+height: 90%;
+}
+[jsconsHideout="true"] iframe {
+height: 90%;
+}
+[jsconsHidedoc="true"] iframe {
+height: 0%;
+}
+[jsconsHideout="true"] pre {
+height: 0%;
+}
+[jsconsHidedoc="true"][jsconsHideout="true"] form {
+height: 100%;
+}
 #cbbuf {
 overflow: hidden;
 outline: none;
