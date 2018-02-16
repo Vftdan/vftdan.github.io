@@ -1,6 +1,6 @@
 ﻿try {
 var JsConsole = (function(target, href, window){
-var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeStr, styles, appendHtml, domTree, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr, toEval = [], enqueueEval, dequeueEval, spaceSplit, getFieldR, $range, docCheck, docChangeListeners = [], lastVar = '__LAST', clipCopyStr, domInsert, libAliases, trim, conInput, extKeys = true, gopn, getKeys, parseBool, npRe, npEsc;
+var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeAttr, escapeStr, styles, appendHtml, domTree, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr, toEval = [], enqueueEval, dequeueEval, spaceSplit, getFieldR, $range, docCheck, docChangeListeners = [], lastVar = '__LAST', clipCopyStr, domInsert, libAliases, trim, conInput, extKeys = true, gopn, getKeys, parseBool, npRe, npEsc;
 def = [];
 window.addEventListener('load', function() {
 conInput = document.getElementById('coninput');
@@ -99,6 +99,9 @@ cons.error(e);
 escapeHtml = function(s) {
 return (s + '').replace(/\&/g, '&amp;').replace(/\>/g, '&gt;').replace(/\</g, '&lt;').replace(/\n/g, '<br />');
 }
+escapeAttr = function(s) {
+return (s + '').replace(/\&/g, '&amp;').replace(/\>/g, '&gt;').replace(/\</g, '&lt;').replace(/\"/g, '&quot;');
+}
 escapeStr = function(s) {
 return (s + '').replace(/\\/g, '\\\\').replace(/\'/g, '\\\'').replace(/\"/g, '\\\"').replace(npRe, npEsc);
 }
@@ -154,7 +157,7 @@ s = [pre, e.nodeName];
 a = e.attributes;
 if(a) {
 for(i = 0; i < a.length; i++) {
-s.push(' ' + escapeHtml(a[i].name) + '="' + escapeHtml(escapeStr(a[i].value)) + '"');
+s.push(' ' + escapeHtml(a[i].name) + '="' + escapeHtml(escapeAttr(a[i].value)) + '"');
 }
 }
 s.push(mid);
