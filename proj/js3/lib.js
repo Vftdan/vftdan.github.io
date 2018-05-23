@@ -1337,7 +1337,48 @@ try {
 							document.write(e)
 						}
 					}
-				}, {})
+				}, {}),
+			GSymbol: withProto(lib, {
+				addTile: function(atl, layer, I, pos, hcount, vcount, scale) {
+					var tid = (this.__tiles.push([atl, I, pos, hcount, vcount, scale]) - 1) << 1;
+					var l = this.__layers;
+					l[layer] = l[layer] || [];
+					l[layer].push(tid);
+					return tid;
+				},
+				addAnimatedTile: function(atl, layer, m, pos, hcount, vcount, scale, frame) {
+					if(!frame && frame !== 0) frame = -1;
+					var tid = ((this.__atiles.push([atl, m, pos, hcount, vcount, scale, frame]) - 1) << 1) + 1;
+					var l = this.__layers;
+					l[layer] = l[layer] || [];
+					l[layer].push(tid);
+					return tid;
+				},
+				setFrame: function(atid, frame) {
+					if(atid & 1) this.__atiles[atid >> 1][6] = frame;	
+				},
+				unsetFrame: function(atid) {
+					if(atid & 1) this.__atiles[atid >> 1][6] = -1;	
+				},
+				setGraphics: function(G, offset) {
+					this.__g = G;
+					if(!offset) offset = new Vectors.Vec([0, 0]);
+					offset.resize(2);
+					this.__goff = offset;
+				},
+				scale: 1,
+				buffered: false,
+				__g: null,
+				__goff: null
+			},
+			function() {
+				this.__tiles = [];
+				this.__atiles = [];
+				this.__layers = [];
+			},
+			{
+					
+			})
 			/*, Shader: withProto(lib, {
 			 
 			 }, 

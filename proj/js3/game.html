@@ -1,0 +1,60 @@
+<html>
+	<head>
+		<script src='lib.js'></script>
+		<style>
+			canvas {
+				image-rendering: optimizeSpeed;
+				image-rendering: optimize-contrast;
+			}
+		</style>
+	</head>
+	<body>
+		<div id='deploy'></div>
+		<script>
+			try {
+				with(lib) { with(lib.Vectors) { with(lib.Graphics) {
+					var gameSize = Vec(240, 160), gameScale = 4;
+					var G = new Graphics(0, gameSize);
+					var Gscaled = new Graphics(0, Vec.mul(gameSize, gameScale));
+					G.bindView();
+					GE('id', 'deploy').push(Gscaled.bindView());
+					G.saveChanges();
+					Gscaled.saveChanges();
+					Gscaled.canv.setStyle('border', '1px solid black');
+					Gscaled.canv.CTX.imageSmoothingEnabled = false;
+					var terrainAtlas, charAtlas, renderTimer;
+					var __resLoadState = 2;
+					var onResLoad = function() {
+						try{
+							charAtlas.drawTo(G, 0, 0, 1, 1);
+							G.loadChanges();
+							G.putPixel(Vec(), Color([0, 0, 0, 255]));
+							G.saveChanges();
+						} catch(ex) {
+							document.write('OnResLoad: ' + ex);
+						}
+					}
+					var resLoadCb = function() {
+						if(!(--__resLoadState)) {
+							onResLoad();
+						}
+					}
+					renderTimer = new Timer(1000 / 24);
+					terrainAtlas = new TileAtlas('atlas.png', Vec(64, 64), 8, 8, 1, resLoadCb);
+					charAtlas = new TileAtlas('char.png', Vec(48, 16), 3, 1, 1, resLoadCb);
+					renderTimer.play();
+					renderTimer.addEventListener('tick', function() {
+						try {
+							Gscaled.cls(1);
+							Gscaled.drawImg(G, 0, Vec.mul(gameSize, gameScale));
+						} catch(ex) {
+							document.write('Render: ' + ex);
+						}
+					});
+				}}}
+			} catch(ex) {
+				document.write('Main: ' + ex);	
+			}
+		</script>
+	</body>
+</html>
