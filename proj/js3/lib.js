@@ -1378,6 +1378,42 @@ try {
 			},
 			{
 					
+			}),
+			Actor: withProto(lib, {
+				setFrame: function(atid, frame) {
+					if(atid & 1) this.__frames[atid] = frame;
+				},
+				getArguments(tid, G) {
+					var a;
+					if(tid & 1) {
+						a = this.symbol.__atiles[tid >> 1].slice(0);
+						var f = ((a[6] + 1) || (this.__frames[tid] + 1)) - 1;
+						a[6] = f;
+						if(f == -1) f = 0;
+						a[1] = a[1][f];
+					} else {
+						a = this.symbol.__tiles[tid >> 1].slice(0);
+					}
+					a.unshift(G);
+					return a;
+				},
+				setGraphics: function(G, offset) {
+					this.__g = G;
+					if(!offset) offset = (this.symbol && this.symbol.__goff && this.symbol.__goff.copy()) || new Vectors.Vec([0, 0]);
+					offset.resize(2);
+					this.__goff = offset;
+				},
+				symbol: null,
+				buffered: false,
+				__g: null,
+				__goff: null
+			},
+			function(s) {
+				this.symbol = s;
+				this.__frames = {};
+			},
+			{
+			
 			})
 			/*, Shader: withProto(lib, {
 			 
