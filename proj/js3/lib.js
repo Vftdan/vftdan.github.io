@@ -1340,9 +1340,10 @@ try {
 				}, {}),
 			GSymbol: withProto(lib, {
 				addTile: function(atl, layer, I, pos, hcount, vcount, scale) {
+					pos = pos || new Vectors.Vec([0, 0]);
 					var tid = (this.__tiles.push([atl, I, pos, hcount, vcount, scale]) - 1) << 1;
 					var l = this.__layers;
-					l[layer] = l[layer] || [];
+					l[layer] = l[layer] || (this.__lvisible[layer] = true) && [];
 					l[layer].push(tid);
 					return tid;
 				},
@@ -1350,7 +1351,7 @@ try {
 					if(!frame && frame !== 0) frame = -1;
 					var tid = ((this.__atiles.push([atl, m, pos, hcount, vcount, scale, frame]) - 1) << 1) + 1;
 					var l = this.__layers;
-					l[layer] = l[layer] || [];
+					l[layer] = l[layer] || (this.__lvisible[layer] = true) && [];
 					l[layer].push(tid);
 					return tid;
 				},
@@ -1366,8 +1367,41 @@ try {
 					offset.resize(2);
 					this.__goff = offset;
 				},
+				setLayerVisibility: function(l, val) {
+					this.__lvisible[l] = val;
+				},
+				isLayerVisible: function(l) {
+					return !!(this.__lvisible[l]);
+				},
+				saveChanges: function() {
+					if(!this.buffered) return;
+					var i, l = this.__layers, G = this.__g, j, tid, a, f, atl;
+					G.cls(1);
+					for(i in l) {
+						if(!l[i] || !this.isLayerVisible(i)) continue;
+						for(j in l[i]) {
+							tid = l[i][j];
+							if(tid & 1) {
+								a = this.__atiles[tid >> 1].slice(0);
+								f = ((a[6] + 1) || (this.__frames[tid] + 1)) - 1;
+								if(f == -1) f = 0;
+								a[1] = a[1][f];
+								a.pop();
+							} else {
+								a = this.symbol.__tiles[tid >> 1].slice(0);
+							}
+							atl = a[0];
+							a[2].addSelf(this.__goff);
+							a[5] = a[5] || 1;
+							a[5] *= this.scale || 1;
+							a[0] = G;
+							atl.drawTo.apply(atl, a);
+						}
+					}
+				},
 				scale: 1,
 				buffered: false,
+				autosave: true,
 				__g: null,
 				__goff: null
 			},
@@ -1375,6 +1409,7 @@ try {
 				this.__tiles = [];
 				this.__atiles = [];
 				this.__layers = [];
+				this.__lvisible = [];
 			},
 			{
 					
@@ -1383,7 +1418,7 @@ try {
 				setFrame: function(atid, frame) {
 					if(atid & 1) this.__frames[atid] = frame;
 				},
-				getArguments(tid, G) {
+				getArguments(tid) {
 					var a;
 					if(tid & 1) {
 						a = this.symbol.__atiles[tid >> 1].slice(0);
@@ -1394,7 +1429,7 @@ try {
 					} else {
 						a = this.symbol.__tiles[tid >> 1].slice(0);
 					}
-					a.unshift(G);
+					a[2] = a[2].copy();
 					return a;
 				},
 				setGraphics: function(G, offset) {
@@ -1403,18 +1438,65 @@ try {
 					offset.resize(2);
 					this.__goff = offset;
 				},
+				setLayerVisibility: function(l, val) {
+					this.__lvisible[l] = val;
+					this.__lhidden[l] = !val;
+				},
+				unsetLayerVisibility: function(l) {
+					this.__lvisible[l] = false;
+					this.__lhidden[l] = false;
+				},
+				isLayerVisible: function(l) {
+					if(this.__lvisible[l]) return true;
+					if(this.__lhidden[l]) return false;
+					return this.symbol.isLayerVisible(l);
+				},
+				saveChanges: function() {
+					if(!this.buffered || !this.symbol) return;
+					this.__g.cls(1);
+					if(this.symbol.buffered) {
+						if(this.symbol.autosave) this.symbol.saveChanges();
+						var off = Vectors.Vec.sub(this.__goff, this.symbol.__goff);
+						var size = new Vectors.Vec([this.symbol.__g.canv.element.width, this.symbol.__g.canv.element.height]);
+						this.__g.drawImg(this.symbol.__g, Vectors.Vec.mul(off, this.scale), Vectors.Vec.mul(size, this.scale), 0, size);
+						return;
+					}
+					var i, j, l = this.symbol.__layers, tid, a, atl, symbol = this.symbol;
+					for(i in l) {
+						if(!l[i] || !this.isLayerVisible(i)) continue;
+						for(j in l[i]) {
+							tid = l[i][j];
+							a = this.getArguments(tid);
+							atl = a[0];
+							a[2].addSelf(this.__goff);
+							a[5] = a[5] || 1;
+							a[5] *= (this.scale || 1) * (symbol.scale || 1);
+							a[0] = this.__g;
+							atl.drawTo.apply(atl, a);
+						}
+					}
+				},
 				symbol: null,
+				scale: 1,
 				buffered: false,
+				autosave: true,
+				useBounds: false,
+				boundsStart: null,
+				boundsSize: null,
 				__g: null,
 				__goff: null
 			},
 			function(s) {
 				this.symbol = s;
 				this.__frames = {};
+				this.__lvisible = [];
+				this.__lhidden = [];
+				this.position = new Vectors.Vec([0, 0]);
 			},
 			{
 			
-			})
+			}),
+			Scene: null
 			/*, Shader: withProto(lib, {
 			 
 			 }, 
@@ -1423,6 +1505,86 @@ try {
 			                         {}, 24)
 			 })*/
 		});
+		Graphics.Scene = subClass(Graphics.Actor, {
+				saveChanges: function() {
+					var k, ar, cropStart, cropSize, pos;
+					this.__g.cls(1);
+					for(k in this.__actors) {
+						ar = this.__actors[k];
+						if(!ar) continue;
+						if(ar.buffered || ar.symbol && ar.symbol.buffered) {
+							if(!ar.buffered) ar = descendObj(ar.symbol, {__goff: ar.__goff, position: ar.position});
+							if(ar.autosave) ar.saveChanges();
+							if(ar.useBounds) {
+								cropStart = ar.boundsStart;
+								cropSize = ar.boundsSize;
+							}
+							pos = Vectors.Vec.mul(ar.position, this.scale);
+							pos.addSelf(this.__goff);
+							if(ar.useBounds) {
+								this.__g.drawImg(ar.__g, pos, Vectors.Vec.mul(cropSize, this.scale), cropStart, cropSize);
+							} else {
+								pos.subSelf(Vectors.Vec.mul(ar.__goff, this.scale));
+								this.__g.drawImg(ar.__g, pos);
+							}
+						}
+						if(!ar.symbol) return;
+						var i, j, l = ar.symbol.__layers, tid, a, atl, symbol = ar.symbol;
+						//document.write([l.length, l])
+						for(i in l) {
+							//document.write(`(layer ${i})` + l[i] + ar.isLayerVisible(i));
+							if(!l[i] || !ar.isLayerVisible(i)) continue;
+							for(j in l[i]) {
+								tid = l[i][j];
+								//document.write(`(tile ${tid})`);
+								a = ar.getArguments(tid);
+								atl = a[0];
+								a[2].addSelf(ar.position);
+								a[2].mulSelf(this.scale || 1);
+								a[5] = a[5] || 1;
+								//document.write(`[${[a[5], this.scale, ar.scale, symbol.scale]}]`);
+								a[5] *= (this.scale || 1) * (ar.scale || 1) * (symbol.scale || 1);
+								a[0] = this.__g;
+								atl.drawTo.apply(atl, a);
+							}
+						}
+					}
+				},
+				addActor: function(a) {
+					this.__actors.push(a);
+				},
+				getActors: function() {
+					return this.__actors.slice(0);
+				},
+				lookAt: function(p) {
+					p = Vectors.Vec.div(p, this.scale);
+					p.subSelf(this.lookFocus);
+					this.__goff = p;
+				},
+				setFocus: function(p) {
+					p.resize(2);
+					this.lookFocus = this.scaleFocus = p;
+				},
+				setScale: function(s) {
+					if(!s) return;
+					if(!this.scale) this.scale = 1;
+					s /= this.scale;
+					this.__goff.addSelf(Vectors.Vec.mul(this.scaleFocus, 1 - s));
+					this.scale *= s;
+				},
+				buffered: true,
+				useBounds: true
+			},
+			function(G) {
+				this.Super(null);
+				this.__actors = [];
+				this.lookFocus = new Vectors.Vec([0, 0]);
+				this.scaleFocus = new Vectors.Vec([0, 0]);
+				this.boundsStart = new Vectors.Vec([0, 0]);
+				if(G && G.canv) this.boundsSize = new Vectors.Vec([G.canv.element.width || 0, G.canv.element.height || 0]);
+				this.setGraphics(G);
+			},
+			{});
 		Timer = withProto(lib, {
 				play: function() {
 					with(this) {

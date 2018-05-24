@@ -22,16 +22,25 @@
 					Gscaled.saveChanges();
 					Gscaled.canv.setStyle('border', '1px solid black');
 					Gscaled.canv.CTX.imageSmoothingEnabled = false;
+					var scene = new Scene(G);
 					var terrainAtlas, charAtlas, renderTimer;
 					var __resLoadState = 2;
 					var onResLoad = function() {
 						try{
-							charAtlas.drawTo(G, 0, 0, 1, 1);
+							var charSymbol = new GSymbol();
+							charSymbol.addTile(charAtlas, 0, 0, 0, 1, 1);
+							var charActor = new Actor(charSymbol);
+							/*document.write(`actor.__lvisible=${charActor.__lvisible}\<br /\>`);
+							document.write(`actor.__lhidden=${charActor.__lhidden}\<br /\>`);
+							document.write(`symbol.__lvisible=${charSymbol.__lvisible}\<br /\>`);*/
+							scene.addActor(charActor);
+							scene.saveChanges();
+							//charAtlas.drawTo(G, 0, 0, 1, 1);
 							G.loadChanges();
 							G.putPixel(Vec(), Color([0, 0, 0, 255]));
 							G.saveChanges();
 						} catch(ex) {
-							document.write('OnResLoad: ' + ex);
+							document.lastChild.innerText += 'OnResLoad: ' + ex.stack;
 						}
 					}
 					var resLoadCb = function() {
