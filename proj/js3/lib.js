@@ -1423,9 +1423,9 @@ try {
 					var a;
 					if(tid & 1) {
 						a = this.symbol.__atiles[tid >> 1].slice(0);
-						var f = ((a[6] + 1) || ((this.__frames[tid] || 0) + 1)) - 1;
+						var f = ((a[6] + 1) || ((this.__frames[tid] || 0) + 1)) - 1; //TODO priority
 						a[6] = f;
-						if(f == -1) f = 0;
+						if(f == -1) f = 0; //TODO remove
 						a[1] = a[1][f];
 					} else {
 						a = this.symbol.__tiles[tid >> 1].slice(0);
