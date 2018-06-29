@@ -1423,7 +1423,7 @@ try {
 					var a;
 					if(tid & 1) {
 						a = this.symbol.__atiles[tid >> 1].slice(0);
-						var f = ((a[6] + 1) || (this.__frames[tid] + 1)) - 1;
+						var f = ((a[6] + 1) || ((this.__frames[tid] || 0) + 1)) - 1;
 						a[6] = f;
 						if(f == -1) f = 0;
 						a[1] = a[1][f];
