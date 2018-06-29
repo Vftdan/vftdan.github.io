@@ -1349,6 +1349,7 @@ try {
 				},
 				addAnimatedTile: function(atl, layer, m, pos, hcount, vcount, scale, frame) {
 					if(!frame && frame !== 0) frame = -1;
+					pos = pos || new Vectors.Vec([0, 0]);
 					var tid = ((this.__atiles.push([atl, m, pos, hcount, vcount, scale, frame]) - 1) << 1) + 1;
 					var l = this.__layers;
 					l[layer] = l[layer] || (this.__lvisible[layer] = true) && [];
