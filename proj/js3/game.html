@@ -13,7 +13,7 @@
 		<script>
 			try {
 				window.onerror = function(msg, url, row, col, e) {
-					document.write(msg + ' ' + row + ':' + col + '\n' + e.stack);
+					document.write((msg + ' ' + row + ':' + col + '\n' + e.stack).replace(/\n/g, '<br />'));
 				}
 				with(lib) { with(lib.Vectors) { with(lib.Graphics) {
 					var gameSize = Vec(240, 160), gameScale = 4;
