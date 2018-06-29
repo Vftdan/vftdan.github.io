@@ -12,6 +12,9 @@
 		<div id='deploy'></div>
 		<script>
 			try {
+				window.onerror = function(msg, url, row, col, e) {
+					document.write(msg + ' ' + row + ':' + col + '\n' + e.stack);
+				}
 				with(lib) { with(lib.Vectors) { with(lib.Graphics) {
 					var gameSize = Vec(240, 160), gameScale = 4;
 					var G = new Graphics(0, gameSize);
@@ -23,7 +26,7 @@
 					Gscaled.canv.setStyle('border', '1px solid black');
 					Gscaled.canv.CTX.imageSmoothingEnabled = false;
 					var scene = new Scene(G);
-					var terrainAtlas, charAtlas, renderTimer, charActor, charSymbol;
+					var terrainAtlas, charAtlas, renderTimer, charActor, charSymbol, platformActor, platformSymbol;
 					var __resLoadState = 2;
 					var onResLoad = function() {
 						try{
@@ -34,7 +37,13 @@
 							document.write(`actor.__lhidden=${charActor.__lhidden}\<br /\>`);
 							document.write(`symbol.__lvisible=${charSymbol.__lvisible}\<br /\>`);*/
 							scene.addActor(charActor);
-							charActor.position.addSelf(Vec([1, 2]));
+							platformSymbol = new GSymbol();
+							platformSymbol.addTile(terrainAtlas, 0, 10, 0, 4, 1);
+							platformSymbol.addTile(terrainAtlas, 0, 9, Vec([0, 8]), 4, 1);
+							platformActor = new Actor(platformSymbol);
+							scene.addActor(platformActor);
+							//charActor.position.addSelf(Vec([1, 2]));
+							platformActor.position.addSelf(Vec([0, 16]));
 							scene.saveChanges();
 							//charAtlas.drawTo(G, 0, 0, 1, 1);
 							G.loadChanges();
