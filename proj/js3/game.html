@@ -13,7 +13,7 @@
 		<script>
 			try {
 				window.onerror = function(msg, url, row, col, e) {
-					document.write((msg + ' ' + row + ':' + col + '\n' + e.stack).replace(/\n/g, '<br />'));
+					document.write((msg + ' ' + row + ':' + col + '\n' + e.stack + '\n\n').replace(/\n/g, '<br />'));
 				}
 				with(lib) { with(lib.Vectors) { with(lib.Graphics) {
 					var gameSize = Vec(240, 160), gameScale = 4;
@@ -26,12 +26,15 @@
 					Gscaled.canv.setStyle('border', '1px solid black');
 					Gscaled.canv.CTX.imageSmoothingEnabled = false;
 					var scene = new Scene(G);
-					var terrainAtlas, charAtlas, renderTimer, charActor, charSymbol, platformActor, platformSymbol;
+					var terrainAtlas, charAtlas, renderTimer, animTimer, charActor, charSymbol, platformActor, platformSymbol;
 					var __resLoadState = 2;
+					animTimer = new Timer(400);
 					var onResLoad = function() {
 						try{
 							charSymbol = new GSymbol();
-							charSymbol.addTile(charAtlas, 0, 0, 0, 1, 1);
+							var charAtid, charFrame = -1;
+							//charSymbol.addTile(charAtlas, 0, 0, 0, 1, 1);
+							charAtid = charSymbol.addAnimatedTile(charAtlas, 0, [0, 1, 2], 0, 1, 1, 0, -1);
 							charActor = new Actor(charSymbol);
 							/*document.write(`actor.__lvisible=${charActor.__lvisible}\<br /\>`);
 							document.write(`actor.__lhidden=${charActor.__lhidden}\<br /\>`);
@@ -44,11 +47,18 @@
 							scene.addActor(platformActor);
 							//charActor.position.addSelf(Vec([1, 2]));
 							platformActor.position.addSelf(Vec([0, 16]));
-							scene.saveChanges();
+							//alert(JSON.stringify(charSymbol.__layers));
+							//alert(JSON.stringify([charActor.getArguments(0).slice(1), charActor.getArguments(1).slice(1)]));
+							//alert(JSON.stringify(charSymbol.__atiles[0].slice(1)));
+							//scene.saveChanges();
 							//charAtlas.drawTo(G, 0, 0, 1, 1);
-							G.loadChanges();
+							/*G.loadChanges();
 							G.putPixel(Vec(), Color([0, 0, 0, 255]));
-							G.saveChanges();
+							G.saveChanges();*/
+							animTimer.addEventListener('tick', function() {
+								charActor.setFrame(charAtid, (charFrame = (charFrame + 1) % 3));
+							});
+							animTimer.play();
 						} catch(ex) {
 							document.lastChild.innerText += 'OnResLoad: ' + ex + '\n' + ex.stack;
 						}
@@ -64,10 +74,12 @@
 					renderTimer.play();
 					renderTimer.addEventListener('tick', function() {
 						try {
+							scene.saveChanges();
 							Gscaled.cls(1);
 							Gscaled.drawImg(G, 0, Vec.mul(gameSize, gameScale));
 						} catch(ex) {
-							document.write('Render: ' + ex);
+							onerror('Render: ' + ex.message, '', 0, 0, ex);
+							//document.write('Render: ' + ex);
 						}
 					});
 				}}}
