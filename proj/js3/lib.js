@@ -560,10 +560,10 @@ try {
 					if(strict && n >= 0b111111) return false;
 					n &= 0b111111;
 					while(n) {
-						if(n & 0b100 == 0) {
-							if(strict && n & 0b011) return false;
+						if((n & 0b100) == 0) {
+							if(strict && (n & 0b011)) return false;
 						} else {
-							if(n & 0b011 == 0b011) return false;
+							if((n & 0b011) == 0b011) return false;
 						}
 						n >>= 3;
 					}
