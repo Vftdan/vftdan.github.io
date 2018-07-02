@@ -545,6 +545,94 @@ try {
 					return v1
 				}
 			}),
+			Pos9: {
+				values: {
+					CENTER:	0b000000,
+					MIDDLE:	0b000000,
+					TOP:	0b000101,
+					BOTTOM:	0b000110,
+					LEFT:	0b101000,
+					RIGHT:	0b110000,
+				},
+				MASK_VERT:	0b000111,
+				MASK_HOR:	0b111000,
+				isValid: function(n, strict) {
+					if(strict && n >= 0b111111) return false;
+					n &= 0b111111;
+					while(n) {
+						if(n & 0b100 == 0) {
+							if(strict && n & 0b011) return false;
+						} else {
+							if(n & 0b011 == 0b011) return false;
+						}
+						n >>= 3;
+					}
+					return true;
+				},
+				getVert: function(n) {
+					n &= this.values.MASK_VERT;
+					if(!this.isValid(n)) throw 'Bad enum';
+					n >>= 0;
+					if(n & 0b100) {
+						return [0, -1, 1][n & 0b011];
+					} else {
+						return 0;
+					}
+				},
+				getHor: function(n) {
+					n &= this.values.MASK_HOR;
+					if(!this.isValid(n)) throw 'Bad enum';
+					n >>= 3;
+					if(n & 0b100) {
+						return [0, -1, 1][n & 0b011];
+					} else {
+						return 0;
+					}
+				},
+				toSVec: function(n) {
+					return new Vectors.Vec([this.getHor(n), this.getVert(n)]);
+				},
+				toNVec: function(n) {
+					var v = this.toSVec(n);
+					if(v.dims[0] || v.dims[1]) v.normSelf();
+					return v;
+				},
+				toUVec: function(n) {
+					return new Vectors.Vec([(1 + this.getHor(n)) / 2.0, (1 + this.getVert(n)) / 2.0]);
+				},
+				fromCoords: function(x, y) { // {x, y} ⊂ ℝ
+					var n = this.values.CENTER;
+					if(x) {
+						n |= (x > 0) ? this.values.RIGHT : this.values.LEFT;
+					}
+					if(y) {
+						n |= (y > 0) ? this.values.BOTTOM : this.values.TOP;
+					}
+					return n;
+				},
+				fromSVec: function(v) { // v ∈ ℝ²
+					v.resize(2);
+					return this.fromCoords(v.dims[0], v.dims[1]);
+				},
+				fromUVec: function(v) { // v ∈ {0, 0.5, 1}²
+					v.resize(2);
+					var d = [], i, c;
+					for(i = 0; i < 2; i++) {
+						c = v.dims[i];
+						c = Math.round(c * 4) / 4.0;
+						switch(c) {
+							case 0:
+								d[i] = 0b101; break;
+							case .5:
+								d[i] = 0b000; break;
+							case 1:
+								d[i] = 0b110; break;
+							default:
+								throw 'Vector ' + v + ' is not in (set {0, .5, 1}) ** 2';
+						}
+					}
+				}
+			},
 			deg: function(a) {
 				return DEG * a
 			},
