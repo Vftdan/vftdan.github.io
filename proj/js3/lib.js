@@ -570,7 +570,7 @@ try {
 					return true;
 				},
 				getVert: function(n) {
-					n &= this.values.MASK_VERT;
+					n &= this.MASK_VERT;
 					if(!this.isValid(n)) throw 'Bad enum';
 					n >>= 0;
 					if(n & 0b100) {
@@ -580,7 +580,7 @@ try {
 					}
 				},
 				getHor: function(n) {
-					n &= this.values.MASK_HOR;
+					n &= this.MASK_HOR;
 					if(!this.isValid(n)) throw 'Bad enum';
 					n >>= 3;
 					if(n & 0b100) {
