@@ -631,6 +631,7 @@ try {
 								throw 'Vector ' + v + ' is not in (set {0, .5, 1}) ** 2';
 						}
 					}
+					return (d[0] << 3) | d[1];
 				}
 			},
 			deg: function(a) {
