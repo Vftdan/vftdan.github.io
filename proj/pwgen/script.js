@@ -17,4 +17,4 @@ return p;
 var gens=("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890()").split("");
 
 
-document.write(pwgen(prompt("Старый пароль/семя генерации"),prompt("Название сайта"),prompt("Номер аккаунта",1)*1))
+//document.write(pwgen(prompt("Старый пароль/семя генерации"),prompt("Название сайта"),prompt("Номер аккаунта",1)*1))

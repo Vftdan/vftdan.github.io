@@ -1,1 +1,17 @@
 <meta charset="UTF-8"><script src="script.js"></script>
+<form>
+	<label>Старый пароль/семя генерации: <input type="password" id="seed" /></label><br />
+	<label>Название сайта: <input type="text" id="site" /></label><br />
+	<label>Номер аккаунта: <input type="text" id="accno" value=1 /></label><br />
+	<input type="submit" value="OK" />
+</form>
+<script>
+	function val(id) {
+		return document.getElementById(id).value;
+	}
+	function gen(e) {
+		document.write(pwgen(val("seed"), val("site"), val("accno") * 1));
+		e.preventDefault();
+	}
+	document.forms[0].onsubmit = gen;
+</script>
