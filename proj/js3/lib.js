@@ -59,7 +59,7 @@ try {
 			if (!el || el.constructor == Object) {
 				opt = opt || el;
 				TN = opt.tagName.toUpperCase();
-				ID = opt.id || opt.attrs.id;
+				ID = opt.id || opt.attrs && opt.attrs.id || undefined;
 				par = opt.parent || (opt.parentView && opt.parentView.element);
 				parv = getView(par);
 				this.parent = par;
