@@ -74,6 +74,14 @@
 			}
 			return t;
 		}
+		setFieldR = function(t, p, v) {
+			p = p.split('.')
+			if(p.length == 0) throw "Missing field!";
+			while(p.length - 1) {
+				t = t[p.shift()];
+			}
+			t[p[0]] = v;
+		}
 		dequeueEval = function(ttl) {
 			if(toEval.length) {
 				ttl = +ttl || 0;
@@ -296,6 +304,16 @@
 						el = getFieldR(W, a[0]);
 					}
 					appendHtml('<div tree style="width: 100%; overflow: auto;">' + domTree(el) + '</div>');
+				} catch(e) {
+					cons.error(e);
+				}
+			},
+			'#upload': function(a) {
+				try { 
+					a = spaceSplit(a);
+					var el;
+					docCheck();
+					setFieldR(W, a[0], appendHtml('<input type="file"></input>').lastChild.firstChild);
 				} catch(e) {
 					cons.error(e);
 				}
