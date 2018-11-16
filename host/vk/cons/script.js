@@ -1,6 +1,6 @@
 ﻿try {
 var JsConsole = (function(target, href, window){
-var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeAttr, escapeStr, styles, appendHtml, domTree, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr, toEval = [], enqueueEval, dequeueEval, spaceSplit, getFieldR, $range, docCheck, docChangeListeners = [], lastVar = '__LAST', clipCopyStr, domInsert, libAliases, trim, conInput, extKeys = true, gopn, getKeys, parseBool, npRe, npEsc;
+var JsConsole, W, exec, tools, doc, cons, escapeHtml, escapeAttr, escapeStr, styles, appendHtml, domTree, prefix_i, prefix_o, def, i, w, evalWrap, tryToStr, toEval = [], enqueueEval, dequeueEval, spaceSplit, getFieldR, $range, docCheck, docChangeListeners = [], lastVar = '__LAST', clipCopyStr, domInsert, libAliases, trim, conInput, extKeys = true, gopn, getKeys, parseBool, npRe, npEsc, hasKeys, scopes = [];
 def = [];
 window.addEventListener('load', function() {
 conInput = document.getElementById('coninput');
@@ -28,6 +28,22 @@ for(i in ko) {
 if(i[0] == '@') pn.push(i.slice(1));
 }
 return pn;
+};
+if(!([].filter)) Array.prototype.filter = function(g) {
+var a=[], i;
+for(i in this) {
+if((+i)==(+i)&&g(this[i])) a.push(this[i]);
+};
+return a;
+};
+hasKeys = function(s) {
+s = getFieldR(W, s);
+try {
+Object.keys(s);
+return true;
+} catch(e) {
+return false;
+}
 };
 trim = function(s) {
 return s.replace(/^[\s\x00-\x20]+|[\s\x00-\x20]+$/g, '');
@@ -87,10 +103,10 @@ s = '[Cannot convert to string, ' + (typeof o) + ']';
 }
 return s;
 }
-evalWrap = function(__COMMAND, window) {
+evalWrap = function(__COMMAND, window, denyLastVar) {
 try{
 var __LAST = this.eval(__COMMAND);
-if(lastVar) this[lastVar] = __LAST;
+if(!denyLastVar && lastVar) this[lastVar] = __LAST;
 return __LAST;
 }catch(e){
 cons.error(e);
