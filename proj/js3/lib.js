@@ -1155,7 +1155,21 @@ try {
 						for (ch = 0; ch < 3; ch++) {
 							S2[0][S2[1] + ch] = S2[0][S2[1] + ch] + aa * (S1[0][S1[1] + ch] - S2[0][S2[1] + ch])
 						};
-						if (!c.noAlpha) S2[0][S2[1] + 3] = (aa + this.getAlpha(1)) * 255
+						if (!this.noAlpha) S2[0][S2[1] + 3] = (aa + this.getAlpha(1)) * 255
+					},
+					lerpSelf: function(c, k) {
+						var ch,
+							S1 = c.srcs,
+							S2 = this.srcs;
+						for (ch = 0; ch < 3; ch++) {
+							S2[0][S2[1] + ch] = S2[0][S2[1] + ch] + k * (S1[0][S1[1] + ch] - S2[0][S2[1] + ch])
+						};
+						if (!this.noAlpha) S2[0][S2[1] + 3] += k * (c.getAlpha() - this.getAlpha());
+					},
+					lerp: function(c, k) {
+						var o = this.copy();
+						o.lerpSelf(c, k);
+						return o;
 					},
 					painted: function(c) {
 						var r = this.copy();
