@@ -1117,7 +1117,7 @@ try {
 					},
 					toString: function() {
 						if (!this.isHex) {
-							var v = this.getValues();
+							var v = this.getValues().map(function(a){return a | 0});
 							if (v[3]) v[3] /= 255;
 							return "rgb" + (this.noAlpha ? '' : 'a') + '(' + v.join(", ") + ')'
 						} else {
