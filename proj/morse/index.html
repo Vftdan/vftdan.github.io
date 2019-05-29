@@ -1,0 +1,167 @@
+<html>
+	<head>
+		<title>Morse decoder</title>
+		<script src="script.js" type="text/javascript"></script>
+		<script>
+addEventListener('load', function() {
+	var tf = new Morse.TableForm(Morse.tableLat.copy());
+	tf.writeEntries();
+	document.getElementById('tabledeploy').appendChild(tf.root);
+	var getPtns = function() {
+		var dotPtn = Morse.escapeRE(document.getElementById('dotptn').value);
+		var dashPtn = Morse.escapeRE(document.getElementById('dashptn').value);
+		var charSep = Morse.escapeRE(document.getElementById('charsep').value);
+		var wordSep = Morse.escapeRE(document.getElementById('wordsep').value);
+		if(document.getElementById('dotptn-mode-any').checked)
+			dotPtn = '^[' + dotPtn + ']';
+		else
+			dotPtn = '^' + dotPtn + '';
+		if(document.getElementById('dashptn-mode-any').checked)
+			dashPtn = '^[' + dashPtn + ']';
+		else
+			dashPtn = '^' + dashPtn + '';
+		if(document.getElementById('charsep-mode-any').checked)
+			charSep = '[' + charSep + ']';
+		else
+			charSep = '' + charSep + '';
+		if(document.getElementById('wordsep-mode-any').checked)
+			wordSep = '[' + wordSep + ']';
+		else
+			wordSep = '' + wordSep + '';
+		return [
+			new RegExp(dotPtn), new RegExp(dashPtn),
+			new RegExp(charSep, 'g'), new RegExp(wordSep, 'g'),
+		];
+	}
+	window.decodeClicked = function() {
+		var onError = function(e) {
+			var s = document.createElement('div');
+			s.innerText = e;
+			s.style.color = '#770000';
+			document.getElementById('log').appendChild(s);
+		};
+		try {
+			tf.update();
+			var ptns = getPtns();
+			document.getElementById('text').value = Morse.decode(document.getElementById('code').value, tf.table, onError, ptns[0], ptns[1], ptns[2], ptns[3]);
+		} catch(e) {
+			onError(e);
+		}
+	};
+	window.addClicked = function() {
+		tf.createEntry();
+	};
+	window.updateClicked = function() {
+		tf.update();
+	};
+	window.switchBlank = function() {
+		tf.bindTable();
+		tf.writeEntries();
+	};
+	window.switchLatin = function() {
+		tf.bindTable(Morse.tableLat.copy());
+		tf.writeEntries();
+	};
+	window.switchCyrillic = function() {
+		tf.bindTable(Morse.tableCyr.copy());
+		tf.writeEntries();
+	};
+});
+		</script>
+	</head>
+	<body>
+		<noscript>
+			<h1>Please, enable JavaScript</h1>
+		</noscript>
+		<table class='options'><tr>
+			<td>
+				<label>
+					Dot: 
+					<textarea id='dotptn'>.</textarea>
+				</label>
+				<br />
+				<label>
+					<input type='radio' name='dotptn-mode' id='dotptn-mode-any' checked> Any character </input>
+				</label>
+				<br />
+				<label>
+					<input type='radio' name='dotptn-mode' id='dotptn-mode-seq'> Character sequence </input>
+				</label>
+			</td>
+			<td>
+				<label>
+					Dash: 
+					<textarea id='dashptn'>-</textarea>
+				</label>
+				<br />
+				<label>
+					<input type='radio' name='dashptn-mode' id='dashptn-mode-any' checked> Any character </input>
+				</label>
+				<br />
+				<label>
+					<input type='radio' name='dashptn-mode' id='dashptn-mode-seq'> Character sequence </input>
+				</label>
+			</td>
+			<td>
+				<label>
+					Character separator: 
+					<textarea id='charsep'> </textarea>
+				</label>
+				<br />
+				<label>
+					<input type='radio' name='charsep-mode' id='charsep-mode-any' checked> Any character </input>
+				</label>
+				<br />
+				<label>
+					<input type='radio' name='charsep-mode' id='charsep-mode-seq'> Character sequence </input>
+				</label>
+			</td>
+			<td>
+				<label>
+					Word separator: 
+					<textarea id='wordsep'>&#13;</textarea>
+				</label>
+				<br />
+				<label>
+					<input type='radio' name='wordsep-mode' id='wordsep-mode-any' checked> Any character </input>
+				</label>
+				<br />
+				<label>
+					<input type='radio' name='wordsep-mode' id='wordsep-mode-seq'> Character sequence </input>
+				</label>
+			</td>
+		</tr></table>
+		<table class='main'><tr>
+			<td>
+				<label>
+					Code:
+					<textarea id='code'></textarea>
+				</label>
+			</td>
+			<td>
+				<label>
+					Text:
+					<textarea id='text'></textarea>
+				</label>
+			</td>
+		</tr></table>
+		<input type='button' onclick='decodeClicked(event)' value='Decode'></input>
+		<table class='presets'><tr>
+			<td>
+				<input type='button' onclick='switchBlank(event)' value='Blank'></input>
+			</td>
+			<td>
+				<input type='button' onclick='switchLatin(event)' value='Latin'></input>
+			</td>
+			<td>
+				<input type='button' onclick='switchCyrillic(event)' value='Cyrillic'></input>
+			</td>
+		</tr></table>
+		<div id='tabledeploy'>
+		</div>
+		<input type='button' onclick='addClicked(event)' value='Add'></input>
+		<input type='button' onclick='updateClicked(event)' value='Update'></input>
+		<div id='log'>
+		</div>
+	</body>
+</html>
